@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" >
 
+    <!--damos permiso a conexion a internet-->
+    <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -11,7 +13,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TP_HCI_MOBILE"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31" >
+        <!--con la linea android:usesCleartextTraffic="true" permitirmos que la api
+        se comunique mediante http y no en https que es el default-->
         <activity
             android:name=".MainActivity"
             android:exported="true"
