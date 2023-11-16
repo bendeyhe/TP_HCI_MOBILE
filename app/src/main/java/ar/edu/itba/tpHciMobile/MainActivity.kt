@@ -17,7 +17,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ElevatedButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -32,6 +36,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import ar.edu.itba.tpHciMobile.ui.theme.TP_HCI_MOBILETheme
 
 class MainActivity : ComponentActivity() {
@@ -39,12 +47,52 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             TP_HCI_MOBILETheme {
-                // A surface container using the 'background' color from the theme
-                MyApp(modifier = Modifier.fillMaxSize())
+                val navController = rememberNavController()
+                Scaffold(
+                    bottomBar = { BottomBar(navController = navController)}
+                ) {
+                    MyAppNavHost(navController = navController)
+                }
+                //MyApp(modifier = Modifier.fillMaxSize())
+
             }
         }
     }
 }
+
+@Composable
+fun BottomBar(navController: NavController) {
+    val items = listOf(
+        Screen.FirstScreen,
+        Screen.SecondScreen,
+        Screen.ThirdScreen
+    )
+
+    NavigationBar{
+        val navBackStackEntry by navController.currentBackStackEntryAsState()
+        val currentRoute = navBackStackEntry?.destination?.route
+        items.forEach{ item ->
+            NavigationBarItem(
+                icon = {Icon(imageVector = item.icon, contentDescription = item.title)},
+                label = {Text(text = item.title)},
+                alwaysShowLabel  = true,
+                selected = currentRoute == item.route,
+                onClick = {
+                    navController.navigate(item.route) {
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                }
+            )
+        }
+
+    }
+}
+
+
 
 @Composable
 fun MyApp (modifier: Modifier = Modifier) {

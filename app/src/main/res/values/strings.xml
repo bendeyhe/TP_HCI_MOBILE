@@ -2,4 +2,6 @@
     <string name="app_name">TOOBIG</string>
     <string name="show_less">Show Less</string>
     <string name="show_more">Show More</string>
+    <string name="goto_other_screen">Go To Other Screen</string>
+    <string name="received_id">Received id %1$d </string>
 </resources>
