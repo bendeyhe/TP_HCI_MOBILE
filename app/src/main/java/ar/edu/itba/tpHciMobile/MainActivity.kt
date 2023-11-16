@@ -7,6 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.spring
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,6 +17,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults.cardElevation
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -32,6 +35,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import ar.edu.itba.tpHciMobile.data.model.NetworkData
 import ar.edu.itba.tpHciMobile.ui.theme.TP_HCI_MOBILETheme
 
 class MainActivity : ComponentActivity() {
@@ -47,12 +52,12 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun MyApp (modifier: Modifier = Modifier) {
-    var shouldShowOnBoarding by rememberSaveable {mutableStateOf(true)}
+fun MyApp(modifier: Modifier = Modifier) {
+    var shouldShowOnBoarding by rememberSaveable { mutableStateOf(true) }
     Surface(modifier) {
-        if(shouldShowOnBoarding) {
-            OnBoardingScreen(onContinueClicked = {shouldShowOnBoarding = false})
-        } else{
+        if (shouldShowOnBoarding) {
+            OnBoardingScreen(onContinueClicked = { shouldShowOnBoarding = false })
+        } else {
             Greetings()
         }
     }
@@ -61,9 +66,10 @@ fun MyApp (modifier: Modifier = Modifier) {
 @Composable
 fun Greetings(
     modifier: Modifier = Modifier,
-    names: List<String> = List(50) {"$it"}) {
+    names: List<String> = List(50) { "$it" }
+) {
     LazyColumn(modifier = modifier.padding(vertical = 4.dp)) {
-        items(items = names){name ->
+        items(items = names) { name ->
             Greeting(name)
         }
     }
@@ -72,18 +78,20 @@ fun Greetings(
 @Composable
 fun OnBoardingScreen(
     onContinueClicked: () -> Unit,
-    modifier: Modifier = Modifier) {
+    modifier: Modifier = Modifier
+) {
 
 
     Column(
         modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
-    ){
+    ) {
         Text("Welcome to the app")
         ElevatedButton(
             modifier = Modifier.padding(vertical = 24.dp),
-            onClick =  onContinueClicked ) {
+            onClick = onContinueClicked
+        ) {
             Text("Continue")
         }
     }
@@ -91,7 +99,7 @@ fun OnBoardingScreen(
 
 @Preview(showBackground = true, widthDp = 320, heightDp = 320)
 @Composable
-fun GreetingsPreview(){
+fun GreetingsPreview() {
     TP_HCI_MOBILETheme {
         Greetings()
     }
@@ -99,11 +107,12 @@ fun GreetingsPreview(){
 
 @Preview(showBackground = true, uiMode = UI_MODE_NIGHT_YES, name = "Dark Mode", showSystemUi = true)
 @Composable
-fun GreetingsDarkPreview(){
+fun GreetingsDarkPreview() {
     TP_HCI_MOBILETheme {
         Greetings()
     }
 }
+
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
     //el "remember" sería como static en C, solo se inicializa la primera vez que se llama
@@ -115,7 +124,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
         animationSpec = spring(
             dampingRatio = Spring.DampingRatioMediumBouncy,
             stiffness = Spring.StiffnessLow
-        )
+        ), label = ""
     )
 
     Surface(
@@ -140,7 +149,11 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
                 )
             }
             ElevatedButton(onClick = { expanded.value = !expanded.value }) {
-                Text(text = if (expanded.value) stringResource(R.string.show_less) else stringResource(R.string.show_more))
+                Text(
+                    text = if (expanded.value) stringResource(R.string.show_less) else stringResource(
+                        R.string.show_more
+                    )
+                )
             }
         }
     }
@@ -153,7 +166,6 @@ fun MyAppPreview() {
         MyApp()
     }
 }
-
 
 
 @Composable
@@ -171,3 +183,49 @@ fun MyText() {
 fun MyTextPreview() {
     MyText()
 }
+
+/*
+@Composable
+fun userCard(data: NetworkData) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(10.dp)
+            .clickable { },
+        elevation = cardElevation(defaultElevation = 1.dp)
+    ) {
+        Row(modifier = Modifier.padding(10.dp)) {
+            // Imagen
+            Column (
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 10.dp)
+                    .weight(1f)
+            ) {
+                Text(
+                    text = "${data.firstName} - ${data.lastName}",
+                    fontSize = 16.sp
+                )
+                Text(
+                    text = data.email,
+                    fontSize = 10.sp
+                )
+            }
+        }
+    }
+}
+
+@Preview
+@Composable
+fun userCardPreview() {
+    userCard(
+        NetworkData(
+            id = 1,
+            email = "hola@gmail.com",
+            firstName = "John",
+            lastName = "Doe",
+            avatar = "https://reqres.in/img/faces/1-image.jpg"
+        )
+    )
+}
+ */

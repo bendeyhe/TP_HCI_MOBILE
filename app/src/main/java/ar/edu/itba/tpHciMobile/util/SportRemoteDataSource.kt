@@ -1,24 +1,36 @@
-import ar.edu.itba.tpHciMobile.data.api.ApiSportService
+package ar.edu.itba.tpHciMobile.util
 
+import ar.edu.itba.tpHciMobile.data.api.ApiSportService
+import ar.edu.itba.tpHciMobile.data.model.NetworkPagedContent
+import ar.edu.itba.tpHciMobile.data.model.NetworkSport
+
+/*
 class SportRemoteDataSource(
-    private val ApiSportService: ApiSportService
+    private val apiSportService: ApiSportService
 ) : RemoteDataSource() {
 
-    suspend fun getSports(): NetworkPagedContent:<NetworkSport> {
+    suspend fun getSports(): NetworkPagedContent :<NetworkSport> {
         return handleApiResponse {
-            ApiSportService.getSports()
+            apiSportService.getSports()
         }
     }
 
-    suspend fun getSport(sportId: Int): NetwirkSport {
+    suspend fun getSport(sportId: Int): NetworkSport {
         return handleApiResponse {
-            ApiSportService.getSport(sportId)
+            apiSportService.getSport(sportId)
         }
     }
 
     suspend fun addSport(sport: NetworkSport): NetworkSport {
         return handleApiResponse {
-            ApiSportService.addSport(sport)
+            apiSportService.addSport(sport)
+        }
+    }
+
+    suspend fun modifySport(sport: NetworkSport): NetworkSport {
+        return handleApiResponse {
+            apiSportService.modifySport(sport.id!!, sport)
         }
     }
 }
+*/

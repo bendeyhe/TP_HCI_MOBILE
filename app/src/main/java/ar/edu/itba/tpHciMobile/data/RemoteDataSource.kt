@@ -1,9 +1,14 @@
-import java.io.IOException
-import java.nio.channels.NetworkChannel
-import javax.sql.DataSource
+package ar.edu.itba.tpHciMobile.data
 
+import ar.edu.itba.tpHciMobile.data.model.NetworkError
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import java.io.IOException
+
+
+/*
 abstract class RemoteDataSource {
-    suspend fun <T :Any> handleApiResponse(execute: suspend () -> Response<T>): T {
+    suspend fun <T :Any> handleApiResponse(execute: suspend () -> Unit): T {
         try {
             val response = execute()
             val body = response.body()
@@ -41,3 +46,4 @@ abstract class RemoteDataSource {
         const val CONNECTION_ERROR_CODE = 99
     }
 }
+ */
