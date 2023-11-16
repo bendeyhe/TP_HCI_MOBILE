@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">TOOBIG</string>
+    <string name="show_less">Ver Menos</string>
+    <string name="show_more">Ver Más</string>
 </resources>
