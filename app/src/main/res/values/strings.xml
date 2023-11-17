@@ -7,4 +7,15 @@
     <string name="loading">Loading Users...</string>
     <string name="load_users">Load Users...</string>
     <string name="dismiss">DISMISS</string>
+    <string name="routines">Routines</string>
+    <string name="favorites">Favorites</string>
+    <string name="profile">Profile</string>
+    <string name="order_by">Sort by</string>
+    <string name="order_by_date_asc">"Oldest date "</string>
+    <string name="order_by_date_desc">Newest date</string>
+    <string name="order_by_rating_asc">Rating: low</string>
+    <string name="order_by_rating_desc">Rating: high</string>
+    <string name="order_by_diff_asc">Difficulty: low</string>
+    <string name="order_by_diff_desc">Difficulty: high</string>
+    <string name="close">CLOSE</string>
 </resources>

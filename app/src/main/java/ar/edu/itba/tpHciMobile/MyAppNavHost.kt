@@ -1,6 +1,7 @@
 package ar.edu.itba.tpHciMobile
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -10,12 +11,13 @@ import androidx.navigation.navArgument
 import androidx.navigation.navDeepLink
 
 @Composable
-fun MyAppNavHost(navController: NavHostController) {
+fun MyAppNavHost(navController: NavHostController, modifier: Modifier) {
     val uri = "http://www.example.com"
     val secureUri="https://www.example.com"
     NavHost(
         navController = navController,
-        startDestination = Screen.Routines.route
+        startDestination = Screen.Routines.route,
+        modifier = modifier
     ){
         composable("home"){
             HomeScreen(onNavigateToOtherScreen = {id -> navController.navigate("other/$id") })
