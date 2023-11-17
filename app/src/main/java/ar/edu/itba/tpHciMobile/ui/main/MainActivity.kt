@@ -1,4 +1,4 @@
-package ar.edu.itba.tpHciMobile
+package ar.edu.itba.tpHciMobile.ui.main
 
 import android.annotation.SuppressLint
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
@@ -8,26 +8,15 @@ import androidx.activity.compose.setContent
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.spring
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults.cardElevation
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -39,7 +28,6 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
@@ -49,9 +37,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -61,11 +47,8 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import ar.edu.itba.tpHciMobile.data.model.NetworkData
+import ar.edu.itba.tpHciMobile.R
 import ar.edu.itba.tpHciMobile.ui.theme.TP_HCI_MOBILETheme
-//import coil.compose.AsyncImage
 
 class MainActivity : ComponentActivity() {
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -75,7 +58,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             TP_HCI_MOBILETheme {
                 val navController = rememberNavController()
-                val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
+                val scrollBehavior =
+                    TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
                 Scaffold(
                     modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
                     topBar = {
@@ -108,26 +92,25 @@ class MainActivity : ComponentActivity() {
                             scrollBehavior = scrollBehavior,
                         )
                     },
-                    bottomBar = { BottomBar(navController = navController)}
-                ) {contentPadding ->
-                    MyAppNavHost(navController = navController, modifier = Modifier.padding(contentPadding))
+                    bottomBar = { BottomBar(navController = navController) }
+                ) { contentPadding ->
+                    MyAppNavHost(
+                        navController = navController,
+                        modifier = Modifier.padding(contentPadding)
+                    )
                 }
 
                 // A surface container using the 'background' color from the theme
-               /* MyApp(modifier = Modifier.fillMaxSize())
+                /*
+                MyApp(modifier = Modifier.fillMaxSize())
 
-                val appState = rememberMyAppState()
-                Scaffold(
+                Surface(
                     modifier = Modifier.fillMaxSize(),
-                    snackbarHost = { appState.snackbarHostState }
-                ) { contentPadding ->
-                    MainScreen(
-                        modifier = Modifier.padding(contentPadding),
-                        appState = appState,
-                        viewModel = viewModel()
-                    )
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    MainScreen()
                 }
-                */
+                 */
             }
         }
     }
@@ -141,14 +124,14 @@ fun BottomBar(navController: NavController) {
         Screen.ThirdScreen
     )
 
-    NavigationBar{
+    NavigationBar {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
-        items.forEach{ item ->
+        items.forEach { item ->
             NavigationBarItem(
-                icon = {Icon(imageVector = item.icon, contentDescription = item.title)},
-                label = {Text(text = item.title)},
-                alwaysShowLabel  = true,
+                icon = { Icon(imageVector = item.icon, contentDescription = item.title) },
+                label = { Text(text = item.title) },
+                alwaysShowLabel = true,
                 selected = currentRoute == item.route,
                 onClick = {
                     navController.navigate(item.route) {
@@ -166,10 +149,9 @@ fun BottomBar(navController: NavController) {
 }
 
 
-
 @Composable
-fun MyApp (modifier: Modifier = Modifier) {
-    var shouldShowOnBoarding by rememberSaveable {mutableStateOf(true)}
+fun MyApp(modifier: Modifier = Modifier) {
+    var shouldShowOnBoarding by rememberSaveable { mutableStateOf(true) }
     Surface(modifier) {
         if (shouldShowOnBoarding) {
             OnBoardingScreen(onContinueClicked = { shouldShowOnBoarding = false })
@@ -279,7 +261,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 @Composable
 fun MyAppPreview() {
     TP_HCI_MOBILETheme {
-        MyApp()
+        ar.edu.itba.tpHciMobile.MyApp()
     }
 }
 
@@ -298,12 +280,11 @@ fun MyText() {
 fun MyTextPreview() {
     MyText()
 }
+
 /*
 @Composable
 fun MainScreen(
-    modifier: Modifier = Modifier,
-    appState: MyAppState,
-    viewModel: MainViewModel
+    viewModel: MainViewModel = viewModel(factory = getViewModelFactory())
 ) {
     val uiState = viewModel.uiState
 
@@ -372,48 +353,125 @@ fun userCard(data: NetworkData) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(10.dp)
-            .clickable { },
-        elevation = cardElevation(defaultElevation = 1.dp)
+            .verticalScroll(rememberScrollState())
     ) {
-        Row(modifier = Modifier.padding(10.dp)) {
-            AsyncImage(
-                model = data.avatar,
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .size(40.dp)
-                    .clip(CircleShape)
-            )
-            Column(
+        if (!uiState.isAuthenticated) {
+            ActionButton(
+                resId = R.string.login,
+                onClick = {
+                    viewModel.login("johndoe", "1234567890")
+                })
+        } else {
+            ActionButton(
+                resId = R.string.logout,
+                onClick = {
+                    viewModel.logout()
+                })
+        }
+
+        ActionButton(
+            resId = R.string.get_current_user,
+            enabled = uiState.canGetCurrentUser,
+            onClick = {
+                viewModel.getCurrentUser()
+            })
+        ActionButton(
+            resId = R.string.get_all_sports,
+            enabled = uiState.canGetAllSports,
+            onClick = {
+                viewModel.getSports()
+            })
+        ActionButton(
+            resId = R.string.get_current_sport,
+            enabled = uiState.canGetCurrentSport,
+            onClick = {
+                val currentSport = uiState.currentSport!!
+                viewModel.getSport(currentSport.id!!)
+            })
+        ActionButton(
+            resId = R.string.add_sport,
+            enabled = uiState.canAddSport,
+            onClick = {
+                val random = Random.nextInt(0, 100)
+                val sport =
+                    Sport(name = "Sport $random", detail = "Detail $random")
+                viewModel.addOrModifySport(sport)
+            })
+        ActionButton(
+            resId = R.string.modify_sport,
+            enabled = uiState.canModifySport,
+            onClick = {
+                val random = Random.nextInt(0, 100)
+                val currentSport = uiState.currentSport!!
+                val sport = Sport(currentSport.id, currentSport.name, detail = "Detail $random")
+                viewModel.addOrModifySport(sport)
+            })
+        ActionButton(
+            resId = R.string.delete_sport,
+            enabled = uiState.canDeleteSport,
+            onClick = {
+                val currentSport = uiState.currentSport!!
+                viewModel.deleteSport(currentSport.id!!)
+            })
+        Column(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            val currentUserData = uiState.currentUser?.let {
+                "Current User: ${it.firstName} ${it.lastName} (${it.email})"
+            }
+            Text(
+                text = currentUserData ?: "",
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 10.dp)
-                    .weight(1f)
-            ) {
+                    .padding(top = 16.dp, start = 16.dp, end = 16.dp),
+                fontSize = 18.sp
+            )
+            val currentSportData = uiState.currentSport?.let {
+                "Current Sport: (${it.id}) ${it.name} - ${it.detail}"
+            }
+            Text(
+                text = currentSportData ?: "",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 16.dp, start = 16.dp, end = 16.dp),
+                fontSize = 18.sp
+            )
+            Text(
+                text = "Total Sports: ${uiState.sports?.size ?: "unknown"}",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 16.dp, start = 16.dp, end = 16.dp),
+                fontSize = 18.sp
+            )
+            if (uiState.error != null) {
                 Text(
-                    text = "${data.firstName} - ${data.lastName}",
-                    fontSize = 16.sp
-                )
-                Text(
-                    text = data.email,
-                    fontSize = 10.sp
+                    text = "${uiState.error.code} - ${uiState.error.message}",
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(top = 16.dp, start = 16.dp, end = 16.dp),
+                    fontSize = 18.sp
                 )
             }
         }
     }
 }
 
-@Preview
 @Composable
-fun userCardPreview() {
-    userCard(
-        NetworkData(
-            id = 1,
-            email = "hola@gmail.com",
-            firstName = "John",
-            lastName = "Doe",
-            avatar = "https://reqres.in/img/faces/1-image.jpg"
+fun ActionButton(
+    @StringRes resId: Int,
+    enabled: Boolean = true,
+    onClick: () -> Unit
+) {
+    Button(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 16.dp, start = 16.dp, end = 16.dp),
+        enabled = enabled,
+        onClick = onClick,
+    ) {
+        Text(
+            text = stringResource(resId),
+            modifier = Modifier.padding(8.dp)
         )
     )
 }

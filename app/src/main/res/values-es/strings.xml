@@ -19,5 +19,12 @@
     <string name="order_by_diff_asc">Dificultad: ascendente</string>
     <string name="order_by_diff_desc">Dificultad: descendente</string>
     <string name="close">CERRAR</string>
-
+    <string name="login">INICIAR SESIÓN</string>
+    <string name="logout">CERRAR SESIÓN</string>
+    <string name="get_current_user">OBTENER USUARIO ACTUAL</string>
+    <string name="get_all_sports">OBTENER TODOS LOS DEPORTES</string>
+    <string name="get_current_sport">OBTENER DEPORTE ACTUAL</string>
+    <string name="add_sport">AÑADIR DEPORTE</string>
+    <string name="modify_sport">MODIFICAR DEPORTE</string>
+    <string name="delete_sport">ELIMINAR DEPORTE</string>
 </resources>

@@ -1,10 +1,11 @@
-package ar.edu.itba.tpHciMobile
+package ar.edu.itba.tpHciMobile.ui.main
 
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import ar.edu.itba.tpHciMobile.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -26,7 +27,7 @@ class MyAppState(
         dismissed: () -> Unit
     ) {
         scope.launch {
-            val actionLabel = MyApp.instance.getString(R.string.dismiss)
+            val actionLabel = ar.edu.itba.tpHciMobile.MyApp.instance.getString(R.string.dismiss)
             val result = snackbarHostState.showSnackbar(
                 message = message,
                 actionLabel = actionLabel

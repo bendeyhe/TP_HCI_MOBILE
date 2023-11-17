@@ -1,4 +1,4 @@
-package ar.edu.itba.tpHciMobile.data.api
+package ar.edu.itba.tpHciMobile.data.network.api
 
 import android.content.Context
 import ar.edu.itba.tpHciMobile.BuildConfig
@@ -7,9 +7,10 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-
+import java.util.Date
 
 object RetrofitClient {
+
     @Volatile
     private var instance: Retrofit? = null
 
@@ -26,8 +27,9 @@ object RetrofitClient {
             .addInterceptor(AuthInterceptor(context))
             .addInterceptor(httpLoggingInterceptor)
             .build()
+
         val gson = GsonBuilder()
-            //.registerTypeAdapter(Date::class.java, ApiDateTypeAdapter())
+            .registerTypeAdapter(Date::class.java, ApiDateTypeAdapter())
             .create()
 
         return Retrofit.Builder()

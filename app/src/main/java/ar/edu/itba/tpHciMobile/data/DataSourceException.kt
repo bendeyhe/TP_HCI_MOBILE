@@ -1,5 +1,7 @@
 package ar.edu.itba.tpHciMobile.data
 
-class DataSourceException(connectionErrorCode: Int, s: String, detailsFromException: List<String>? = null) : Throwable() {
-
-}
+class DataSourceException(
+    var code: Int,
+    message: String,
+    var details: List<String>?
+) : Exception(message)

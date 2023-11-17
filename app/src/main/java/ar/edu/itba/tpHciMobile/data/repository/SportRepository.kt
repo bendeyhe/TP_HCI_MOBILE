@@ -1,25 +1,29 @@
 package ar.edu.itba.tpHciMobile.data.repository
 
-//import SportRemoteDataSource
 import ar.edu.itba.tpHciMobile.data.model.Sport
-import ar.edu.itba.tpHciMobile.util.SportRemoteDataSource
+import ar.edu.itba.tpHciMobile.data.network.SportRemoteDataSource
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
 class SportRepository(
     private val remoteDataSource: SportRemoteDataSource
 ) {
-    // Mutex to make writes to cached values thread-safe
+    // Mutex to make writes to cached values thread-safe.
     private val sportsMutex = Mutex()
-    // Cache of the latest sports got from the network
+
+    // Cache of the latest sports got from the network.
     private var sports: List<Sport> = emptyList()
 
-    /*
     suspend fun getSports(refresh: Boolean = false): List<Sport> {
         if (refresh || sports.isEmpty()) {
             val result = remoteDataSource.getSports()
+            // Thread-safe write to sports
+            sportsMutex.withLock {
+                this.sports = result.content.map { it.asModel() }
+            }
         }
-        return sports
+
+        return sportsMutex.withLock { this.sports }
     }
 
     suspend fun getSport(sportId: Int): Sport {
@@ -35,11 +39,17 @@ class SportRepository(
     }
 
     suspend fun modifySport(sport: Sport): Sport {
-        val updateSport = remoteDataSource.modifySport(sport.asNetworkModel()).asModel()
+        val updatedSport = remoteDataSource.modifySport(sport.asNetworkModel()).asModel()
         sportsMutex.withLock {
             this.sports = emptyList()
         }
-        return updateSport
+        return updatedSport
     }
-     */
+
+    suspend fun deleteSport(sportId: Int) {
+        remoteDataSource.deleteSport(sportId)
+        sportsMutex.withLock {
+            this.sports = emptyList()
+        }
+    }
 }

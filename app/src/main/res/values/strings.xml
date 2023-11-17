@@ -18,4 +18,12 @@
     <string name="order_by_diff_asc">Difficulty: low</string>
     <string name="order_by_diff_desc">Difficulty: high</string>
     <string name="close">CLOSE</string>
+    <string name="login">LOGIN</string>
+    <string name="logout">LOGOUT</string>
+    <string name="get_current_user">GET CURRENT USER</string>
+    <string name="get_all_sports">GET ALL SPORTS</string>
+    <string name="get_current_sport">GET CURRENT SPORT</string>
+    <string name="add_sport">ADD SPORT</string>
+    <string name="modify_sport">MODIFY SPORT</string>
+    <string name="delete_sport">DELETE SPORT</string>
 </resources>

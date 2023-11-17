@@ -1,4 +1,4 @@
-package ar.edu.itba.tpHciMobile
+package ar.edu.itba.tpHciMobile.ui.main
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
+import ar.edu.itba.tpHciMobile.R
 
 @Composable
 fun HomeScreen(

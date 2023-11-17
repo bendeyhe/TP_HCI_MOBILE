@@ -1,4 +1,4 @@
-package ar.edu.itba.tpHciMobile
+package ar.edu.itba.tpHciMobile.ui.main
 
 class NotasDeClase {
     /*

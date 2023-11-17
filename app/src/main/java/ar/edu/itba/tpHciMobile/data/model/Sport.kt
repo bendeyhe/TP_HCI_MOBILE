@@ -1,8 +1,17 @@
 package ar.edu.itba.tpHciMobile.data.model
 
-data class Sport (
-    val id: Int,
-    val name: String,
-    val description: String,
-    val image: String
-)
+import ar.edu.itba.tpHciMobile.data.network.model.NetworkSport
+
+class Sport(
+    var id: Int? = null,
+    var name: String,
+    var detail: String? = null
+) {
+    fun asNetworkModel(): NetworkSport {
+        return NetworkSport(
+            id = id,
+            name = name,
+            detail = detail
+        )
+    }
+}
