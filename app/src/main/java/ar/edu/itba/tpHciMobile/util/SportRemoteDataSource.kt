@@ -1,9 +1,13 @@
+package ar.edu.itba.tpHciMobile.util
+
+import ar.edu.itba.tpHciMobile.data.RemoteDataSource
 import ar.edu.itba.tpHciMobile.data.api.ApiSportService
 
 class SportRemoteDataSource(
     private val ApiSportService: ApiSportService
 ) : RemoteDataSource() {
 
+    /*
     suspend fun getSports(): NetworkPagedContent:<NetworkSport> {
         return handleApiResponse {
             ApiSportService.getSports()
@@ -21,4 +25,5 @@ class SportRemoteDataSource(
             ApiSportService.addSport(sport)
         }
     }
+     */
 }

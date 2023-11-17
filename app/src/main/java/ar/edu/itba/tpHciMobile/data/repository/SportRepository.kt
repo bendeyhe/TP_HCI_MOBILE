@@ -1,6 +1,10 @@
 package ar.edu.itba.tpHciMobile.data.repository
 
-import SportRemoteDataSource
+//import SportRemoteDataSource
+import ar.edu.itba.tpHciMobile.data.model.Sport
+import ar.edu.itba.tpHciMobile.util.SportRemoteDataSource
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 
 class SportRepository(
     private val remoteDataSource: SportRemoteDataSource
@@ -10,6 +14,7 @@ class SportRepository(
     // Cache of the latest sports got from the network
     private var sports: List<Sport> = emptyList()
 
+    /*
     suspend fun getSports(refresh: Boolean = false): List<Sport> {
         if (refresh || sports.isEmpty()) {
             val result = remoteDataSource.getSports()
@@ -36,6 +41,5 @@ class SportRepository(
         }
         return updateSport
     }
-
-    
+     */
 }

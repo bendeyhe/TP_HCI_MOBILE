@@ -4,4 +4,7 @@
     <string name="show_more">Show More</string>
     <string name="goto_other_screen">Go To Other Screen</string>
     <string name="received_id">Received id %1$d </string>
+    <string name="loading">Loading Users...</string>
+    <string name="load_users">Load Users...</string>
+    <string name="dismiss">DISMISS</string>
 </resources>

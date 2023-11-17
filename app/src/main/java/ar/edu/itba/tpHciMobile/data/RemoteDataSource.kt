@@ -1,8 +1,15 @@
+package ar.edu.itba.tpHciMobile.data
+
+import ar.edu.itba.tpHciMobile.data.model.NetworkError
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import retrofit2.Response
 import java.io.IOException
 import java.nio.channels.NetworkChannel
 import javax.sql.DataSource
 
 abstract class RemoteDataSource {
+
     suspend fun <T :Any> handleApiResponse(execute: suspend () -> Response<T>): T {
         try {
             val response = execute()

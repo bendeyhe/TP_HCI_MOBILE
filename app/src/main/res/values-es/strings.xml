@@ -5,4 +5,7 @@
     <string name="show_more">Ver Más</string>
     <string name="goto_other_screen">Ir a Otra Pantalla</string>
     <string name="received_id">El Id recibido es: %1$d</string>
+    <string name="loading">Cargando Usuarios...</string>
+    <string name="load_users">Cargar Usuarios...</string>
+    <string name="dismiss">DESCARTAR</string>
 </resources>
