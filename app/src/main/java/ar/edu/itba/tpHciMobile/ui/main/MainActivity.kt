@@ -5,6 +5,7 @@ import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.annotation.StringRes
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.spring
@@ -12,11 +13,15 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -43,12 +48,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import ar.edu.itba.tpHciMobile.R
+import ar.edu.itba.tpHciMobile.data.model.Sport
 import ar.edu.itba.tpHciMobile.ui.theme.TP_HCI_MOBILETheme
+import ar.edu.itba.tpHciMobile.util.getViewModelFactory
+import kotlin.random.Random
 
 class MainActivity : ComponentActivity() {
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -99,11 +109,7 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier.padding(contentPadding)
                     )
                 }
-
-                // A surface container using the 'background' color from the theme
                 /*
-                MyApp(modifier = Modifier.fillMaxSize())
-
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
@@ -281,7 +287,27 @@ fun MyTextPreview() {
     MyText()
 }
 
-/*
+
+@Composable
+fun ActionButton(
+    @StringRes resId: Int,
+    enabled: Boolean = true,
+    onClick: () -> Unit
+) {
+    Button(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 16.dp, start = 16.dp, end = 16.dp),
+        enabled = enabled,
+        onClick = onClick,
+    ) {
+        Text(
+            text = stringResource(resId),
+            modifier = Modifier.padding(8.dp)
+        )
+    }
+}
+
 @Composable
 fun MainScreen(
     viewModel: MainViewModel = viewModel(factory = getViewModelFactory())
@@ -289,68 +315,6 @@ fun MainScreen(
     val uiState = viewModel.uiState
 
     Column(
-        modifier = modifier
-    ) {
-        Column(
-            modifier = modifier
-                .fillMaxWidth()
-                .weight(1f)
-        ) {
-            if (uiState.isLoading)
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    Text(
-                        text = stringResource(R.string.loading),
-                        fontSize = 16.sp
-                    )
-                }
-            else {
-                val list = uiState.users?.data.orEmpty()
-                LazyVerticalGrid(
-                    state = rememberLazyGridState(),
-                    columns = GridCells.Adaptive(minSize = 250.dp),
-                ) {
-                    items(
-                        count = list.size,
-                        key = { index -> list[index].id.toString() }
-                    ) { index ->
-                        userCard(list[index])
-                    }
-                }
-            }
-
-            ElevatedButton(
-                onClick = {
-                          viewModel.fetchUsers(1)
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp)
-            ) {
-                Text(
-                    text = stringResource(R.string.load_users),
-                    modifier = Modifier.padding(8.dp)
-                )
-            }
-
-            if(uiState.hasError){
-                appState.showSnackbar(
-                    uiState.message!!,
-                    { viewModel.dissmissMessage() },
-                    { viewModel.dissmissMessage() }
-                )
-            }
-        }
-    }
-}
-
-
-@Composable
-fun userCard(data: NetworkData) {
-    Card(
         modifier = Modifier
             .fillMaxWidth()
             .verticalScroll(rememberScrollState())
@@ -393,8 +357,7 @@ fun userCard(data: NetworkData) {
             enabled = uiState.canAddSport,
             onClick = {
                 val random = Random.nextInt(0, 100)
-                val sport =
-                    Sport(name = "Sport $random", detail = "Detail $random")
+                val sport = Sport(name = "Sport $random", detail = "Detail $random")
                 viewModel.addOrModifySport(sport)
             })
         ActionButton(
@@ -455,25 +418,3 @@ fun userCard(data: NetworkData) {
         }
     }
 }
-
-@Composable
-fun ActionButton(
-    @StringRes resId: Int,
-    enabled: Boolean = true,
-    onClick: () -> Unit
-) {
-    Button(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 16.dp, start = 16.dp, end = 16.dp),
-        enabled = enabled,
-        onClick = onClick,
-    ) {
-        Text(
-            text = stringResource(resId),
-            modifier = Modifier.padding(8.dp)
-        )
-    )
-}
-
- */
