@@ -1,5 +1,6 @@
 package ar.edu.itba.tpHciMobile
 
+import android.annotation.SuppressLint
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -17,6 +18,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ElevatedButton
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -43,6 +45,8 @@ import androidx.navigation.compose.rememberNavController
 import ar.edu.itba.tpHciMobile.ui.theme.TP_HCI_MOBILETheme
 
 class MainActivity : ComponentActivity() {
+    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -64,7 +68,7 @@ class MainActivity : ComponentActivity() {
 fun BottomBar(navController: NavController) {
     val items = listOf(
         Screen.FirstScreen,
-        Screen.SecondScreen,
+        Screen.Routines,
         Screen.ThirdScreen
     )
 

@@ -15,7 +15,7 @@ fun MyAppNavHost(navController: NavHostController) {
     val secureUri="https://www.example.com"
     NavHost(
         navController = navController,
-        startDestination = Screen.SecondScreen.route
+        startDestination = Screen.Routines.route
     ){
         composable("home"){
             HomeScreen(onNavigateToOtherScreen = {id -> navController.navigate("other/$id") })
@@ -29,8 +29,8 @@ fun MyAppNavHost(navController: NavHostController) {
         ){
             route -> OtherScreen(route.arguments?.getInt("id"))
         }
-        composable(Screen.SecondScreen.route){
-            SecondScreen()
+        composable(Screen.Routines.route){
+            Routines()
         }
         composable(Screen.ThirdScreen.route){
             ThirdScreen()
