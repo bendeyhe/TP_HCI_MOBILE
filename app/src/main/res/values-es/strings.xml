@@ -33,4 +33,7 @@
     <string name="username">Usuario</string>
     <string name="password">Contraseña</string>
     <string name="login_msg">Iniciar sesión</string>
+    <string name="routine_details">Detalle de la rutina</string>
+    <string name="share_routine">Compartir</string>
+    <string name="start_routine">Comenzar</string>
 </resources>

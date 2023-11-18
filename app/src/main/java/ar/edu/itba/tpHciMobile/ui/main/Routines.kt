@@ -3,6 +3,7 @@ package ar.edu.itba.tpHciMobile.ui.main
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.spring
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -67,7 +68,6 @@ fun Routines(modifier: Modifier = Modifier, navController : NavController) {
     Surface(
         color = Color(0xFFAEB0B2)
     ) {
-
         Column(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.End
@@ -75,7 +75,9 @@ fun Routines(modifier: Modifier = Modifier, navController : NavController) {
             OrderByBtn(modifier.padding(end = 8.dp))
             LazyColumn(modifier = modifier.padding(vertical = 4.dp)) {
                 items(items = names) { name ->
-                    Routine(name, description)
+                    Routine(name, description, onItemClick = {
+                        navController.navigate(Screen.RoutineDetails.route)
+                    })
                 }
             }
         }
@@ -84,7 +86,7 @@ fun Routines(modifier: Modifier = Modifier, navController : NavController) {
 
 
 @Composable
-fun Routine(name: String, description: String, modifier: Modifier = Modifier) {
+fun Routine(name: String, description: String, modifier: Modifier = Modifier, onItemClick: () -> Unit) {
     var expanded = rememberSaveable { mutableStateOf(false) }
     var fav = rememberSaveable { mutableStateOf(false) }
     //luego para usar lo que hay en expanded se usa expanded.value
@@ -96,12 +98,12 @@ fun Routine(name: String, description: String, modifier: Modifier = Modifier) {
         ), label = ""
     )
 
-    Surface(modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp)) {
+    Surface(modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp).clickable(onClick = onItemClick)) {
         Row(modifier = Modifier.padding(20.dp)) {
             Column(
                 modifier = Modifier
                     .weight(1f)
-                    .padding(bottom = extraPadding)
+                    .padding(bottom = extraPadding),
             ) { //de esta manera se le da peso a la columna
                 Text(
                     text = "$name",

@@ -54,7 +54,9 @@ fun Favorites(modifier: Modifier = Modifier, navController: NavController){
             OrderByBtn(modifier.padding(end = 8.dp))
             LazyColumn(modifier = modifier.padding(vertical = 4.dp)) {
                 items(items = names) { name ->
-                    Routine(name, description)
+                    Routine(name, description, onItemClick = {
+                        navController.navigate(Screen.RoutineDetails.route)
+                    })
                 }
             }
         }

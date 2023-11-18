@@ -14,6 +14,7 @@ import ar.edu.itba.tpHciMobile.screens.ThirdScreen
 import ar.edu.itba.tpHciMobile.ui.main.Login
 import ar.edu.itba.tpHciMobile.ui.main.Routines
 import ar.edu.itba.tpHciMobile.ui.main.Favorites
+import ar.edu.itba.tpHciMobile.ui.main.RoutineDetails
 import ar.edu.itba.tpHciMobile.ui.main.Screen
 
 
@@ -51,6 +52,9 @@ fun MyAppNavHost(navController: NavHostController, modifier: Modifier) {
         }
         composable(Screen.Favorites.route){
             Favorites(navController = navController)
+        }
+        composable(Screen.RoutineDetails.route){
+            RoutineDetails()
         }
     }
 }

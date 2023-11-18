@@ -30,6 +30,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
@@ -133,10 +134,10 @@ fun Login(navController : NavController) {
                 trailingIcon = {
                     IconButton(onClick = { passwordHidden = !passwordHidden }) {
                         val visibilityIcon =
-                            if (passwordHidden) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder //todo buscar como hacer que funcione Visibility
+                            if (passwordHidden) painterResource(R.drawable.visibility_off) else painterResource(R.drawable.visibility)//todo buscar como hacer que funcione Visibility
                         // Please provide localized description for accessibility services
                         val description = if (passwordHidden) "Show password" else "Hide password"
-                        Icon(imageVector = visibilityIcon, contentDescription = description)
+                        Icon(painter = visibilityIcon, contentDescription = description)
                     }
                 }
             )

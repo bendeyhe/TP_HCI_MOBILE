@@ -26,6 +26,8 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemColors
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -57,9 +59,6 @@ import ar.edu.itba.tpHciMobile.ui.theme.TP_HCI_MOBILETheme
 class MainActivity : ComponentActivity() {
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     @OptIn(ExperimentalMaterial3Api::class)
-
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -70,8 +69,7 @@ class MainActivity : ComponentActivity() {
                 Scaffold(
                     topBar = {
                         CenterAlignedTopAppBar(
-                            //colors = TopAppBarDefault.topAppBarColors( containerColor = Color.DarkGray),
-                            modifier = Modifier.background(Color.DarkGray),
+                            colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = Color.DarkGray),
                             title = {
                                 Text(
                                     "TOOBIG",
@@ -99,7 +97,6 @@ class MainActivity : ComponentActivity() {
                                     )
                                 }
                             },
-
                              */
                             scrollBehavior = scrollBehavior,
                         )
@@ -124,12 +121,19 @@ fun BottomBar(navController: NavController) {
         Screen.ThirdScreen
     )
 
-    NavigationBar ( modifier = Modifier.background(color = Color.DarkGray)){
+    NavigationBar(containerColor = Color.DarkGray) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
         items.forEach { item ->
             NavigationBarItem(
-                icon = { Icon(imageVector = item.icon, contentDescription = item.title, tint = Color(0xFF8EFE00)) },
+                colors = NavigationBarItemDefaults.colors(indicatorColor = Color.Gray),
+                icon = {
+                    Icon(
+                        imageVector = item.icon,
+                        contentDescription = item.title,
+                        tint = Color(0xFF8EFE00)
+                    )
+                },
                 label = { Text(text = item.title, color = Color(0xFF8EFE00)) },
                 alwaysShowLabel = true,
                 selected = currentRoute == item.route,

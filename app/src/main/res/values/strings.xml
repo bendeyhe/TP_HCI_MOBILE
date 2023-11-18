@@ -32,4 +32,7 @@
     <string name="username">Username</string>
     <string name="login_msg">Login</string>
     <string name="enter_password">Password</string>
+    <string name="routine_details">Routine details</string>
+    <string name="share_routine">Share</string>
+    <string name="start_routine">Start</string>
 </resources>
