@@ -13,7 +13,9 @@ import ar.edu.itba.tpHciMobile.screens.OtherScreen
 import ar.edu.itba.tpHciMobile.screens.ThirdScreen
 import ar.edu.itba.tpHciMobile.ui.main.Login
 import ar.edu.itba.tpHciMobile.ui.main.Routines
+import ar.edu.itba.tpHciMobile.ui.main.Favorites
 import ar.edu.itba.tpHciMobile.ui.main.Screen
+
 
 @Composable
 fun MyAppNavHost(navController: NavHostController, modifier: Modifier) {
@@ -24,7 +26,7 @@ fun MyAppNavHost(navController: NavHostController, modifier: Modifier) {
         startDestination = Screen.Routines.route,
         modifier = modifier
     ){
-        composable("home"){
+      /*  composable("home"){
             HomeScreen(onNavigateToOtherScreen = {id -> navController.navigate("other/$id") })
         }
         composable(
@@ -36,6 +38,8 @@ fun MyAppNavHost(navController: NavHostController, modifier: Modifier) {
         ){
             route -> OtherScreen(route.arguments?.getInt("id"))
         }
+
+       */
         composable(Screen.Routines.route){
             Routines(navController = navController)
         }
@@ -44,6 +48,9 @@ fun MyAppNavHost(navController: NavHostController, modifier: Modifier) {
         }
         composable(Screen.LoginScreen.route){
             Login(navController = navController)
+        }
+        composable(Screen.Favorites.route){
+            Favorites(navController = navController)
         }
     }
 }

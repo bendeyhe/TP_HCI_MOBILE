@@ -119,7 +119,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun BottomBar(navController: NavController) {
     val items = listOf(
-        Screen.FirstScreen,
+        Screen.Favorites,
         Screen.Routines,
         Screen.ThirdScreen
     )

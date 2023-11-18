@@ -1,7 +1,7 @@
 package ar.edu.itba.tpHciMobile.data.model
 
 import ar.edu.itba.tpHciMobile.data.network.model.util.NetworkCategory
-import ar.edu.itba.tpHciMobile.data.network.model.NetworkUser
+import ar.edu.itba.tpHciMobile.data.network.model.user.NetworkUser
 import ar.edu.itba.tpHciMobile.data.network.model.routines.NetworkRoutine
 import java.util.Date
 

@@ -1,7 +1,7 @@
 package ar.edu.itba.tpHciMobile.data.network.model.routines
 
 import ar.edu.itba.tpHciMobile.data.network.model.util.NetworkCategory
-import ar.edu.itba.tpHciMobile.data.network.model.NetworkUser
+import ar.edu.itba.tpHciMobile.data.network.model.user.NetworkUser
 import com.google.gson.annotations.SerializedName
 import ar.edu.itba.tpHciMobile.data.model.Routine
 import java.util.Date

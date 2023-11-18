@@ -32,10 +32,4 @@
     <string name="username">Username</string>
     <string name="login_msg">Login</string>
     <string name="enter_password">Password</string>
-    <string name="date_up">DATE UP</string>
-    <string name="date_down">DATE DOWN</string>
-    <string name="rating_up">RATING UP</string>
-    <string name="rating_down">RATING DOWN</string>
-    <string name="diff_up">DIFFICULTY UP</string>
-    <string name="diff_down">DIFFICULTY DOWN</string>
 </resources>
