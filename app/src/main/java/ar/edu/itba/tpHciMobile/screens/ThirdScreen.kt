@@ -20,14 +20,14 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import ar.edu.itba.tpHciMobile.R
 import ar.edu.itba.tpHciMobile.data.model.Sport
-import ar.edu.itba.tpHciMobile.ui.main.MainViewModel
+import ar.edu.itba.tpHciMobile.ui.main.viewmodels.MainViewModel
 import ar.edu.itba.tpHciMobile.ui.main.Screen
-import ar.edu.itba.tpHciMobile.ui.main.canAddSport
-import ar.edu.itba.tpHciMobile.ui.main.canDeleteSport
-import ar.edu.itba.tpHciMobile.ui.main.canGetAllSports
-import ar.edu.itba.tpHciMobile.ui.main.canGetCurrentSport
-import ar.edu.itba.tpHciMobile.ui.main.canGetCurrentUser
-import ar.edu.itba.tpHciMobile.ui.main.canModifySport
+import ar.edu.itba.tpHciMobile.ui.main.uistates.canAddSport
+import ar.edu.itba.tpHciMobile.ui.main.uistates.canDeleteSport
+import ar.edu.itba.tpHciMobile.ui.main.uistates.canGetAllSports
+import ar.edu.itba.tpHciMobile.ui.main.uistates.canGetCurrentSport
+import ar.edu.itba.tpHciMobile.ui.main.uistates.canGetCurrentUser
+import ar.edu.itba.tpHciMobile.ui.main.uistates.canModifySport
 import ar.edu.itba.tpHciMobile.util.getViewModelFactory
 import kotlin.random.Random
 

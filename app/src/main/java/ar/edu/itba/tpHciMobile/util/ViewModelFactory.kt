@@ -5,7 +5,7 @@ import androidx.lifecycle.AbstractSavedStateViewModelFactory
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.savedstate.SavedStateRegistryOwner
-import ar.edu.itba.tpHciMobile.ui.main.MainViewModel
+import ar.edu.itba.tpHciMobile.ui.main.viewmodels.MainViewModel
 import ar.edu.itba.tpHciMobile.data.repository.SportRepository
 import ar.edu.itba.tpHciMobile.data.repository.UserRepository
 
