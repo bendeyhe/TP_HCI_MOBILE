@@ -1,7 +1,8 @@
 package ar.edu.itba.tpHciMobile.data.repository
 
+import ar.edu.itba.tpHciMobile.data.model.Routine
 import ar.edu.itba.tpHciMobile.data.model.User
-import ar.edu.itba.tpHciMobile.data.network.UserRemoteDataSource
+import ar.edu.itba.tpHciMobile.data.network.datasources.UserRemoteDataSource
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
@@ -10,10 +11,25 @@ class UserRepository(
 ) {
 
     // Mutex to make writes to cached values thread-safe.
-    private val currentUserMutex = Mutex()
+    private val userMutex = Mutex()
 
     // Cache of the current user got from the network.
     private var currentUser: User? = null
+
+    // Cache of the current user routines got from the network.
+    private var userRoutines: List<Routine> = emptyList()
+
+    suspend fun register(user: User) {
+        remoteDataSource.register(user.asNetworkModel())
+    }
+
+    suspend fun resendVerification(email: String) {
+        remoteDataSource.resendVerification(email)
+    }
+
+    suspend fun verifyEmail(email: String, code: String) {
+        remoteDataSource.verifyEmail(email, code)
+    }
 
     suspend fun login(username: String, password: String) {
         remoteDataSource.login(username, password)
@@ -23,14 +39,33 @@ class UserRepository(
         remoteDataSource.logout()
     }
 
+    suspend fun updateCurrentUser(user: User) {
+        remoteDataSource.updateCurrentUser(user.asNetworkModel())
+    }
+
+    suspend fun getCurrentUserRoutines(refresh: Boolean = false): List<Routine> {
+        var page = 0
+        if (refresh || userRoutines.isEmpty()) {
+            this.userRoutines = emptyList()
+            do {
+                val result = remoteDataSource.getCurrentUserRoutines(page)
+                userMutex.withLock {
+                    this.userRoutines = this.userRoutines.plus(result.content.map { it.asModel() })
+                }
+                page++
+            } while (!result.isLastPage)
+        }
+        return userMutex.withLock { this.userRoutines }
+    }
+
     suspend fun getCurrentUser(refresh: Boolean): User? {
         if (refresh || currentUser == null) {
             val result = remoteDataSource.getCurrentUser()
             // Thread-safe write to latestNews
-            currentUserMutex.withLock {
+            userMutex.withLock {
                 this.currentUser = result.asModel()
             }
         }
-        return currentUserMutex.withLock { this.currentUser }
+        return userMutex.withLock { this.currentUser }
     }
 }

@@ -1,6 +1,6 @@
 package ar.edu.itba.tpHciMobile.data.model
 
-import ar.edu.itba.tpHciMobile.data.network.model.Routines.NetworkCompleteCycle
+import ar.edu.itba.tpHciMobile.data.network.model.routines.NetworkCompleteCycle
 
 class CompleteCycle (
     var id: Int,

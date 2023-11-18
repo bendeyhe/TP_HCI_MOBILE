@@ -1,4 +1,4 @@
-package ar.edu.itba.tpHciMobile.data.network.model.Routines
+package ar.edu.itba.tpHciMobile.data.network.model.routines
 
 import com.google.gson.annotations.SerializedName
 import ar.edu.itba.tpHciMobile.data.model.CompleteCycle

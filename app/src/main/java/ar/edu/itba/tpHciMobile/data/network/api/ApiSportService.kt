@@ -1,7 +1,7 @@
 package ar.edu.itba.tpHciMobile.data.network.api
 
-import ar.edu.itba.tpHciMobile.data.network.model.NetworkPagedContent
-import ar.edu.itba.tpHciMobile.data.network.model.NetworkSport
+import ar.edu.itba.tpHciMobile.data.network.model.util.NetworkPagedContent
+import ar.edu.itba.tpHciMobile.data.network.model.util.NetworkSport
 import retrofit2.Response
 import retrofit2.http.*
 

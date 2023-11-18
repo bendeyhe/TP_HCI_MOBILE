@@ -1,4 +1,4 @@
-package ar.edu.itba.tpHciMobile.data.network.model
+package ar.edu.itba.tpHciMobile.data.network.model.util
 
 import com.google.gson.annotations.SerializedName
 

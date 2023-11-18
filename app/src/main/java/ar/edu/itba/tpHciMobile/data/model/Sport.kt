@@ -1,6 +1,6 @@
 package ar.edu.itba.tpHciMobile.data.model
 
-import ar.edu.itba.tpHciMobile.data.network.model.NetworkSport
+import ar.edu.itba.tpHciMobile.data.network.model.util.NetworkSport
 
 class Sport(
     var id: Int? = null,

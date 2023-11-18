@@ -23,8 +23,25 @@ class SessionManager (context: Context){
         editor.apply()
     }
 
+    fun loadEmail(): String? {
+        return preferences.getString(EMAIL, null)
+    }
+
+    fun removeEmail() {
+        val editor = preferences.edit()
+        editor.remove(EMAIL)
+        editor.apply()
+    }
+
+    fun saveEmail(email: String?) {
+        val editor = preferences.edit()
+        editor.putString(EMAIL, email)
+        editor.apply()
+    }
+
     companion object {
         const val PREFERENCES_NAME = "my_app"
         const val AUTH_TOKEN = "auth_token"
+        const val EMAIL = "email"
     }
 }

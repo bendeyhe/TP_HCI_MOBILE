@@ -1,4 +1,4 @@
-package ar.edu.itba.tpHciMobile.data.network.model.Exercises
+package ar.edu.itba.tpHciMobile.data.network.model.exercises
 
 import com.google.gson.annotations.SerializedName
 import java.util.Date

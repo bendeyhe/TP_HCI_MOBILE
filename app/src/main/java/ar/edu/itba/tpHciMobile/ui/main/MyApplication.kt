@@ -1,8 +1,8 @@
 package ar.edu.itba.tpHciMobile.ui.main
 
 import android.app.Application
-import ar.edu.itba.tpHciMobile.data.network.SportRemoteDataSource
-import ar.edu.itba.tpHciMobile.data.network.UserRemoteDataSource
+import ar.edu.itba.tpHciMobile.data.network.datasources.SportRemoteDataSource
+import ar.edu.itba.tpHciMobile.data.network.datasources.UserRemoteDataSource
 import ar.edu.itba.tpHciMobile.data.network.api.RetrofitClient
 import ar.edu.itba.tpHciMobile.data.repository.SportRepository
 import ar.edu.itba.tpHciMobile.data.repository.UserRepository

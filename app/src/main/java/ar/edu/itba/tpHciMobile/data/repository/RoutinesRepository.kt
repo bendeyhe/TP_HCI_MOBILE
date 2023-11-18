@@ -1,11 +1,7 @@
 package ar.edu.itba.tpHciMobile.data.repository
 
-import ar.edu.itba.tpHciMobile.data.model.CompleteCycle
 import ar.edu.itba.tpHciMobile.data.model.Routine
-import ar.edu.itba.tpHciMobile.data.network.RoutinesRemoteDataSource
-import ar.edu.itba.tpHciMobile.data.network.model.NetworkPagedContent
-import ar.edu.itba.tpHciMobile.data.network.model.Routines.NetworkCompleteCycle
-import ar.edu.itba.tpHciMobile.data.network.model.Routines.NetworkRoutine
+import ar.edu.itba.tpHciMobile.data.network.datasources.RoutinesRemoteDataSource
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 

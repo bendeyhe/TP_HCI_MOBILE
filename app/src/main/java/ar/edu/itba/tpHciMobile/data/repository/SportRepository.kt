@@ -1,7 +1,7 @@
 package ar.edu.itba.tpHciMobile.data.repository
 
 import ar.edu.itba.tpHciMobile.data.model.Sport
-import ar.edu.itba.tpHciMobile.data.network.SportRemoteDataSource
+import ar.edu.itba.tpHciMobile.data.network.datasources.SportRemoteDataSource
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 

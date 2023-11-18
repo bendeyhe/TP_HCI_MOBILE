@@ -1,9 +1,9 @@
-package ar.edu.itba.tpHciMobile.data.network
+package ar.edu.itba.tpHciMobile.data.network.datasources
 
 import ar.edu.itba.tpHciMobile.data.network.api.ApiRoutinesService
-import ar.edu.itba.tpHciMobile.data.network.model.NetworkPagedContent
-import ar.edu.itba.tpHciMobile.data.network.model.Routines.NetworkCompleteCycle
-import ar.edu.itba.tpHciMobile.data.network.model.Routines.NetworkRoutine
+import ar.edu.itba.tpHciMobile.data.network.model.util.NetworkPagedContent
+import ar.edu.itba.tpHciMobile.data.network.model.routines.NetworkCompleteCycle
+import ar.edu.itba.tpHciMobile.data.network.model.routines.NetworkRoutine
 
 class RoutinesRemoteDataSource (
     private val routinesService: ApiRoutinesService
