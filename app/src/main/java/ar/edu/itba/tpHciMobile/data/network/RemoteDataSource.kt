@@ -31,13 +31,13 @@ abstract class RemoteDataSource {
         } catch (e: IOException) {
             throw DataSourceException(
                 CONNECTION_ERROR_CODE,
-                "Connection error",
+                e.message ?: "Connection error",
                 getDetailsFromException(e)
             )
         } catch (e: Exception) {
             throw DataSourceException(
                 UNEXPECTED_ERROR_CODE,
-                "Unexpected error",
+                e.message ?: "Unexpected error",
                 getDetailsFromException(e)
             )
         }

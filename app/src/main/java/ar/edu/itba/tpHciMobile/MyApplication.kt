@@ -10,6 +10,11 @@ import ar.edu.itba.tpHciMobile.util.SessionManager
 
 class MyApplication : Application() {
 
+    override fun onCreate() {
+        super.onCreate()
+        instance = this
+    }
+
     private val userRemoteDataSource: UserRemoteDataSource
         get() = UserRemoteDataSource(sessionManager, RetrofitClient.getApiUserService(this))
 
@@ -24,4 +29,8 @@ class MyApplication : Application() {
 
     val sportRepository: SportRepository
         get() = SportRepository(sportRemoteDataSource)
+    companion object {
+            lateinit var instance: MyApplication
+                private set
+    }
 }

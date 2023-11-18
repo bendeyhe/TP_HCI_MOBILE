@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId = "ar.edu.itba.tpHciMobile"
-        minSdk = 24
+        minSdk = 28
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -27,10 +27,10 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            buildConfigField("String", "API_BASE_URL", "\"http://192.168.1.9:8080/api/\"")
+            buildConfigField("String", "API_BASE_URL", "\"http://192.168.137.1:8080/api/\"")
         }
         debug {
-            buildConfigField("String", "API_BASE_URL", "\"http://192.168.1.9:8080/api/\"")
+            buildConfigField("String", "API_BASE_URL", "\"http://192.168.137.1:8080/api/\"")
         }
     }
 

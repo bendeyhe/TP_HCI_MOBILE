@@ -27,7 +27,7 @@ class MyAppState(
         dismissed: () -> Unit
     ) {
         scope.launch {
-            val actionLabel = ar.edu.itba.tpHciMobile.MyApp.instance.getString(R.string.dismiss)
+            val actionLabel = ar.edu.itba.tpHciMobile.MyApplication.instance.getString(R.string.dismiss)
             val result = snackbarHostState.showSnackbar(
                 message = message,
                 actionLabel = actionLabel

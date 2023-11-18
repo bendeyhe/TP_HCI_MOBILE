@@ -1,4 +1,4 @@
-package ar.edu.itba.tpHciMobile.ui.main
+package ar.edu.itba.tpHciMobile.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -8,6 +8,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navDeepLink
+import ar.edu.itba.tpHciMobile.screens.HomeScreen
+import ar.edu.itba.tpHciMobile.screens.OtherScreen
+import ar.edu.itba.tpHciMobile.screens.ThirdScreen
+import ar.edu.itba.tpHciMobile.ui.main.Routines
+import ar.edu.itba.tpHciMobile.ui.main.Screen
 
 @Composable
 fun MyAppNavHost(navController: NavHostController, modifier: Modifier) {

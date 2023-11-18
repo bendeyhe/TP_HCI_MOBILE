@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSavedStateRegistryOwner
-import ar.edu.itba.tpHciMobile.MyApp
 import ar.edu.itba.tpHciMobile.MyApplication
 
 @Composable

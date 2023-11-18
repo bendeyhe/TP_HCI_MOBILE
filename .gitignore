@@ -13,3 +13,7 @@
 .externalNativeBuild
 .cxx
 local.properties
+API/
+app/build.gradle
+app/build.gradle.kts
+app/build.gradle.kts
