@@ -26,4 +26,10 @@
     <string name="add_sport">ADD SPORT</string>
     <string name="modify_sport">MODIFY SPORT</string>
     <string name="delete_sport">DELETE SPORT</string>
+    <string name="confirm">CONFIRM</string>
+    <string name="password">Password</string>
+    <string name="long_input">Input is too long</string>
+    <string name="username">Username</string>
+    <string name="login_msg">Login</string>
+    <string name="enter_password">Password</string>
 </resources>

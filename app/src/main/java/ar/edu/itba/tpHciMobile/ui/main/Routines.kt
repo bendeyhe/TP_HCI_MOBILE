@@ -45,11 +45,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import androidx.navigation.NavController
 import ar.edu.itba.tpHciMobile.R
 
 
 @Composable
-fun Routines(modifier: Modifier = Modifier) {
+fun Routines(modifier: Modifier = Modifier, navController : NavController) {
     val names = listOf(
         "Rutina 1",
         "Rutina 2",
@@ -149,11 +150,13 @@ fun FavButton(fav: Boolean, onClick: () -> Unit) {
     }
 }
 
+/*
 @Preview
 @Composable
 fun RoutinesPreview() {
     Routines()
 }
+ */
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -172,6 +175,7 @@ fun OrderByBtn(modifier : Modifier = Modifier, ) {
             selectedLeadingIconColor = Color.Black,
             selectedContainerColor = Color.Black
         ),
+        border = null,
         label = {
             Text(
                 stringResource(R.string.order_by),
@@ -236,18 +240,35 @@ fun MinimalDialog(onDismissRequest: () -> Unit) {
                         )
                     }
                 }
-                // Botón "Cerrar" al final de la Card
-                TextButton(
-                    onClick = { onDismissRequest() },
+                // Row para colocar los botones "Cerrar" y "Aceptar"
+                Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .align(Alignment.End)
+                        .padding(end = 16.dp),
+                    horizontalArrangement = Arrangement.End
                 ) {
-                    Text(
-                        text = stringResource(R.string.close),
-                        style = MaterialTheme.typography.bodyMedium.copy(fontSize = 16.sp)
-
+                    // Botón "Cerrar"
+                    TextButton(
+                        onClick = { onDismissRequest() },
+                        modifier = Modifier
+                            .padding(end = 8.dp)
+                    ) {
+                        Text(
+                            text = stringResource(R.string.close),
+                            style = MaterialTheme.typography.bodyMedium.copy(fontSize = 16.sp)
                         )
+                    }
+                    // Botón "Confirmar"
+                    TextButton(
+                        onClick = {
+                            // todo Aca agregar la lógica para el botón "Aceptar"
+                        }
+                    ) {
+                        Text(
+                            text = stringResource(R.string.confirm),
+                            style = MaterialTheme.typography.bodyMedium.copy(fontSize = 16.sp)
+                        )
+                    }
                 }
             }
         }

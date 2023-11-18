@@ -8,6 +8,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.spring
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -28,6 +29,7 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
@@ -37,6 +39,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -54,6 +57,9 @@ import ar.edu.itba.tpHciMobile.ui.theme.TP_HCI_MOBILETheme
 class MainActivity : ComponentActivity() {
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     @OptIn(ExperimentalMaterial3Api::class)
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -62,21 +68,26 @@ class MainActivity : ComponentActivity() {
                 val scrollBehavior =
                     TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
                 Scaffold(
-                    modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
                     topBar = {
                         CenterAlignedTopAppBar(
+                            //colors = TopAppBarDefault.topAppBarColors( containerColor = Color.DarkGray),
+                            modifier = Modifier.background(Color.DarkGray),
                             title = {
                                 Text(
                                     "TOOBIG",
                                     maxLines = 1,
-                                    overflow = TextOverflow.Ellipsis
+                                    overflow = TextOverflow.Ellipsis,
+                                    color = Color(0xFF8EFE00)
                                 )
                             },
                             navigationIcon = {
-                                IconButton(onClick = { /* do something */ }) {
+                                IconButton(onClick = {
+                                    navController.popBackStack()
+                                }) {
                                     Icon(
                                         imageVector = Icons.Filled.ArrowBack,
-                                        contentDescription = "Localized description"
+                                        contentDescription = "Localized description",
+                                        tint = Color(0xFF8EFE00)
                                     )
                                 }
                             },
@@ -113,15 +124,16 @@ fun BottomBar(navController: NavController) {
         Screen.ThirdScreen
     )
 
-    NavigationBar {
+    NavigationBar ( modifier = Modifier.background(color = Color.DarkGray)){
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
         items.forEach { item ->
             NavigationBarItem(
-                icon = { Icon(imageVector = item.icon, contentDescription = item.title) },
-                label = { Text(text = item.title) },
+                icon = { Icon(imageVector = item.icon, contentDescription = item.title, tint = Color(0xFF8EFE00)) },
+                label = { Text(text = item.title, color = Color(0xFF8EFE00)) },
                 alwaysShowLabel = true,
                 selected = currentRoute == item.route,
+
                 onClick = {
                     navController.navigate(item.route) {
                         popUpTo(navController.graph.findStartDestination().id) {

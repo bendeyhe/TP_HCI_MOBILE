@@ -27,4 +27,10 @@
     <string name="add_sport">AÑADIR DEPORTE</string>
     <string name="modify_sport">MODIFICAR DEPORTE</string>
     <string name="delete_sport">ELIMINAR DEPORTE</string>
+    <string name="confirm">CONFIRMAR</string>
+    <string name="enter_password">Ingrese su contraseña</string>
+    <string name="long_input">El texto ingresado es muy largo</string>
+    <string name="username">Usuario</string>
+    <string name="password">Contraseña</string>
+    <string name="login_msg">Iniciar sesión</string>
 </resources>

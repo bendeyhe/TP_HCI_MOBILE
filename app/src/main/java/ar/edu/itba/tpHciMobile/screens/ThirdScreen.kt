@@ -17,9 +17,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import ar.edu.itba.tpHciMobile.R
 import ar.edu.itba.tpHciMobile.data.model.Sport
 import ar.edu.itba.tpHciMobile.ui.main.MainViewModel
+import ar.edu.itba.tpHciMobile.ui.main.Screen
 import ar.edu.itba.tpHciMobile.ui.main.canAddSport
 import ar.edu.itba.tpHciMobile.ui.main.canDeleteSport
 import ar.edu.itba.tpHciMobile.ui.main.canGetAllSports
@@ -30,12 +32,12 @@ import ar.edu.itba.tpHciMobile.util.getViewModelFactory
 import kotlin.random.Random
 
 @Composable
-fun ThirdScreen() {
+fun ThirdScreen(navController : NavController) {
     Surface (
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
     ) {
-        MainScreen()
+        MainScreen(navController = navController)
         // Text(text = "Third Screen", fontSize=30.sp)
     }
 }
@@ -63,7 +65,8 @@ fun ActionButton(
 
 @Composable
 fun MainScreen(
-    viewModel: MainViewModel = viewModel(factory = getViewModelFactory())
+    viewModel: MainViewModel = viewModel(factory = getViewModelFactory()),
+    navController :NavController
 ) {
     val uiState = viewModel.uiState
 
@@ -76,7 +79,8 @@ fun MainScreen(
             ActionButton(
                 resId = R.string.login,
                 onClick = {
-                    viewModel.login("mati", "mati")
+                    navController.navigate(Screen.LoginScreen.route)
+                    //viewModel.login("mati", "mati")
                 })
         } else {
             ActionButton(
