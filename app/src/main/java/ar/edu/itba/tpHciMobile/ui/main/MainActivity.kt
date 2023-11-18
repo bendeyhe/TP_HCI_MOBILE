@@ -250,7 +250,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 @Composable
 fun MyAppPreview() {
     TP_HCI_MOBILETheme {
-        ar.edu.itba.tpHciMobile.MyApplication()
+        MyApplication()
     }
 }
 

@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSavedStateRegistryOwner
-import ar.edu.itba.tpHciMobile.MyApplication
+import ar.edu.itba.tpHciMobile.ui.main.MyApplication
 
 @Composable
 fun getViewModelFactory(defaultArgs: Bundle? = null): ViewModelFactory {
