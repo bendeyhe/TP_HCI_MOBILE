@@ -1,6 +1,7 @@
 package ar.edu.itba.tpHciMobile.data.network.model.Routines
 
 import com.google.gson.annotations.SerializedName
+import ar.edu.itba.tpHciMobile.data.model.CompleteCycle
 
 class NetworkCompleteCycle (
     @SerializedName("id"          ) var id          : Int,
@@ -9,5 +10,15 @@ class NetworkCompleteCycle (
     @SerializedName("name"        ) var name        : String,
     @SerializedName("detail"      ) var detail      : String? = null,
     @SerializedName("repetitions" ) var repetitions : Int,
-    @SerializedName("metadata"    ) var metadata    : String? = null
-)
+) {
+    fun asModel() : CompleteCycle {
+        return CompleteCycle(
+            id = id,
+            type = type,
+            order = order,
+            detail = detail,
+            name = name,
+            repetitions = repetitions,
+        )
+    }
+}

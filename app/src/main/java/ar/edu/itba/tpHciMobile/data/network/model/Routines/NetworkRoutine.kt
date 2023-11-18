@@ -3,6 +3,7 @@ package ar.edu.itba.tpHciMobile.data.network.model.Routines
 import ar.edu.itba.tpHciMobile.data.network.model.NetworkCategory
 import ar.edu.itba.tpHciMobile.data.network.model.NetworkUser
 import com.google.gson.annotations.SerializedName
+import ar.edu.itba.tpHciMobile.data.model.Routine
 import java.util.Date
 
 class NetworkRoutine (
@@ -16,4 +17,17 @@ class NetworkRoutine (
     @SerializedName("user"       ) var user       : NetworkUser?     = null,            //desde el converter estaba User()
     @SerializedName("category"   ) var category   : NetworkCategory,   //esta bien esto
     @SerializedName("metadata"   ) var metadata   : String?   = null
-)
+) {
+    fun asModel(): Routine{
+        return Routine(
+            id = id,
+            name = name,
+            detail = detail,
+            date = date,
+            score = score,
+            difficulty = difficulty,
+            user = user,
+            category = category,
+        )
+    }
+}
