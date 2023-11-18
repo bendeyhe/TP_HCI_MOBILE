@@ -19,8 +19,8 @@ class UserRepository(
     // Cache of the current user routines got from the network.
     private var userRoutines: List<Routine> = emptyList()
 
-    suspend fun register(user: User) {
-        remoteDataSource.register(user.asNetworkModel())
+    suspend fun register(user: User) : User {
+        return remoteDataSource.register(user.asNetworkModel()).asModel()
     }
 
     suspend fun resendVerification(email: String) {
@@ -39,8 +39,8 @@ class UserRepository(
         remoteDataSource.logout()
     }
 
-    suspend fun updateCurrentUser(user: User) {
-        remoteDataSource.updateCurrentUser(user.asNetworkModel())
+    suspend fun updateCurrentUser(user: User) : User {
+        return remoteDataSource.updateCurrentUser(user.asNetworkModel()).asModel()
     }
 
     suspend fun getCurrentUserRoutines(refresh: Boolean = false): List<Routine> {

@@ -1,5 +1,6 @@
 package ar.edu.itba.tpHciMobile.data.network.datasources
 
+import ar.edu.itba.tpHciMobile.data.model.User
 import ar.edu.itba.tpHciMobile.data.network.api.ApiUserService
 import ar.edu.itba.tpHciMobile.data.network.model.util.NetworkPagedContent
 import ar.edu.itba.tpHciMobile.data.network.model.routines.NetworkRoutine
@@ -14,9 +15,10 @@ class UserRemoteDataSource(
     private val apiUserService: ApiUserService
 ) : RemoteDataSource() {
 
-    suspend fun register(user: NetworkUser) {
+    suspend fun register(user: NetworkUser) : NetworkUser {
         val response = handleApiResponse { apiUserService.register(user) }
         sessionManager.saveEmail(response.email) // todo no se si es necesario
+        return response
     }
 
     suspend fun resendVerification(email: String) {
@@ -40,8 +42,8 @@ class UserRemoteDataSource(
         sessionManager.removeAuthToken()
     }
 
-    suspend fun updateCurrentUser(user: NetworkUser) {
-        val response = handleApiResponse { apiUserService.updateCurrentUser(user) }
+    suspend fun updateCurrentUser(user: NetworkUser) : NetworkUser {
+        return handleApiResponse { apiUserService.updateCurrentUser(user) }
     }
 
     suspend fun getCurrentUserRoutines(page: Int): NetworkPagedContent<NetworkRoutine> {
