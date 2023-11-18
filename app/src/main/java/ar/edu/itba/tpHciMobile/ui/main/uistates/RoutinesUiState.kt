@@ -8,7 +8,7 @@ import ar.edu.itba.tpHciMobile.ui.components.FilterOptions
 data class RoutinesUiState (
     val routines: List<Routine>? = null,
     val currentRoutine: Routine? = null,
-    val orderBy: Int = 0,
+    /*val orderBy: Int = 0,
     val filters: List<FilterOptions> = listOf(
         FilterOptions.DateUp,
         FilterOptions.DateDown,
@@ -16,11 +16,13 @@ data class RoutinesUiState (
         FilterOptions.RatingDown,
         FilterOptions.DifficultyUp,
         FilterOptions.DifficultyDown,
-    ),
-    val userRoutines: List<Routine>? = null,
+    ),*/
     val routinesCycles: List<CompleteCycle> = emptyList(),
-    val favouriteRoutines: List<Routine>? = null,
+    val currentRoutineCycle: CompleteCycle? = null,
 
+    //val favouriteRoutines: List<Routine>? = null,
+
+    val userRoutines: List<Routine>? = null,
     val isFetchingRoutine: Boolean = false,
     val fetchingRoutineId: Int? = null,
     val fetchRoutineErrorStringId: Error? = null,

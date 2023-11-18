@@ -1,5 +1,6 @@
 package ar.edu.itba.tpHciMobile.data.network.model.exercises
 
+import ar.edu.itba.tpHciMobile.data.model.Exercises
 import com.google.gson.annotations.SerializedName
 import java.util.Date
 
@@ -16,4 +17,13 @@ class NetworkExercise (
     var date     : Date?    = null,
     @SerializedName("metadata")
     var metadata : String? = null
-)
+) {
+    fun asModel(): Exercises {
+        return Exercises(
+            id = id,
+            name = name,
+            detail = detail,
+            type = type,
+        )
+    }
+}

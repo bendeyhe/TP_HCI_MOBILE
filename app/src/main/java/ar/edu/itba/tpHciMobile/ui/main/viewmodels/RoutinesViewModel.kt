@@ -17,13 +17,17 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 class RoutinesViewModel (
-    private val sessionManager: SessionManager,
-    private val userRepository: UserRepository,
     private val routinesRepository: RoutinesRepository,
-    private val routinesCycleRepository: RoutinesCycleRepository
+    private val userRepository: UserRepository,
+    private val routinesCycleRepository: RoutinesCycleRepository,
+    sessionManager: SessionManager,
     ) : ViewModel() {
     var uiState by mutableStateOf(RoutinesUiState())
         private set
+
+    var userState by mutableStateOf(MainUiState(isAuthenticated = sessionManager.loadAuthToken() != null))
+        private set
+
     fun getRoutines() = runOnViewModelScope(
         {
             routinesRepository.getRoutines(true)
@@ -48,6 +52,33 @@ class RoutinesViewModel (
         },
         {
                 state, response -> state.copy(currentRoutine = response)
+        }
+    )
+
+    fun getCurrentUserRoutines() = runOnViewModelScope(
+        {
+            userRepository.getCurrentUserRoutines(true)
+        },
+        {
+                state, response -> state.copy(userRoutines = response)
+        }
+    )
+
+    fun getRoutinesCycles(routineId: Int) = runOnViewModelScope(
+        {
+            routinesCycleRepository.getRoutineCycles(routineId, true)
+        },
+        {
+                state, response -> state.copy(routinesCycles = response)
+        }
+    )
+
+    fun getRoutineCycle(routineId: Int, cycleId: Int) = runOnViewModelScope(
+        {
+            routinesCycleRepository.getRoutineCycle(routineId, cycleId)
+        },
+        {
+                state, response -> state.copy(currentRoutineCycle = response)
         }
     )
 
