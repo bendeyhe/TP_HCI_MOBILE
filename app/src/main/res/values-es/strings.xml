@@ -33,4 +33,10 @@
     <string name="username">Usuario</string>
     <string name="password">Contraseña</string>
     <string name="login_msg">Iniciar sesión</string>
+    <string name="date_up">FECHA ASCENDENTE</string>
+    <string name="date_down">FECHA DESCENDENTE</string>
+    <string name="rating_up">RATING ASCENDENTE</string>
+    <string name="rating_down">RATING DESCENDENTE</string>
+    <string name="diff_up">DIFICULTAD ASCENDENTE</string>
+    <string name="diff_down">DIFICULTAD DESCENDENTE</string>
 </resources>
