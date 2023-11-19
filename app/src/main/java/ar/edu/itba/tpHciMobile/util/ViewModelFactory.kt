@@ -8,6 +8,7 @@ import androidx.savedstate.SavedStateRegistryOwner
 import ar.edu.itba.tpHciMobile.ui.main.viewmodels.MainViewModel
 import ar.edu.itba.tpHciMobile.data.repository.SportRepository
 import ar.edu.itba.tpHciMobile.data.repository.UserRepository
+import ar.edu.itba.tpHciMobile.ui.main.viewmodels.UserViewModel
 
 class ViewModelFactory constructor(
     private val sessionManager: SessionManager,
@@ -25,6 +26,9 @@ class ViewModelFactory constructor(
         when {
             isAssignableFrom(MainViewModel::class.java) ->
                 MainViewModel(sessionManager, userRepository, sportRepository)
+
+            isAssignableFrom(UserViewModel::class.java) ->
+                UserViewModel(sessionManager, userRepository)
 
             else ->
                 throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")

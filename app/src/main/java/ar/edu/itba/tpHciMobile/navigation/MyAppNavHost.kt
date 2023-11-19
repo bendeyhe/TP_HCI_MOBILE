@@ -5,7 +5,6 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import ar.edu.itba.tpHciMobile.ui.screens.ThirdScreen
 import ar.edu.itba.tpHciMobile.ui.screens.Login
 import ar.edu.itba.tpHciMobile.ui.screens.Routines
 import ar.edu.itba.tpHciMobile.ui.screens.Favorites
@@ -38,9 +37,6 @@ fun MyAppNavHost(navController: NavHostController, modifier: Modifier) {
        */
         composable(Screen.Routines.route){
             Routines(navController = navController)
-        }
-        composable(Screen.ThirdScreen.route){
-            ThirdScreen(navController = navController)
         }
         composable(Screen.LoginScreen.route){
             Login(navController = navController)

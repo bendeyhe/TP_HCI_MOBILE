@@ -38,4 +38,9 @@
     <string name="start_routine">Comenzar</string>
     <string name="rating">Puntaje</string>
     <string name="difficulty">Dificultad</string>
+    <string name="not_submitted_username">Debe ingresar un nombre de usuario</string>
+    <string name="not_valid_username">El nombre de usuario ingresado no es válido</string>
+    <string name="not_submitted_password">Debe ingresar una contraseña</string>
+    <string name="not_valid_password">La contraseña ingresada no es válida</string>
+    <string name="not_valid_credentials">Las credenciales ingresadas no son válidas</string>
 </resources>

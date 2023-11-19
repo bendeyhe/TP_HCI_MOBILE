@@ -37,4 +37,9 @@
     <string name="start_routine">Start</string>
     <string name="rating">Rating</string>
     <string name="difficulty">Difficulty</string>
+    <string name="not_submitted_username">The username must be submitted</string>
+    <string name="not_valid_username">The username is not valid</string>
+    <string name="not_submitted_password">The password must be submitted</string>
+    <string name="not_valid_password">The password is not valid</string>
+    <string name="not_valid_credentials">The credentials are not valid</string>
 </resources>

@@ -1,5 +1,6 @@
 package ar.edu.itba.tpHciMobile.ui.screens
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -30,6 +31,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
@@ -41,26 +43,37 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import ar.edu.itba.tpHciMobile.R
+import ar.edu.itba.tpHciMobile.ui.main.Screen
+import ar.edu.itba.tpHciMobile.ui.main.viewmodels.MainViewModel
+import ar.edu.itba.tpHciMobile.ui.main.viewmodels.UserViewModel
+import ar.edu.itba.tpHciMobile.util.getViewModelFactory
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Login(navController : NavController) {
+fun Login(
+    navController: NavController,
+    userViewModel: UserViewModel = viewModel(factory = getViewModelFactory())
+) {
     var username by rememberSaveable { mutableStateOf("") }
     var password by rememberSaveable { mutableStateOf("") }
     var passwordHidden by rememberSaveable { mutableStateOf(true) }
     val errorMessage = stringResource(R.string.long_input)
     var isError by rememberSaveable { mutableStateOf(false) }
     val charLimit = 25 // todo ver cuanto era el limite de caracteres
+    val context = LocalContext.current
     fun validate(text: String) {
         isError = text.length > charLimit
     }
 
     Surface() {
         Column(
-            modifier = Modifier.fillMaxWidth().padding(16.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
@@ -95,10 +108,13 @@ fun Login(navController : NavController) {
                 },
                 isError = isError,
                 keyboardActions = KeyboardActions { validate(username) },
-                modifier = Modifier.padding(16.dp).fillMaxWidth().semantics {
-                    // Provide localized description of the error
-                    if (isError) error(errorMessage)
-                }
+                modifier = Modifier
+                    .padding(16.dp)
+                    .fillMaxWidth()
+                    .semantics {
+                        // Provide localized description of the error
+                        if (isError) error(errorMessage)
+                    }
             )
 
             TextField(
@@ -127,14 +143,19 @@ fun Login(navController : NavController) {
                 },
                 isError = isError,
                 keyboardActions = KeyboardActions { validate(password) },
-                modifier = Modifier.padding(16.dp).fillMaxWidth().semantics {
-                    // Provide localized description of the error
-                    if (isError) error(errorMessage)
-                },
+                modifier = Modifier
+                    .padding(16.dp)
+                    .fillMaxWidth()
+                    .semantics {
+                        // Provide localized description of the error
+                        if (isError) error(errorMessage)
+                    },
                 trailingIcon = {
                     IconButton(onClick = { passwordHidden = !passwordHidden }) {
                         val visibilityIcon =
-                            if (passwordHidden) painterResource(R.drawable.visibility_off) else painterResource(R.drawable.visibility)//todo buscar como hacer que funcione Visibility
+                            if (passwordHidden) painterResource(R.drawable.visibility_off) else painterResource(
+                                R.drawable.visibility
+                            )//todo buscar como hacer que funcione Visibility
                         // Please provide localized description for accessibility services
                         val description = if (passwordHidden) "Show password" else "Hide password"
                         Icon(painter = visibilityIcon, contentDescription = description)
@@ -142,10 +163,29 @@ fun Login(navController : NavController) {
                 }
             )
 
-            //val notValidUsername = stringResource(R.string.not_valid_username)
+            val notSubmittedUsername = stringResource(R.string.not_submitted_username)
+            val notSubmittedPassword = stringResource(R.string.not_submitted_password)
+            val notValidUsername = stringResource(R.string.not_valid_username)
+            val notValidPassword = stringResource(R.string.not_valid_password)
+            val notValidCredentials = stringResource(R.string.not_valid_credentials)
             Button(
                 onClick = {
-                          },
+                    if (username.isEmpty())
+                        Toast.makeText(context, notSubmittedUsername, Toast.LENGTH_SHORT).show()
+                    else if (username.length > charLimit)
+                        Toast.makeText(context, notValidUsername, Toast.LENGTH_SHORT).show()
+                    else if (password.isEmpty())
+                        Toast.makeText(context, notSubmittedPassword, Toast.LENGTH_SHORT).show()
+                    else if (password.length > charLimit)
+                        Toast.makeText(context, notValidPassword, Toast.LENGTH_SHORT).show()
+                    else {
+                        var isAuth = userViewModel.login(username, password)
+                        if (isAuth)
+                            navController.navigate(Screen.Routines.route)
+                        else
+                            Toast.makeText(context, notValidCredentials, Toast.LENGTH_SHORT).show()
+                    }
+                },
                 contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF8EFE00)),
                 modifier = Modifier.padding(16.dp),
@@ -154,7 +194,10 @@ fun Login(navController : NavController) {
                     text = stringResource(R.string.login),
                     color = Color.Black,
                     textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.headlineMedium.copy(fontSize = 20.sp, fontWeight = FontWeight.Medium)
+                    style = MaterialTheme.typography.headlineMedium.copy(
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Medium
+                    )
                 )
             }
 

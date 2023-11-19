@@ -118,7 +118,7 @@ fun BottomBar(navController: NavController) {
     val items = listOf(
         Screen.Favorites,
         Screen.Routines,
-        Screen.ThirdScreen
+        Screen.LoginScreen
     )
 
     NavigationBar(containerColor = Color.DarkGray) {

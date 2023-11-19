@@ -54,13 +54,16 @@ class UserViewModel(
         { state, _ -> state }
     )
 
-    fun login(username: String, password: String) = runOnViewModelScope(
-        {
-            userRepository.login(username, password)
-            userRepository.getCurrentUser(true)
-        },
-        { state, response -> state.copy(isAuthenticated = true, currentUser = response) }
-    )
+    fun login(username: String, password: String) : Boolean {
+        runOnViewModelScope(
+            {
+                userRepository.login(username, password)
+                userRepository.getCurrentUser(true)
+            },
+            { state, response -> state.copy(isAuthenticated = true, currentUser = response) }
+        )
+        return uiState.isAuthenticated
+    }
 
     fun logout() = runOnViewModelScope(
         { userRepository.logout() },
