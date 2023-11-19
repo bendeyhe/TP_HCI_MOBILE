@@ -1,4 +1,4 @@
-package ar.edu.itba.tpHciMobile.ui.main
+package ar.edu.itba.tpHciMobile.ui.screens
 
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDpAsState
@@ -18,25 +18,21 @@ import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.Card
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExposedDropdownMenuBox
-import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -49,16 +45,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
 import ar.edu.itba.tpHciMobile.R
+import ar.edu.itba.tpHciMobile.ui.main.Screen
 
 
 @Composable
-fun Routines(modifier: Modifier = Modifier, navController : NavController) {
+fun Routines(modifier: Modifier = Modifier, navController: NavController) {
     val names = listOf(
         "Rutina 1",
         "Rutina 2",
@@ -96,7 +92,14 @@ fun Routines(modifier: Modifier = Modifier, navController : NavController) {
 
 
 @Composable
-fun Routine(name: String, description: String, difficulty: String, rating : String, modifier: Modifier = Modifier, onItemClick: () -> Unit) {
+fun Routine(
+    name: String,
+    description: String,
+    difficulty: String,
+    rating: String,
+    modifier: Modifier = Modifier,
+    onItemClick: () -> Unit
+) {
     var expanded = rememberSaveable { mutableStateOf(false) }
     var fav = rememberSaveable { mutableStateOf(false) }
     //luego para usar lo que hay en expanded se usa expanded.value
@@ -108,7 +111,11 @@ fun Routine(name: String, description: String, difficulty: String, rating : Stri
         ), label = ""
     )
 
-    Surface(modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp).clickable(onClick = onItemClick)) {
+    Surface(
+        modifier = Modifier
+            .padding(vertical = 4.dp, horizontal = 8.dp)
+            .clickable(onClick = onItemClick)
+    ) {
         Row(modifier = Modifier.padding(horizontal = 20.dp, vertical = 4.dp)) {
             Column(
                 modifier = Modifier
@@ -180,7 +187,7 @@ fun RoutinesPreview() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun OrderByBtn(modifier : Modifier = Modifier, ) {
+fun OrderByBtn(modifier: Modifier = Modifier) {
 
     val options = listOf(
         stringResource(R.string.order_by_date_desc),
@@ -192,17 +199,19 @@ fun OrderByBtn(modifier : Modifier = Modifier, ) {
     )
     var expanded by remember { mutableStateOf(false) }
     var selectedOptionText by remember { mutableStateOf(options[0]) }
-
-
+    val msg = stringResource(R.string.order_by)
+    var label by remember{mutableStateOf(msg)}
     var selected by remember { mutableStateOf(false) }
+    
     FilterChip(
         modifier = modifier
             .wrapContentSize()
             .padding(top = 8.dp),
+        //trailingIcon = Icons.Filled.KeyboardArrowDown,
         onClick = { selected = !selected },
         colors = FilterChipDefaults.filterChipColors(
             labelColor = Color.Black,
-            containerColor= Color(0xFF8EFE00),
+            containerColor = Color(0xFF8EFE00),
             selectedLabelColor = Color(0xFF8EFE00),
             selectedLeadingIconColor = Color.Black,
             selectedContainerColor = Color.Black
@@ -210,30 +219,35 @@ fun OrderByBtn(modifier : Modifier = Modifier, ) {
         border = null,
         label = {
             Text(
-                stringResource(R.string.order_by),
-                style = MaterialTheme.typography.bodyMedium.copy(fontSize = 18.sp, fontWeight = FontWeight.Medium)
+                text = label,
+                style = MaterialTheme.typography.bodyMedium.copy(
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Medium
+                )
             )
+            Icon(Icons.Filled.KeyboardArrowDown, "Share", tint = Color.Black)
 
         },
         selected = selected,
         leadingIcon = if (selected) {
             {
                 DropdownMenu(
-            expanded = selected,
-            onDismissRequest = {
-                selected = false
-            }
-        ) {
-            options.forEach { selectionOption ->
-                DropdownMenuItem(
-                    text = { Text(text = selectionOption) },
-                    onClick = {
-                        selectedOptionText = selectionOption
+                    expanded = selected,
+                    onDismissRequest = {
                         selected = false
                     }
-                )
-            }
-        }
+                ) {
+                    options.forEach { selectionOption ->
+                        DropdownMenuItem(
+                            text = { Text(text = selectionOption) },
+                            onClick = {
+                                selectedOptionText = selectionOption
+                                selected = false
+                                label = selectedOptionText
+                            }
+                        )
+                    }
+                }
             }
         } else {
             null
@@ -253,7 +267,7 @@ fun MinimalDialog(onDismissRequest: () -> Unit) {
         stringResource(R.string.order_by_rating_asc),
         stringResource(R.string.order_by_diff_desc),
         stringResource(R.string.order_by_diff_asc)
-        )
+    )
     val (selectedOption, onOptionSelected) = remember { mutableStateOf(radioOptions[0]) }
 
     Dialog(onDismissRequest = { onDismissRequest() }) {

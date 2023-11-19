@@ -1,4 +1,4 @@
-package ar.edu.itba.tpHciMobile.ui.main
+package ar.edu.itba.tpHciMobile.ui.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

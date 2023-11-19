@@ -1,4 +1,4 @@
-package ar.edu.itba.tpHciMobile.screens
+package ar.edu.itba.tpHciMobile.ui.screens
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
