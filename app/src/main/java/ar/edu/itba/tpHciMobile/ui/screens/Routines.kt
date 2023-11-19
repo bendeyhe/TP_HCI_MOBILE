@@ -48,26 +48,29 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import ar.edu.itba.tpHciMobile.R
+import ar.edu.itba.tpHciMobile.data.model.Routine
 import ar.edu.itba.tpHciMobile.ui.main.Screen
+import ar.edu.itba.tpHciMobile.ui.main.viewmodels.RoutinesViewModel
+import ar.edu.itba.tpHciMobile.util.getViewModelFactory
 
 
 @Composable
-fun Routines(modifier: Modifier = Modifier, navController: NavController) {
-    val names = listOf(
-        "Rutina 1",
-        "Rutina 2",
-        "Rutina 3",
-        "Rutina 4",
-        "Rutina 5",
-        "Rutina 6",
-        "Rutina 7",
-        "Rutina 8",
-        "Rutina 9",
-        "Rutina 10"
-    )
-    val description = "Esta es una rutina de prueba"
+fun Routines(
+    modifier: Modifier = Modifier,
+    navController: NavController,
+    routinesViewModel: RoutinesViewModel = viewModel(factory = getViewModelFactory())
+) {
+    routinesViewModel.getRoutines()
+    val routines = routinesViewModel.uiState.routines
+    val rout = mutableListOf<Routine>()
+    if (routines != null) {
+        for (routine in routines) {
+            rout.add(routine)
+        }
+    }
     val rating = "4.5"
     val difficulty = "Hard"
 
@@ -80,8 +83,8 @@ fun Routines(modifier: Modifier = Modifier, navController: NavController) {
         ) {
             OrderByBtn(modifier.padding(end = 8.dp))
             LazyColumn(modifier = modifier.padding(vertical = 4.dp)) {
-                items(items = names) { name ->
-                    Routine(name, description, difficulty, rating, onItemClick = {
+                items(items = rout) { routine ->
+                    Routine(routine.name, routine.detail, difficulty, rating, onItemClick = {
                         navController.navigate(Screen.RoutineDetails.route)
                     })
                 }
@@ -94,7 +97,7 @@ fun Routines(modifier: Modifier = Modifier, navController: NavController) {
 @Composable
 fun Routine(
     name: String,
-    description: String,
+    description: String?,
     difficulty: String,
     rating: String,
     modifier: Modifier = Modifier,
@@ -142,12 +145,10 @@ fun Routine(
             Column() {
                 FavButton(fav = fav.value, onClick = { fav.value = !fav.value })
                 /*
-        ElevatedButton(onClick = { expanded.value = !expanded.value }) {
-            Text(text = if (expanded.value) stringResource(R.string.show_less) else stringResource(R.string.show_more))
-        }
-
-         */
-
+                ElevatedButton(onClick = { expanded.value = !expanded.value }) {
+                    Text(text = if (expanded.value) stringResource(R.string.show_less) else stringResource(R.string.show_more))
+                    }
+                */
             }
         }
     }
@@ -177,14 +178,6 @@ fun FavButton(fav: Boolean, onClick: () -> Unit) {
     }
 }
 
-/*
-@Preview
-@Composable
-fun RoutinesPreview() {
-    Routines()
-}
- */
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun OrderByBtn(modifier: Modifier = Modifier) {
@@ -200,9 +193,9 @@ fun OrderByBtn(modifier: Modifier = Modifier) {
     var expanded by remember { mutableStateOf(false) }
     var selectedOptionText by remember { mutableStateOf(options[0]) }
     val msg = stringResource(R.string.order_by)
-    var label by remember{mutableStateOf(msg)}
+    var label by remember { mutableStateOf(msg) }
     var selected by remember { mutableStateOf(false) }
-    
+
     FilterChip(
         modifier = modifier
             .wrapContentSize()
@@ -256,86 +249,3 @@ fun OrderByBtn(modifier: Modifier = Modifier) {
 
 
 }
-
-@Composable
-fun MinimalDialog(onDismissRequest: () -> Unit) {
-
-    val radioOptions = listOf(
-        stringResource(R.string.order_by_date_desc),
-        stringResource(R.string.order_by_date_asc),
-        stringResource(R.string.order_by_rating_desc),
-        stringResource(R.string.order_by_rating_asc),
-        stringResource(R.string.order_by_diff_desc),
-        stringResource(R.string.order_by_diff_asc)
-    )
-    val (selectedOption, onOptionSelected) = remember { mutableStateOf(radioOptions[0]) }
-
-    Dialog(onDismissRequest = { onDismissRequest() }) {
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(420.dp)
-                .padding(16.dp),
-            shape = RoundedCornerShape(8.dp),
-        ) {
-            Column(Modifier.selectableGroup()) {
-                radioOptions.forEach { text ->
-                    Row(
-                        Modifier
-                            .fillMaxWidth()
-                            .height(56.dp)
-                            .selectable(
-                                selected = (text == selectedOption),
-                                onClick = { onOptionSelected(text) },
-                                role = Role.RadioButton
-                            )
-                            .padding(horizontal = 16.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        RadioButton(
-                            selected = (text == selectedOption),
-                            onClick = { onOptionSelected(text) }// supongo que aca hay que llamar a la funcion que reordena
-                        )
-                        Text(
-                            text = text,
-                            style = MaterialTheme.typography.bodyMedium.copy(fontSize = 16.sp),
-                            modifier = Modifier.padding(start = 16.dp)
-                        )
-                    }
-                }
-                // Row para colocar los botones "Cerrar" y "Aceptar"
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(end = 16.dp),
-                    horizontalArrangement = Arrangement.End
-                ) {
-                    // Botón "Cerrar"
-                    TextButton(
-                        onClick = { onDismissRequest() },
-                        modifier = Modifier
-                            .padding(end = 8.dp)
-                    ) {
-                        Text(
-                            text = stringResource(R.string.close),
-                            style = MaterialTheme.typography.bodyMedium.copy(fontSize = 16.sp)
-                        )
-                    }
-                    // Botón "Confirmar"
-                    TextButton(
-                        onClick = {
-                            // todo Aca agregar la lógica para el botón "Aceptar"
-                        }
-                    ) {
-                        Text(
-                            text = stringResource(R.string.confirm),
-                            style = MaterialTheme.typography.bodyMedium.copy(fontSize = 16.sp)
-                        )
-                    }
-                }
-            }
-        }
-    }
-}
-
-

@@ -16,12 +16,12 @@ import ar.edu.itba.tpHciMobile.util.SessionManager
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class RoutinesViewModel (
+class RoutinesViewModel(
     private val routinesRepository: RoutinesRepository,
     private val userRepository: UserRepository,
     private val routinesCycleRepository: RoutinesCycleRepository,
     sessionManager: SessionManager,
-    ) : ViewModel() {
+) : ViewModel() {
     var uiState by mutableStateOf(RoutinesUiState())
         private set
 
@@ -32,8 +32,8 @@ class RoutinesViewModel (
         {
             routinesRepository.getRoutines(true)
         },
-        {
-                state, response -> state.copy(routines = response)
+        { state, response ->
+            state.copy(routines = response)
         }
     )
 
@@ -41,8 +41,8 @@ class RoutinesViewModel (
         {
             routinesRepository.getRoutinesOrderBy(orderBy, direction)
         },
-        {
-                state, response -> state.copy(routines = response)
+        { state, response ->
+            state.copy(routines = response)
         }
     )
 
@@ -50,8 +50,8 @@ class RoutinesViewModel (
         {
             routinesRepository.getRoutine(routineId)
         },
-        {
-                state, response -> state.copy(currentRoutine = response)
+        { state, response ->
+            state.copy(currentRoutine = response)
         }
     )
 
@@ -59,8 +59,8 @@ class RoutinesViewModel (
         {
             userRepository.getCurrentUserRoutines(true)
         },
-        {
-                state, response -> state.copy(userRoutines = response)
+        { state, response ->
+            state.copy(userRoutines = response)
         }
     )
 
@@ -68,8 +68,8 @@ class RoutinesViewModel (
         {
             routinesCycleRepository.getRoutineCycles(routineId, true)
         },
-        {
-                state, response -> state.copy(routinesCycles = response)
+        { state, response ->
+            state.copy(routinesCycles = response)
         }
     )
 
@@ -77,13 +77,10 @@ class RoutinesViewModel (
         {
             routinesCycleRepository.getRoutineCycle(routineId, cycleId)
         },
-        {
-                state, response -> state.copy(currentRoutineCycle = response)
+        { state, response ->
+            state.copy(currentRoutineCycle = response)
         }
     )
-
-
-
 
 
     private fun <R> runOnViewModelScope(
@@ -96,7 +93,8 @@ class RoutinesViewModel (
         }.onSuccess { response ->
             uiState = updateState(uiState, response).copy(isFetchingRoutine = false)
         }.onFailure { e ->
-            uiState = uiState.copy(isFetchingRoutine = false, fetchRoutineErrorStringId = handleError(e))
+            uiState =
+                uiState.copy(isFetchingRoutine = false, fetchRoutineErrorStringId = handleError(e))
         }
     }
 

@@ -1,13 +1,14 @@
 package ar.edu.itba.tpHciMobile.data.repository
 
 import ar.edu.itba.tpHciMobile.data.model.Routine
+import ar.edu.itba.tpHciMobile.data.network.datasources.RemoteDataSource
 import ar.edu.itba.tpHciMobile.data.network.datasources.RoutinesRemoteDataSource
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
 class RoutinesRepository(
     private val routinesRemoteDataSource: RoutinesRemoteDataSource
-) {
+) : RemoteDataSource() {
     private val routinesMutex = Mutex()
     private var routines: List<Routine> = emptyList()
 
