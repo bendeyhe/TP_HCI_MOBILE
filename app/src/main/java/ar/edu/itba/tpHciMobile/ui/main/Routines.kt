@@ -18,18 +18,25 @@ import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.Card
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -65,6 +72,9 @@ fun Routines(modifier: Modifier = Modifier, navController : NavController) {
         "Rutina 10"
     )
     val description = "Esta es una rutina de prueba"
+    val rating = "4.5"
+    val difficulty = "Hard"
+
     Surface(
         color = Color(0xFFAEB0B2)
     ) {
@@ -75,7 +85,7 @@ fun Routines(modifier: Modifier = Modifier, navController : NavController) {
             OrderByBtn(modifier.padding(end = 8.dp))
             LazyColumn(modifier = modifier.padding(vertical = 4.dp)) {
                 items(items = names) { name ->
-                    Routine(name, description, onItemClick = {
+                    Routine(name, description, difficulty, rating, onItemClick = {
                         navController.navigate(Screen.RoutineDetails.route)
                     })
                 }
@@ -86,7 +96,7 @@ fun Routines(modifier: Modifier = Modifier, navController : NavController) {
 
 
 @Composable
-fun Routine(name: String, description: String, modifier: Modifier = Modifier, onItemClick: () -> Unit) {
+fun Routine(name: String, description: String, difficulty: String, rating : String, modifier: Modifier = Modifier, onItemClick: () -> Unit) {
     var expanded = rememberSaveable { mutableStateOf(false) }
     var fav = rememberSaveable { mutableStateOf(false) }
     //luego para usar lo que hay en expanded se usa expanded.value
@@ -99,7 +109,7 @@ fun Routine(name: String, description: String, modifier: Modifier = Modifier, on
     )
 
     Surface(modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp).clickable(onClick = onItemClick)) {
-        Row(modifier = Modifier.padding(20.dp)) {
+        Row(modifier = Modifier.padding(horizontal = 20.dp, vertical = 4.dp)) {
             Column(
                 modifier = Modifier
                     .weight(1f)
@@ -111,6 +121,14 @@ fun Routine(name: String, description: String, modifier: Modifier = Modifier, on
                 )
                 Text(
                     text = "$description!",
+                    style = MaterialTheme.typography.headlineMedium.copy(fontSize = 20.sp)
+                )
+                Text(
+                    text = stringResource(R.string.difficulty) + ": $difficulty",
+                    style = MaterialTheme.typography.headlineMedium.copy(fontSize = 20.sp)
+                )
+                Text(
+                    text = stringResource(R.string.rating) + ": $rating",
                     style = MaterialTheme.typography.headlineMedium.copy(fontSize = 20.sp)
                 )
             }
@@ -163,8 +181,20 @@ fun RoutinesPreview() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun OrderByBtn(modifier : Modifier = Modifier, ) {
-    var selected by remember { mutableStateOf(false) }
 
+    val options = listOf(
+        stringResource(R.string.order_by_date_desc),
+        stringResource(R.string.order_by_date_asc),
+        stringResource(R.string.order_by_rating_desc),
+        stringResource(R.string.order_by_rating_asc),
+        stringResource(R.string.order_by_diff_desc),
+        stringResource(R.string.order_by_diff_asc)
+    )
+    var expanded by remember { mutableStateOf(false) }
+    var selectedOptionText by remember { mutableStateOf(options[0]) }
+
+
+    var selected by remember { mutableStateOf(false) }
     FilterChip(
         modifier = modifier
             .wrapContentSize()
@@ -188,12 +218,29 @@ fun OrderByBtn(modifier : Modifier = Modifier, ) {
         selected = selected,
         leadingIcon = if (selected) {
             {
-               MinimalDialog(onDismissRequest = { selected = false })
+                DropdownMenu(
+            expanded = selected,
+            onDismissRequest = {
+                selected = false
+            }
+        ) {
+            options.forEach { selectionOption ->
+                DropdownMenuItem(
+                    text = { Text(text = selectionOption) },
+                    onClick = {
+                        selectedOptionText = selectionOption
+                        selected = false
+                    }
+                )
+            }
+        }
             }
         } else {
             null
         },
     )
+
+
 }
 
 @Composable

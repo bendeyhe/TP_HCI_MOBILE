@@ -44,6 +44,9 @@ fun Favorites(modifier: Modifier = Modifier, navController: NavController){
         "Rutina 10 -Fav"
     )
     val description = "Estas son las rutinas favoritas"
+    val rating = "4.5"
+    val difficulty = "Hard"
+
     Surface(
         color = Color(0xFFAEB0B2)
     ) {
@@ -54,7 +57,7 @@ fun Favorites(modifier: Modifier = Modifier, navController: NavController){
             OrderByBtn(modifier.padding(end = 8.dp))
             LazyColumn(modifier = modifier.padding(vertical = 4.dp)) {
                 items(items = names) { name ->
-                    Routine(name, description, onItemClick = {
+                    Routine(name, description, difficulty, rating, onItemClick = {
                         navController.navigate(Screen.RoutineDetails.route)
                     })
                 }

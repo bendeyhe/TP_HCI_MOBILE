@@ -36,4 +36,6 @@
     <string name="routine_details">Detalle de la rutina</string>
     <string name="share_routine">Compartir</string>
     <string name="start_routine">Comenzar</string>
+    <string name="rating">Puntaje</string>
+    <string name="difficulty">Dificultad</string>
 </resources>
