@@ -13,7 +13,6 @@
 .externalNativeBuild
 .cxx
 local.properties
-API/
-app/build.gradle
+API_Swagger/
 app/build.gradle.kts
-app/build.gradle.kts
+

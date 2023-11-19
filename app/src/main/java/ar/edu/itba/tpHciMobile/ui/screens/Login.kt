@@ -142,8 +142,10 @@ fun Login(navController : NavController) {
                 }
             )
 
+            //val notValidUsername = stringResource(R.string.not_valid_username)
             Button(
-                onClick = { /*TODO validar usuario y ver a donde navegar navController.navigate(Screen.Routines.route) */ },
+                onClick = {
+                          },
                 contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF8EFE00)),
                 modifier = Modifier.padding(16.dp),

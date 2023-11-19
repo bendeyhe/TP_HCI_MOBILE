@@ -1,5 +1,5 @@
 package ar.edu.itba.tpHciMobile.data.repository
-/*
+
 import ar.edu.itba.tpHciMobile.data.model.CompleteCycle
 import ar.edu.itba.tpHciMobile.data.network.datasources.RoutinesRemoteDataSource
 import kotlinx.coroutines.sync.Mutex
@@ -32,6 +32,3 @@ class RoutinesCycleRepository (
         return routinesCyclesMutex.withLock { routinesRemoteDataSource.getCycle(routineId, cycleId).asModel() }
     }
 }
-
-
- */
