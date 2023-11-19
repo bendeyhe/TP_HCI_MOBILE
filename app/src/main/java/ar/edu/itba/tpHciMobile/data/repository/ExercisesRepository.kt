@@ -1,5 +1,5 @@
 package ar.edu.itba.tpHciMobile.data.repository
-
+/*
 import ar.edu.itba.tpHciMobile.data.model.Exercises
 import ar.edu.itba.tpHciMobile.data.network.datasources.ExercisesRemoteDataSource
 import kotlinx.coroutines.sync.Mutex
@@ -30,3 +30,5 @@ class ExercisesRepository (
         return exercisesMutex.withLock { exercisesRemoteDataSource.getExercise(exerciseId).asModel() }
     }
 }
+
+ */

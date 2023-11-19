@@ -1,5 +1,5 @@
 package ar.edu.itba.tpHciMobile.data.network.datasources
-
+/*
 import ar.edu.itba.tpHciMobile.data.network.api.ApiRoutinesService
 import ar.edu.itba.tpHciMobile.data.network.model.util.NetworkPagedContent
 import ar.edu.itba.tpHciMobile.data.network.model.routines.NetworkCompleteCycle
@@ -36,3 +36,5 @@ class RoutinesRemoteDataSource (
         }
     }
 }
+
+ */

@@ -1,5 +1,5 @@
 package ar.edu.itba.tpHciMobile.data.network.datasources
-
+/*
 import ar.edu.itba.tpHciMobile.data.network.api.ApiExercisesService
 import ar.edu.itba.tpHciMobile.data.network.model.exercises.NetworkExercise
 import ar.edu.itba.tpHciMobile.data.network.model.util.NetworkPagedContent
@@ -19,3 +19,4 @@ class ExercisesRemoteDataSource (
         }
     }
 }
+*/
