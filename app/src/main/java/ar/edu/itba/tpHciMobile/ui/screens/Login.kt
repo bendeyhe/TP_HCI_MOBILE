@@ -69,138 +69,314 @@ fun Login(
         isError = text.length > charLimit
     }
 
-    Surface() {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            Text(
-                text = stringResource(R.string.login_msg),
-                textAlign = TextAlign.Center,
-                fontSize = 30.sp,
-                fontWeight = androidx.compose.ui.text.font.FontWeight.Bold,
-                modifier = Modifier.padding(16.dp)
-            )
-
-            TextField(
-                value = username,
-                onValueChange = {
-                    username = it
-                    validate(username)
-                },
-                singleLine = true,
-                label = { Text(stringResource(R.string.username)) },
-                placeholder = { Text(stringResource(R.string.username)) },
-                leadingIcon = {
-                    Icon(
-                        imageVector = Icons.Filled.Person,
-                        contentDescription = "Password"
-                    )
-                },
-                supportingText = {
-                    Text(
-                        modifier = Modifier.fillMaxWidth(),
-                        text = "Limit: ${username.length}/$charLimit",
-                    )
-                },
-                isError = isError,
-                keyboardActions = KeyboardActions { validate(username) },
+    if (userViewModel.uiState.currentUser == null || !userViewModel.uiState.isAuthenticated) {
+        Surface() {
+            Column(
                 modifier = Modifier
-                    .padding(16.dp)
                     .fillMaxWidth()
-                    .semantics {
-                        // Provide localized description of the error
-                        if (isError) error(errorMessage)
-                    }
-            )
-
-            TextField(
-                value = password,
-                onValueChange = {
-                    password = it
-                    validate(password)
-                },
-                singleLine = true,
-                label = { Text(stringResource(R.string.password)) },
-                placeholder = { Text(stringResource(R.string.password)) },
-                visualTransformation =
-                if (passwordHidden) PasswordVisualTransformation() else VisualTransformation.None,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                leadingIcon = {
-                    Icon(
-                        imageVector = Icons.Filled.Lock,
-                        contentDescription = "Password"
-                    )
-                },
-                supportingText = {
-                    Text(
-                        modifier = Modifier.fillMaxWidth(),
-                        text = "Limit: ${password.length}/$charLimit",
-                    )
-                },
-                isError = isError,
-                keyboardActions = KeyboardActions { validate(password) },
-                modifier = Modifier
-                    .padding(16.dp)
-                    .fillMaxWidth()
-                    .semantics {
-                        // Provide localized description of the error
-                        if (isError) error(errorMessage)
-                    },
-                trailingIcon = {
-                    IconButton(onClick = { passwordHidden = !passwordHidden }) {
-                        val visibilityIcon =
-                            if (passwordHidden) painterResource(R.drawable.visibility_off) else painterResource(
-                                R.drawable.visibility
-                            )//todo buscar como hacer que funcione Visibility
-                        // Please provide localized description for accessibility services
-                        val description = if (passwordHidden) "Show password" else "Hide password"
-                        Icon(painter = visibilityIcon, contentDescription = description)
-                    }
-                }
-            )
-
-            val notSubmittedUsername = stringResource(R.string.not_submitted_username)
-            val notSubmittedPassword = stringResource(R.string.not_submitted_password)
-            val notValidUsername = stringResource(R.string.not_valid_username)
-            val notValidPassword = stringResource(R.string.not_valid_password)
-            val notValidCredentials = stringResource(R.string.not_valid_credentials)
-            Button(
-                onClick = {
-                    if (username.isEmpty())
-                        Toast.makeText(context, notSubmittedUsername, Toast.LENGTH_SHORT).show()
-                    else if (username.length > charLimit)
-                        Toast.makeText(context, notValidUsername, Toast.LENGTH_SHORT).show()
-                    else if (password.isEmpty())
-                        Toast.makeText(context, notSubmittedPassword, Toast.LENGTH_SHORT).show()
-                    else if (password.length > charLimit)
-                        Toast.makeText(context, notValidPassword, Toast.LENGTH_SHORT).show()
-                    else {
-                        var isAuth = userViewModel.login(username, password)
-                        if (isAuth)
-                            navController.navigate(Screen.Routines.route)
-                        else
-                            Toast.makeText(context, notValidCredentials, Toast.LENGTH_SHORT).show()
-                    }
-                },
-                contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF8EFE00)),
-                modifier = Modifier.padding(16.dp),
+                    .padding(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
             ) {
                 Text(
-                    text = stringResource(R.string.login),
-                    color = Color.Black,
+                    text = stringResource(R.string.login_msg),
                     textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.headlineMedium.copy(
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Medium
-                    )
+                    fontSize = 30.sp,
+                    fontWeight = androidx.compose.ui.text.font.FontWeight.Bold
                 )
-            }
 
+                TextField(
+                    value = username,
+                    onValueChange = {
+                        username = it
+                        validate(username)
+                    },
+                    singleLine = true,
+                    label = { Text(stringResource(R.string.username)) },
+                    placeholder = { Text(stringResource(R.string.username)) },
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Filled.Person,
+                            contentDescription = "Password"
+                        )
+                    },
+                    supportingText = {
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = "Limit: ${username.length}/$charLimit",
+                        )
+                    },
+                    isError = isError,
+                    keyboardActions = KeyboardActions { validate(username) },
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .fillMaxWidth()
+                        .semantics {
+                            // Provide localized description of the error
+                            if (isError) error(errorMessage)
+                        }
+                )
+
+                TextField(
+                    value = password,
+                    onValueChange = {
+                        password = it
+                        validate(password)
+                    },
+                    singleLine = true,
+                    label = { Text(stringResource(R.string.password)) },
+                    placeholder = { Text(stringResource(R.string.password)) },
+                    visualTransformation =
+                    if (passwordHidden) PasswordVisualTransformation() else VisualTransformation.None,
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Filled.Lock,
+                            contentDescription = "Password"
+                        )
+                    },
+                    supportingText = {
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = "Limit: ${password.length}/$charLimit",
+                        )
+                    },
+                    isError = isError,
+                    keyboardActions = KeyboardActions { validate(password) },
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .fillMaxWidth()
+                        .semantics {
+                            // Provide localized description of the error
+                            if (isError) error(errorMessage)
+                        },
+                    trailingIcon = {
+                        IconButton(onClick = { passwordHidden = !passwordHidden }) {
+                            val visibilityIcon =
+                                if (passwordHidden) painterResource(R.drawable.visibility_off) else painterResource(
+                                    R.drawable.visibility
+                                )//todo buscar como hacer que funcione Visibility
+                            // Please provide localized description for accessibility services
+                            val description =
+                                if (passwordHidden) "Show password" else "Hide password"
+                            Icon(painter = visibilityIcon, contentDescription = description)
+                        }
+                    }
+                )
+
+                val notSubmittedUsername = stringResource(R.string.not_submitted_username)
+                val notSubmittedPassword = stringResource(R.string.not_submitted_password)
+                val notValidUsername = stringResource(R.string.not_valid_username)
+                val notValidPassword = stringResource(R.string.not_valid_password)
+                val notValidCredentials = stringResource(R.string.not_valid_credentials)
+                Button(
+                    onClick = {
+                        if (username.isEmpty())
+                            Toast.makeText(context, notSubmittedUsername, Toast.LENGTH_SHORT).show()
+                        else if (username.length > charLimit)
+                            Toast.makeText(context, notValidUsername, Toast.LENGTH_SHORT).show()
+                        else if (password.isEmpty())
+                            Toast.makeText(context, notSubmittedPassword, Toast.LENGTH_SHORT).show()
+                        else if (password.length > charLimit)
+                            Toast.makeText(context, notValidPassword, Toast.LENGTH_SHORT).show()
+                        else {
+                            var isAuth = userViewModel.login(username, password)
+                            if (!userViewModel.uiState.isFetching) {
+                                if (isAuth)
+                                    navController.navigate(Screen.Routines.route)
+                                else
+                                    Toast.makeText(context, notValidCredentials, Toast.LENGTH_SHORT)
+                                        .show()
+                            }
+                        }
+                    },
+                    contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF8EFE00)),
+                    modifier = Modifier.padding(16.dp),
+                ) {
+                    Text(
+                        text = stringResource(R.string.login),
+                        color = Color.Black,
+                        textAlign = TextAlign.Center,
+                        style = MaterialTheme.typography.headlineMedium.copy(
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Medium
+                        )
+                    )
+                }
+
+            }
+        }
+    } else {
+        Surface() {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    text = stringResource(R.string.logout_msg),
+                    textAlign = TextAlign.Center,
+                    fontSize = 30.sp,
+                    fontWeight = androidx.compose.ui.text.font.FontWeight.Bold,
+                    modifier = Modifier.padding(16.dp)
+                )
+
+                TextField(
+                    value = userViewModel.uiState.currentUser?.username.toString(),
+                    onValueChange = {
+                        userViewModel.uiState.currentUser?.username = it
+                        validate(userViewModel.uiState.currentUser?.username.toString())
+                    },
+                    enabled = false,
+                    singleLine = true,
+                    label = { Text(stringResource(R.string.username)) },
+                    placeholder = { Text(stringResource(R.string.username)) },
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Filled.Person,
+                            contentDescription = "Password"
+                        )
+                    },
+                    supportingText = {
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = "Limit: ${userViewModel.uiState.currentUser?.username.toString().length}/$charLimit",
+                        )
+                    },
+                    isError = isError,
+                    keyboardActions = KeyboardActions { validate(userViewModel.uiState.currentUser?.username.toString()) },
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .fillMaxWidth()
+                        .semantics {
+                            // Provide localized description of the error
+                            if (isError) error(errorMessage)
+                        }
+                )
+
+                TextField(
+                    value = userViewModel.uiState.currentUser?.firstName.toString(),
+                    onValueChange = {
+                        userViewModel.uiState.currentUser?.firstName = it
+                        validate(userViewModel.uiState.currentUser?.firstName.toString())
+                    },
+                    enabled = false,
+                    singleLine = true,
+                    label = { Text(stringResource(R.string.first_name)) },
+                    placeholder = { Text(stringResource(R.string.first_name)) },
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Filled.Person,
+                            contentDescription = "Password"
+                        )
+                    },
+                    supportingText = {
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = "Limit: ${userViewModel.uiState.currentUser?.firstName.toString().length}/$charLimit",
+                        )
+                    },
+                    isError = isError,
+                    keyboardActions = KeyboardActions { validate(userViewModel.uiState.currentUser?.firstName.toString()) },
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .fillMaxWidth()
+                        .semantics {
+                            // Provide localized description of the error
+                            if (isError) error(errorMessage)
+                        }
+                )
+
+                TextField(
+                    value = userViewModel.uiState.currentUser?.lastName.toString(),
+                    onValueChange = {
+                        userViewModel.uiState.currentUser?.lastName = it
+                        validate(userViewModel.uiState.currentUser?.lastName.toString())
+                    },
+                    enabled = false,
+                    singleLine = true,
+                    label = { Text(stringResource(R.string.last_name)) },
+                    placeholder = { Text(stringResource(R.string.last_name)) },
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Filled.Person,
+                            contentDescription = "Password"
+                        )
+                    },
+                    supportingText = {
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = "Limit: ${userViewModel.uiState.currentUser?.lastName.toString().length}/$charLimit",
+                        )
+                    },
+                    isError = isError,
+                    keyboardActions = KeyboardActions { validate(userViewModel.uiState.currentUser?.lastName.toString()) },
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .fillMaxWidth()
+                        .semantics {
+                            // Provide localized description of the error
+                            if (isError) error(errorMessage)
+                        }
+                )
+
+                TextField(
+                    value = userViewModel.uiState.currentUser?.email.toString(),
+                    onValueChange = {
+                        userViewModel.uiState.currentUser?.email = it
+                        validate(userViewModel.uiState.currentUser?.email.toString())
+                    },
+                    enabled = false,
+                    singleLine = true,
+                    label = { Text(stringResource(R.string.email)) },
+                    placeholder = { Text(stringResource(R.string.email)) },
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Filled.Person,
+                            contentDescription = "Password"
+                        )
+                    },
+                    supportingText = {
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = "Limit: ${userViewModel.uiState.currentUser?.email.toString().length}/$charLimit",
+                        )
+                    },
+                    isError = isError,
+                    keyboardActions = KeyboardActions { validate(userViewModel.uiState.currentUser?.email.toString()) },
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .fillMaxWidth()
+                        .semantics {
+                            // Provide localized description of the error
+                            if (isError) error(errorMessage)
+                        }
+                )
+
+                Button(
+                    onClick = {
+                        userViewModel.logout()
+                        if (!userViewModel.uiState.isFetching) {
+                            username = ""
+                            password = ""
+                        }
+                    },
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF8EFE00)),
+                ) {
+                    Text(
+                        text = stringResource(R.string.logout),
+                        color = Color.Black,
+                        textAlign = TextAlign.Center,
+                        style = MaterialTheme.typography.headlineMedium.copy(
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Medium
+                        )
+                    )
+                }
+            }
         }
     }
 }

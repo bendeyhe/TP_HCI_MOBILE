@@ -1,5 +1,6 @@
 package ar.edu.itba.tpHciMobile.ui.screens
 
+import android.widget.Toast
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.spring
@@ -46,6 +47,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
@@ -58,18 +60,20 @@ import ar.edu.itba.tpHciMobile.R
 import ar.edu.itba.tpHciMobile.data.model.Routine
 import ar.edu.itba.tpHciMobile.ui.main.Screen
 import ar.edu.itba.tpHciMobile.ui.main.viewmodels.RoutinesViewModel
+import ar.edu.itba.tpHciMobile.ui.main.viewmodels.UserViewModel
 import ar.edu.itba.tpHciMobile.util.getViewModelFactory
-
 
 @Composable
 fun Routines(
     modifier: Modifier = Modifier,
     navController: NavController,
-    routinesViewModel: RoutinesViewModel = viewModel(factory = getViewModelFactory())
+    routinesViewModel: RoutinesViewModel = viewModel(factory = getViewModelFactory()),
+    userViewModel: UserViewModel = viewModel(factory = getViewModelFactory())
 ) {
     if (routinesViewModel.uiState.isFetchingRoutine) {
         Text(text = "Loading...", modifier = Modifier.padding(16.dp))
     } else {
+
 
     val orderBy = routinesViewModel.uiState.orderBy
     if (routinesViewModel.uiState.routines == null) {
@@ -79,26 +83,33 @@ fun Routines(
     val routines = routinesViewModel.uiState.routines
 
 
-    Surface(
-        color = Color(0xFFAEB0B2)
-    ) {
-        Column(
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.End
+    if (!routines.isNullOrEmpty()) {
+        Surface(
+            color = Color(0xFFAEB0B2)
         ) {
-            OrderByBtn(modifier.padding(end = 8.dp), routinesViewModel = routinesViewModel)
-            val list = routines.orEmpty()
-            if (list.isNotEmpty()) {
-                LazyVerticalGrid(state = rememberLazyGridState(), columns = GridCells.Adaptive(minSize = 250.dp)) {
-                    items(items = list) { routine ->
-                        Routine(routine, onItemClick = {
-                            navController.navigate(Screen.RoutineDetails.route)
-                        })
+            Column(
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.End
+            ) {
+                OrderByBtn(modifier.padding(end = 8.dp), routinesViewModel = routinesViewModel)
+                val list = routines.orEmpty()
+                if (list.isNotEmpty()) {
+                    LazyVerticalGrid(
+                        state = rememberLazyGridState(),
+                        columns = GridCells.Adaptive(minSize = 250.dp)
+                    ) {
+                        items(items = list) { routine ->
+                            Routine(routine, routinesViewModel, onItemClick = {
+                                navController.navigate(Screen.RoutineDetails.route)
+                            })
+                        }
                     }
                     }
                 }
             }
         }
+    } else {
+        Text(text = stringResource(R.string.no_routines))
     }
 }
 
@@ -106,7 +117,7 @@ fun Routines(
 @Composable
 fun Routine(
     routine: Routine,
-    modifier: Modifier = Modifier,
+    routinesViewModel: RoutinesViewModel,
     onItemClick: () -> Unit
 ) {
     var expanded = rememberSaveable { mutableStateOf(false) }
@@ -149,7 +160,9 @@ fun Routine(
                 )
             }
             Column() {
-                FavButton(fav = fav.value, onClick = { fav.value = !fav.value })
+                FavButton(fav = fav.value, onClick = {
+                    routinesViewModel.addRoutineToFavorites(routine.id)
+                })
                 /*
                 ElevatedButton(onClick = { expanded.value = !expanded.value }) {
                     Text(text = if (expanded.value) stringResource(R.string.show_less) else stringResource(R.string.show_more))
@@ -186,7 +199,10 @@ fun FavButton(fav: Boolean, onClick: () -> Unit) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun OrderByBtn(modifier: Modifier = Modifier, routinesViewModel: RoutinesViewModel = viewModel(factory = getViewModelFactory())) {
+fun OrderByBtn(
+    modifier: Modifier = Modifier,
+    routinesViewModel: RoutinesViewModel = viewModel(factory = getViewModelFactory())
+) {
 
     val options = listOf(
         stringResource(R.string.order_by_date_desc),
@@ -240,7 +256,11 @@ fun OrderByBtn(modifier: Modifier = Modifier, routinesViewModel: RoutinesViewMod
                         DropdownMenuItem(
                             text = { Text(text = selectionOption) },
                             onClick = {
-                                routinesViewModel.uiState.copy(orderBy = options.indexOf(selectionOption))
+                                routinesViewModel.uiState.copy(
+                                    orderBy = options.indexOf(
+                                        selectionOption
+                                    )
+                                )
                                 selectedOptionText = selectionOption
                                 selected = false
                                 label = selectedOptionText
