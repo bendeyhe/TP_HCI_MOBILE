@@ -26,6 +26,12 @@ class RoutinesRemoteDataSource (
         }
     }
 
+    suspend fun removeFavRoutine(routineId: Int) {
+        handleApiResponse {
+            routinesService.removeFavRoutine(routineId)
+        }
+    }
+
     suspend fun getRoutinesOrderBy(page: Int, orderBy: String, direction: String) : NetworkPagedContent<NetworkRoutine> {
         return handleApiResponse {
             routinesService.getRoutinesOrderBy(page, orderBy, direction)

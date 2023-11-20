@@ -18,6 +18,9 @@ interface ApiRoutinesService {
     @POST("favourites/{routineId}")
     suspend fun addFavRoutine(@Path("routineId") routineId: Int): Response<Unit>
 
+    @DELETE("favourites/{routineId}")
+    suspend fun removeFavRoutine(@Path("routineId") routineId: Int): Response<Unit>
+
     @GET("routines")
     suspend fun getRoutinesOrderBy(@Query("page") page: Int, @Query("orderBy") orderBy: String, @Query("direction") direction: String): Response<NetworkPagedContent<NetworkRoutine>>
 

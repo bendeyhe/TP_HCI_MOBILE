@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,24 +24,28 @@ fun Favorites(
     navController: NavController,
     routinesViewModel: RoutinesViewModel = viewModel(factory = getViewModelFactory())
 ) {
-    if (routinesViewModel.uiState.favouriteRoutines == null)
-        routinesViewModel.getFavoriteRoutines()
-    val routines = routinesViewModel.uiState.favouriteRoutines
+    if (routinesViewModel.uiState.isFetchingRoutine) {
+        Text(text = "Loading...", modifier = Modifier.padding(16.dp))
+    } else {
+        if (routinesViewModel.uiState.favouriteRoutines == null)
+            routinesViewModel.getFavoriteRoutines()
+        val routines = routinesViewModel.uiState.favouriteRoutines
 
-    Surface(
-        color = Color(0xFFAEB0B2)
-    ) {
-        Column(
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.End
+        Surface(
+            color = Color(0xFFAEB0B2)
         ) {
-            OrderByBtn(modifier.padding(end = 8.dp))
-            val list = routines.orEmpty()
-            LazyColumn(modifier = modifier.padding(vertical = 4.dp)) {
-                items(items = list) { routine ->
-                    Routine(routine, routinesViewModel, onItemClick = {
-                        navController.navigate(Screen.RoutineDetails.route)
-                    })
+            Column(
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.End
+            ) {
+                OrderByBtn(modifier.padding(end = 8.dp))
+                val list = routines.orEmpty()
+                LazyColumn(modifier = modifier.padding(vertical = 4.dp)) {
+                    items(items = list) { routine ->
+                        Routine(routine, routinesViewModel, onItemClick = {
+                            navController.navigate(Screen.RoutineDetails.route)
+                        })
+                    }
                 }
             }
         }

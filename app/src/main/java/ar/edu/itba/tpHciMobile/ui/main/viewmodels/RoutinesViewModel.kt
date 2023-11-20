@@ -50,7 +50,34 @@ class RoutinesViewModel(
         {
             routinesRepository.addFavoriteRoutine(routineId)
         },
-        { state, _ -> state}
+        { state, _ ->
+            state.copy(
+                favouriteRoutines = state.favouriteRoutines?.map {
+                    if (it.id == routineId) {
+                        it.copy(liked = true)
+                    } else {
+                        it
+                    }
+                }
+            )
+        }
+    )
+
+    fun removeRoutineFromFavorites(routineId: Int) = runOnViewModelScope(
+        {
+            routinesRepository.removeFavoriteRoutine(routineId)
+        },
+        { state, _ ->
+            state.copy(
+                favouriteRoutines = state.favouriteRoutines?.map {
+                    if (it.id == routineId) {
+                        it.copy(liked = false)
+                    } else {
+                        it
+                    }
+                }
+            )
+        }
     )
 
     fun getRoutinesOrderBy(orderBy: String, direction: String) = runOnViewModelScope(

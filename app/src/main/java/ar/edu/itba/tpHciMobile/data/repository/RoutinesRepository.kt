@@ -10,54 +10,58 @@ class RoutinesRepository(
     private val routinesRemoteDataSource: RoutinesRemoteDataSource
 ) : RemoteDataSource() {
     private val routinesMutex = Mutex()
-    private var routines: List<Routine> = emptyList()
 
     suspend fun getRoutines(refresh: Boolean = false): List<Routine> {
         var page = 0
-        if (refresh || routines.isEmpty()) {
-            this.routines = emptyList()
+        var routines = emptyList<Routine>()
+        if (refresh) {
             do {
                 val result = routinesRemoteDataSource.getRoutines(page)
                 routinesMutex.withLock {
-                    this.routines = this.routines.plus(result.content.map { it.asModel() })
+                    routines = routines.plus(result.content.map { it.asModel() })
                 }
                 page++
             } while (!result.isLastPage)
         }
-        return routinesMutex.withLock { this.routines }
+        return routinesMutex.withLock { routines }
     }
 
     suspend fun getFavoriteRoutines(refresh: Boolean = false): List<Routine> {
         var page = 0
-        if (refresh || routines.isEmpty()) {
-            this.routines = emptyList()
+        var favRoutines = emptyList<Routine>()
+        if (refresh) {
+            favRoutines = emptyList()
             do {
                 val result = routinesRemoteDataSource.getFavRoutines(page)
                 routinesMutex.withLock {
-                    this.routines = this.routines.plus(result.content.map { it.asModel() })
+                    favRoutines = favRoutines.plus(result.content.map { it.asModel() })
                 }
                 page++
             } while (!result.isLastPage)
         }
-        return routinesMutex.withLock { this.routines }
+        return routinesMutex.withLock { favRoutines }
     }
 
     suspend fun addFavoriteRoutine(routineId: Int) {
         routinesRemoteDataSource.addFavRoutine(routineId)
     }
 
+    suspend fun removeFavoriteRoutine(routineId: Int) {
+        routinesRemoteDataSource.removeFavRoutine(routineId)
+    }
+
     suspend fun getRoutinesOrderBy(orderBy: String, direction: String): List<Routine> {
         var page = 0
-        this.routines = emptyList()
+        var routines = emptyList<Routine>()
         do {
             val result = routinesRemoteDataSource.getRoutinesOrderBy(page, orderBy, direction)
             routinesMutex.withLock {
-                this.routines = this.routines.plus(result.content.map { it.asModel() })
+                routines = routines.plus(result.content.map { it.asModel() })
             }
             page++
         } while (!result.isLastPage)
 
-        return routinesMutex.withLock { this.routines }
+        return routinesMutex.withLock { routines }
     }
 
     suspend fun getRoutine(routineId: Int): Routine {

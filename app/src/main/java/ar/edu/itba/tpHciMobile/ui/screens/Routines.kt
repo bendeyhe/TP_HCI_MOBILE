@@ -159,9 +159,16 @@ fun Routine(
                 )
             }
             Column() {
-                FavButton(fav = fav.value, onClick = {
-                    routinesViewModel.addRoutineToFavorites(routine.id)
-                })
+                FavButton(routine,
+                    onClick = {
+                        if (!routine.liked) {
+                            routine.liked = true
+                            routinesViewModel.removeRoutineFromFavorites(routine.id)
+                        } else {
+                            routine.liked = false
+                            routinesViewModel.addRoutineToFavorites(routine.id)
+                        }
+                    })
                 /*
                 ElevatedButton(onClick = { expanded.value = !expanded.value }) {
                     Text(text = if (expanded.value) stringResource(R.string.show_less) else stringResource(R.string.show_more))
@@ -174,11 +181,11 @@ fun Routine(
 
 
 @Composable
-fun FavButton(fav: Boolean, onClick: () -> Unit) {
+fun FavButton(routine: Routine, onClick: () -> Unit) {
     TextButton(
         onClick = { onClick() }
     ) {
-        if (fav) {
+        if (!routine.liked) {
             Icon(
                 Icons.Filled.Favorite,
                 "FavIcon",

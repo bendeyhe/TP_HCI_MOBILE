@@ -30,4 +30,19 @@ class Routine(
             category = category
         )
     }
+
+    fun copy(liked: Boolean): Routine {
+        return Routine(
+            id = id,
+            name = name,
+            detail = detail,
+            date = date,
+            score = score,
+            difficulty = difficulty,
+            user = user,
+            category = category,
+            liked = liked,
+            fromCUser = fromCUser
+        )
+    }
 }
