@@ -49,6 +49,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import ar.edu.itba.tpHciMobile.R
+import ar.edu.itba.tpHciMobile.data.model.Routine
 import ar.edu.itba.tpHciMobile.ui.main.Screen
 import ar.edu.itba.tpHciMobile.ui.main.viewmodels.RoutinesViewModel
 import ar.edu.itba.tpHciMobile.ui.main.viewmodels.UserViewModel
@@ -59,28 +60,25 @@ fun RoutineDetails(
     userViewModel: UserViewModel = viewModel(factory = getViewModelFactory()),
     navController: NavController,
     routinesViewModel: RoutinesViewModel = viewModel(factory = getViewModelFactory()),
-    id: Int
 ) {
-    if (!userViewModel.uiState.isAuthenticated || userViewModel.uiState.currentUser == null) {
-        navController.navigate(Screen.Routines.route)
-    }
-    else {
-
+    if (!routinesViewModel.uiState.isFetchingR && routinesViewModel.uiState.currentRoutine != null ) {
+        val currentRoutine = routinesViewModel.uiState.currentRoutine!!
         @OptIn(ExperimentalMaterial3Api::class)
         Scaffold(
             bottomBar = { Buttons() }
         ) { contentPadding ->
-            RoutineDetailsContent(Modifier.padding(contentPadding), id, routinesViewModel)
+            RoutineDetailsContent(Modifier.padding(contentPadding), routinesViewModel, currentRoutine)
         }
-    }
-}
 
+    }
+    else Text(text = "Loading")
+}
 @Composable
 
-fun RoutineDetailsContent(modifier: Modifier, id: Int, routinesViewModel: RoutinesViewModel) {
+fun RoutineDetailsContent(modifier: Modifier, routinesViewModel: RoutinesViewModel, currentRoutine: Routine) {
     Column() {
         Text(
-            text = "Routine Name",
+            text = currentRoutine.name,
             style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.ExtraBold)
         )
         CollapsableLazyColumn(

@@ -46,8 +46,8 @@ fun MyAppNavHost(navController: NavHostController, modifier: Modifier) {
         composable(Screen.Favorites.route){
             Favorites(navController = navController)
         }
-        composable(route = Screen.RoutineDetails.route + "/{id}", arguments = listOf(navArgument("id") { type = NavType.IntType })) {
-            RoutineDetails(navController = navController, id = it.arguments?.getInt("id")!!
+        composable(route = Screen.RoutineDetails.route ) {
+            RoutineDetails(navController = navController
             )
         }
     }

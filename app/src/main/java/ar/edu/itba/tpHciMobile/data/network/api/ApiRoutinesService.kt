@@ -28,7 +28,7 @@ interface ApiRoutinesService {
     suspend fun getRoutine(@Path("routineId") routineId: Int) : Response<NetworkRoutine>
 
     @GET("routines/{routineId}/cycles")
-    suspend fun getCycles(@Path("routineId") routineId: Int, @Query("page") page: Int) : Response<NetworkPagedContent<NetworkCompleteCycle>>
+    suspend fun getCycles(@Path("routineId") routineId: Int) : Response<NetworkPagedContent<NetworkCompleteCycle>>
 
     @GET("routines/{routineId}/cycles/{cycleId}")
     suspend fun getCycle(@Path("routineId") routineId: Int, @Path("cycleId") cycleId: Int) : Response<NetworkCompleteCycle>

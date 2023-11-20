@@ -29,4 +29,19 @@ class ExercisesRepository (
     suspend fun getExercise(exerciseId: Int): Exercises {
         return exercisesMutex.withLock { exercisesRemoteDataSource.getExercise(exerciseId).asModel() }
     }
+
+    suspend fun getExercisesByCycle(cycleId: Int): List<Exercises> {
+        var page = 0
+        var exercises: List<Exercises> = emptyList()
+        do {
+            val result = exercisesRemoteDataSource.getExercisesByCycle(cycleId)
+            exercises = exercises.plus(result.content.map { it.asModel() })
+            page++
+        } while (!result.isLastPage)
+        return exercises
+    }
+
+    suspend fun getExerciseByCycle(cycleId: Int, exerciseId: Int): Exercises {
+        return exercisesRemoteDataSource.getExerciseByCycle(cycleId, exerciseId).asModel()
+    }
 }

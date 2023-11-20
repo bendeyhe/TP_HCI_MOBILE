@@ -18,4 +18,16 @@ class ExercisesRemoteDataSource (
             exercisesService.getExercise(exerciseId)
         }
     }
+
+    suspend fun getExercisesByCycle(cycleId: Int): NetworkPagedContent<NetworkExercise> {
+        return handleApiResponse {
+            exercisesService.getExercisesByCycle(cycleId)
+        }
+    }
+
+    suspend fun getExerciseByCycle(cycleId: Int, exerciseId: Int): NetworkExercise {
+        return handleApiResponse {
+            exercisesService.getExerciseByCycle(cycleId, exerciseId)
+        }
+    }
 }

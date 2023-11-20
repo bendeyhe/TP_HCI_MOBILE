@@ -45,7 +45,7 @@ class RoutinesRemoteDataSource (
     }
     suspend fun getCycles(routineId: Int, page: Int): NetworkPagedContent<NetworkCompleteCycle> {
         return handleApiResponse {
-            routinesService.getCycles(routineId, page)
+            routinesService.getCycles(routineId)
         }
     }
     suspend fun getCycle(routineId: Int, cycleId: Int): NetworkCompleteCycle {

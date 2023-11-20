@@ -4,7 +4,9 @@ import android.app.Application
 import ar.edu.itba.tpHciMobile.data.network.datasources.SportRemoteDataSource
 import ar.edu.itba.tpHciMobile.data.network.datasources.UserRemoteDataSource
 import ar.edu.itba.tpHciMobile.data.network.api.RetrofitClient
+import ar.edu.itba.tpHciMobile.data.network.datasources.ExercisesRemoteDataSource
 import ar.edu.itba.tpHciMobile.data.network.datasources.RoutinesRemoteDataSource
+import ar.edu.itba.tpHciMobile.data.repository.ExercisesRepository
 import ar.edu.itba.tpHciMobile.data.repository.RoutinesCycleRepository
 import ar.edu.itba.tpHciMobile.data.repository.RoutinesRepository
 import ar.edu.itba.tpHciMobile.data.repository.SportRepository
@@ -27,6 +29,9 @@ class MyApplication : Application() {
     private val routinesRemoteDataSource: RoutinesRemoteDataSource
         get() = RoutinesRemoteDataSource(RetrofitClient.getApiRoutinesService(this))
 
+    private val exercisesRemoteDataSource: ExercisesRemoteDataSource
+        get() = ExercisesRemoteDataSource(RetrofitClient.getApiExercisesService(this))
+
     val sessionManager: SessionManager
         get() = SessionManager(this)
 
@@ -42,6 +47,8 @@ class MyApplication : Application() {
     val routinesCycleRepository: RoutinesCycleRepository
         get() = RoutinesCycleRepository(routinesRemoteDataSource)
 
+    val exercisesRepository: ExercisesRepository
+        get() = ExercisesRepository(exercisesRemoteDataSource)
     companion object {
             lateinit var instance: MyApplication
                 private set
