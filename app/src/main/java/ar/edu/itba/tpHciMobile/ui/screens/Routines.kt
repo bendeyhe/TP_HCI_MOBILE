@@ -68,8 +68,8 @@ fun Routines(
     routinesViewModel: RoutinesViewModel = viewModel(factory = getViewModelFactory())
 ) {
 
-
-    routinesViewModel.getRoutines()
+    if (routinesViewModel.uiState.routines == null)
+        routinesViewModel.getRoutines()
     val routines = routinesViewModel.uiState.routines
 
 
