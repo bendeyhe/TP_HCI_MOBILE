@@ -73,8 +73,6 @@ fun Routines(
     if (routinesViewModel.uiState.isFetchingRoutine) {
         Text(text = "Loading...", modifier = Modifier.padding(16.dp))
     } else {
-
-
         val orderBy = routinesViewModel.uiState.orderBy
         if (routinesViewModel.uiState.routines == null) {
             routinesViewModel.getRoutinesOrderBy(
@@ -83,7 +81,6 @@ fun Routines(
             )
         }
         val routines = routinesViewModel.uiState.routines
-
 
         if (!routines.isNullOrEmpty()) {
             Surface(
@@ -116,165 +113,165 @@ fun Routines(
 }
 
 
-        @Composable
-        fun Routine(
-            routine: Routine,
-            routinesViewModel: RoutinesViewModel,
-            onItemClick: () -> Unit
-        ) {
-            var expanded = rememberSaveable { mutableStateOf(false) }
-            var fav = rememberSaveable { mutableStateOf(false) }
-            //luego para usar lo que hay en expanded se usa expanded.value
-            val extraPadding by animateDpAsState(
-                if (expanded.value) 48.dp else 0.dp,
-                animationSpec = spring(
-                    dampingRatio = Spring.DampingRatioMediumBouncy,
-                    stiffness = Spring.StiffnessLow
-                ), label = ""
-            )
+@Composable
+fun Routine(
+    routine: Routine,
+    routinesViewModel: RoutinesViewModel,
+    onItemClick: () -> Unit
+) {
+    var expanded = rememberSaveable { mutableStateOf(false) }
+    var fav = rememberSaveable { mutableStateOf(false) }
+    //luego para usar lo que hay en expanded se usa expanded.value
+    val extraPadding by animateDpAsState(
+        if (expanded.value) 48.dp else 0.dp,
+        animationSpec = spring(
+            dampingRatio = Spring.DampingRatioMediumBouncy,
+            stiffness = Spring.StiffnessLow
+        ), label = ""
+    )
 
-            Surface(
+    Surface(
+        modifier = Modifier
+            .padding(vertical = 4.dp, horizontal = 8.dp)
+            .clickable(onClick = onItemClick)
+    ) {
+        Row(modifier = Modifier.padding(horizontal = 20.dp, vertical = 4.dp)) {
+            Column(
                 modifier = Modifier
-                    .padding(vertical = 4.dp, horizontal = 8.dp)
-                    .clickable(onClick = onItemClick)
-            ) {
-                Row(modifier = Modifier.padding(horizontal = 20.dp, vertical = 4.dp)) {
-                    Column(
-                        modifier = Modifier
-                            .weight(1f)
-                            .padding(bottom = extraPadding),
-                    ) { //de esta manera se le da peso a la columna
-                        Text(
-                            text = routine.name,
-                            style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.ExtraBold)
-                        )
-                        Text(
-                            text = routine.detail ?: "",
-                            style = MaterialTheme.typography.bodyMedium.copy(fontSize = 18.sp)
-                        )
-                        Text(
-                            text = stringResource(R.string.difficulty) + " " + routine.difficulty,
-                            style = MaterialTheme.typography.headlineMedium.copy(fontSize = 20.sp)
-                        )
-                        Text(
-                            text = stringResource(R.string.rating) + " " + routine.score,
-                            style = MaterialTheme.typography.headlineMedium.copy(fontSize = 20.sp)
-                        )
+                    .weight(1f)
+                    .padding(bottom = extraPadding),
+            ) { //de esta manera se le da peso a la columna
+                Text(
+                    text = routine.name,
+                    style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.ExtraBold)
+                )
+                Text(
+                    text = routine.detail ?: "",
+                    style = MaterialTheme.typography.bodyMedium.copy(fontSize = 18.sp)
+                )
+                Text(
+                    text = stringResource(R.string.difficulty) + " " + routine.difficulty,
+                    style = MaterialTheme.typography.headlineMedium.copy(fontSize = 20.sp)
+                )
+                Text(
+                    text = stringResource(R.string.rating) + " " + routine.score,
+                    style = MaterialTheme.typography.headlineMedium.copy(fontSize = 20.sp)
+                )
+            }
+            Column() {
+                FavButton(fav = fav.value, onClick = {
+                    routinesViewModel.addRoutineToFavorites(routine.id)
+                })
+                /*
+                ElevatedButton(onClick = { expanded.value = !expanded.value }) {
+                    Text(text = if (expanded.value) stringResource(R.string.show_less) else stringResource(R.string.show_more))
                     }
-                    Column() {
-                        FavButton(fav = fav.value, onClick = {
-                            routinesViewModel.addRoutineToFavorites(routine.id)
-                        })
-                        /*
-                        ElevatedButton(onClick = { expanded.value = !expanded.value }) {
-                            Text(text = if (expanded.value) stringResource(R.string.show_less) else stringResource(R.string.show_more))
-                            }
-                        */
-                    }
-                }
+                */
             }
         }
+    }
+}
 
 
-        @Composable
-        fun FavButton(fav: Boolean, onClick: () -> Unit) {
-            TextButton(
-                onClick = { onClick() }
-            ) {
-                if (fav) {
-                    Icon(
-                        Icons.Filled.Favorite,
-                        "FavIcon",
-                        tint = Color.Black,
-                        modifier = Modifier.size(32.dp)
-                    )
-                } else {
-                    Icon(
-                        Icons.Outlined.FavoriteBorder,
-                        "FavIcon",
-                        tint = Color.Black,
-                        modifier = Modifier.size(32.dp)
-                    )
-                }
-            }
-        }
-
-        @OptIn(ExperimentalMaterial3Api::class)
-        @Composable
-        fun OrderByBtn(
-            modifier: Modifier = Modifier,
-            routinesViewModel: RoutinesViewModel = viewModel(factory = getViewModelFactory())
-        ) {
-
-            val options = listOf(
-                stringResource(R.string.order_by_date_desc),
-                stringResource(R.string.order_by_date_asc),
-                stringResource(R.string.order_by_rating_desc),
-                stringResource(R.string.order_by_rating_asc),
-                stringResource(R.string.order_by_diff_desc),
-                stringResource(R.string.order_by_diff_asc)
+@Composable
+fun FavButton(fav: Boolean, onClick: () -> Unit) {
+    TextButton(
+        onClick = { onClick() }
+    ) {
+        if (fav) {
+            Icon(
+                Icons.Filled.Favorite,
+                "FavIcon",
+                tint = Color.Black,
+                modifier = Modifier.size(32.dp)
             )
-            var expanded by remember { mutableStateOf(false) }
-            var selectedOptionText by remember { mutableStateOf(options[0]) }
-            val msg = stringResource(R.string.order_by)
-            var label by remember { mutableStateOf(msg) }
-            var selected by remember { mutableStateOf(false) }
+        } else {
+            Icon(
+                Icons.Outlined.FavoriteBorder,
+                "FavIcon",
+                tint = Color.Black,
+                modifier = Modifier.size(32.dp)
+            )
+        }
+    }
+}
 
-            FilterChip(
-                modifier = modifier
-                    .wrapContentSize()
-                    .padding(top = 8.dp),
-                //trailingIcon = Icons.Filled.KeyboardArrowDown,
-                onClick = { selected = !selected },
-                colors = FilterChipDefaults.filterChipColors(
-                    labelColor = Color.Black,
-                    containerColor = Color(0xFF8EFE00),
-                    selectedLabelColor = Color(0xFF8EFE00),
-                    selectedLeadingIconColor = Color.Black,
-                    selectedContainerColor = Color.Black
-                ),
-                border = null,
-                label = {
-                    Text(
-                        text = label,
-                        style = MaterialTheme.typography.bodyMedium.copy(
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Medium
-                        )
-                    )
-                    Icon(Icons.Filled.KeyboardArrowDown, "Share", tint = Color.Black)
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun OrderByBtn(
+    modifier: Modifier = Modifier,
+    routinesViewModel: RoutinesViewModel = viewModel(factory = getViewModelFactory())
+) {
 
-                },
-                selected = selected,
-                leadingIcon = if (selected) {
-                    {
-                        DropdownMenu(
-                            expanded = selected,
-                            onDismissRequest = {
-                                selected = false
-                            }
-                        ) {
-                            options.forEach { selectionOption ->
-                                DropdownMenuItem(
-                                    text = { Text(text = selectionOption) },
-                                    onClick = {
-                                        routinesViewModel.uiState.copy(
-                                            orderBy = options.indexOf(
-                                                selectionOption
-                                            )
-                                        )
-                                        selectedOptionText = selectionOption
-                                        selected = false
-                                        label = selectedOptionText
-                                    }
+    val options = listOf(
+        stringResource(R.string.order_by_date_desc),
+        stringResource(R.string.order_by_date_asc),
+        stringResource(R.string.order_by_rating_desc),
+        stringResource(R.string.order_by_rating_asc),
+        stringResource(R.string.order_by_diff_desc),
+        stringResource(R.string.order_by_diff_asc)
+    )
+    var expanded by remember { mutableStateOf(false) }
+    var selectedOptionText by remember { mutableStateOf(options[0]) }
+    val msg = stringResource(R.string.order_by)
+    var label by remember { mutableStateOf(msg) }
+    var selected by remember { mutableStateOf(false) }
+
+    FilterChip(
+        modifier = modifier
+            .wrapContentSize()
+            .padding(top = 8.dp),
+        //trailingIcon = Icons.Filled.KeyboardArrowDown,
+        onClick = { selected = !selected },
+        colors = FilterChipDefaults.filterChipColors(
+            labelColor = Color.Black,
+            containerColor = Color(0xFF8EFE00),
+            selectedLabelColor = Color(0xFF8EFE00),
+            selectedLeadingIconColor = Color.Black,
+            selectedContainerColor = Color.Black
+        ),
+        border = null,
+        label = {
+            Text(
+                text = label,
+                style = MaterialTheme.typography.bodyMedium.copy(
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Medium
+                )
+            )
+            Icon(Icons.Filled.KeyboardArrowDown, "Share", tint = Color.Black)
+
+        },
+        selected = selected,
+        leadingIcon = if (selected) {
+            {
+                DropdownMenu(
+                    expanded = selected,
+                    onDismissRequest = {
+                        selected = false
+                    }
+                ) {
+                    options.forEach { selectionOption ->
+                        DropdownMenuItem(
+                            text = { Text(text = selectionOption) },
+                            onClick = {
+                                routinesViewModel.uiState.copy(
+                                    orderBy = options.indexOf(
+                                        selectionOption
+                                    )
                                 )
+                                selectedOptionText = selectionOption
+                                selected = false
+                                label = selectedOptionText
                             }
-                        }
+                        )
                     }
-                } else {
-                    null
-                },
-            )
+                }
+            }
+        } else {
+            null
+        },
+    )
 
 
-        }
+}
