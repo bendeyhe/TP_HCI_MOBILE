@@ -11,6 +11,7 @@ class Routine(
     var detail: String? = null,
     var date: Date? = null,
     var score: Int? = null,
+    var isPublic: Boolean? = null,
     var difficulty: String? = null,
     var user: NetworkUser? = null,
     var category: NetworkCategory,

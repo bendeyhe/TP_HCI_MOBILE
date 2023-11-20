@@ -27,6 +27,25 @@ class RoutinesRepository(
         return routinesMutex.withLock { this.routines }
     }
 
+    suspend fun getFavoriteRoutines(refresh: Boolean = false): List<Routine> {
+        var page = 0
+        if (refresh || routines.isEmpty()) {
+            this.routines = emptyList()
+            do {
+                val result = routinesRemoteDataSource.getFavRoutines(page)
+                routinesMutex.withLock {
+                    this.routines = this.routines.plus(result.content.map { it.asModel() })
+                }
+                page++
+            } while (!result.isLastPage)
+        }
+        return routinesMutex.withLock { this.routines }
+    }
+
+    suspend fun addFavoriteRoutine(routineId: Int) {
+        routinesRemoteDataSource.addFavRoutine(routineId)
+    }
+
     suspend fun getRoutinesOrderBy(orderBy: String, direction: String): List<Routine> {
         var page = 0
         this.routines = emptyList()
@@ -44,20 +63,4 @@ class RoutinesRepository(
     suspend fun getRoutine(routineId: Int): Routine {
         return routinesMutex.withLock { routinesRemoteDataSource.getRoutine(routineId).asModel() }
     }
-
-    suspend fun getFavoriteRoutines(refresh: Boolean = false): List<Routine> {
-        var page = 0
-        if (refresh || routines.isEmpty()) {
-            this.routines = emptyList()
-            do {
-                val result = routinesRemoteDataSource.getFavRoutines(page)
-                routinesMutex.withLock {
-                    this.routines = this.routines.plus(result.content.map { it.asModel() })
-                }
-                page++
-            } while (!result.isLastPage)
-        }
-        return routinesMutex.withLock { this.routines }
-    }
-
 }
