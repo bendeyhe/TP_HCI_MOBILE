@@ -78,15 +78,20 @@ class MainActivity : ComponentActivity() {
                                     color = Color(0xFF8EFE00)
                                 )
                             },
+
                             navigationIcon = {
-                                IconButton(onClick = {
-                                    navController.popBackStack()
-                                }) {
-                                    Icon(
-                                        imageVector = Icons.Filled.ArrowBack,
-                                        contentDescription = "Localized description",
-                                        tint = Color(0xFF8EFE00)
-                                    )
+                                if (navController.currentBackStackEntry?.destination?.route == Screen.Routines.route
+                                    || navController.currentBackStackEntry?.destination?.route == Screen.Favorites.route
+                                    || navController.currentBackStackEntry?.destination?.route == Screen.LoginScreen.route) {
+                                    IconButton(onClick = {
+                                        navController.popBackStack()
+                                    }) {
+                                        Icon(
+                                            imageVector = Icons.Filled.ArrowBack,
+                                            contentDescription = "Localized description",
+                                            tint = Color(0xFF8EFE00)
+                                        )
+                                    }
                                 }
                             },
                             /*actions = {
