@@ -54,87 +54,40 @@ fun RoutineDetails() {
 
 @Composable
 fun RoutineDetailsContent(modifier: Modifier) {
-
-    /*
-    val cycles = listOf(
-        "Entrada en Calor",
-        "Principal",
-        "Enfriamiento",
-    )
-    val exercises = listOf(
-        "Ejercicio 1",
-        "Ejercicio 2",
-        "Ejercicio 3",
-        "Ejercicio 4",
-        "Ejercicio 5",
-        "Ejercicio 6",
-        "Ejercicio 7",
-        "Ejercicio 8",
-        "Ejercicio 9",
-        "Ejercicio 10"
-    )
-
-    Surface(modifier = modifier)
-    {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(10.dp)
-                .verticalScroll(enabled = true, state = ScrollState(0)),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-        ) {
-            Text(
-                text = "Routine Name",
-                style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.ExtraBold)
-            )
-            for (cycle in cycles) {
-                Text(
-                    text = "$cycle",
-                    style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold)
-                )
-                for (exercise in exercises)
-                    Row() {
-                        Text(
-                            text = "$exercise"
-                        )
-                        Text(
-                            text = "Duración"
-                        )
-                    }
-            }
-        }
+    Row() {
+        Text(
+            text = "Routine Name",
+            style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.ExtraBold)
+        )
+        CollapsableLazyColumn(
+            sections = listOf(
+                CollapsableSection(
+                    title = "Entrada en Calor",
+                    rows = listOf<Exercise>(
+                        Exercise("Ej de calentamiento 1", "Duración 1"),
+                        Exercise("Ej de calentamiento 2", "Duración 2"),
+                        Exercise("Ej de calentamiento 3", "Duración 3")
+                    )
+                ),
+                CollapsableSection(
+                    title = "Principal",
+                    rows = listOf<Exercise>(
+                        Exercise("Ej 1", "Duración 1"),
+                        Exercise("Ej 2", "Duración 2"),
+                        Exercise("Ej 3", "Duración 3")
+                    )
+                ),
+                CollapsableSection(
+                    title = "Enfriamiento",
+                    rows = listOf<Exercise>(
+                        Exercise("Ej de enfriamiento 1", "Duración 1"),
+                        Exercise("Ej de enfriamiento 2", "Duración 2"),
+                        Exercise("Ej de enfriamiento 3", "Duración 3")
+                    )
+                ),
+            ),
+        )
     }
-
-
-     */
-    CollapsableLazyColumn(
-        sections = listOf(
-            CollapsableSection(
-                title = "Entrada en Calor",
-                rows = listOf<Exercise>(
-                    Exercise("Ej de calentamiento 1", "Duración 1"),
-                    Exercise("Ej de calentamiento 2", "Duración 2"),
-                    Exercise("Ej de calentamiento 3", "Duración 3")
-                )
-            ),
-            CollapsableSection(
-                title = "Principal",
-                rows = listOf<Exercise>(
-                    Exercise("Ej 1", "Duración 1"),
-                    Exercise("Ej 2", "Duración 2"),
-                    Exercise("Ej 3", "Duración 3")
-                )
-            ),
-            CollapsableSection(
-                title = "Enfriamiento",
-                rows = listOf<Exercise>(
-                    Exercise("Ej de enfriamiento 1", "Duración 1"),
-                    Exercise("Ej de enfriamiento 2", "Duración 2"),
-                    Exercise("Ej de enfriamiento 3", "Duración 3")
-                )
-            ),
-        ),
-    )
 }
 
 @Composable
