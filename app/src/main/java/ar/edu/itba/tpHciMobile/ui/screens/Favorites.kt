@@ -34,8 +34,9 @@ fun Favorites(
             horizontalAlignment = Alignment.End
         ) {
             OrderByBtn(modifier.padding(end = 8.dp))
+            val list = routines.orEmpty()
             LazyColumn(modifier = modifier.padding(vertical = 4.dp)) {
-                items(items = routines!!) { routine ->
+                items(items = list) { routine ->
                     Routine(routine, onItemClick = {
                         navController.navigate(Screen.RoutineDetails.route)
                     })
