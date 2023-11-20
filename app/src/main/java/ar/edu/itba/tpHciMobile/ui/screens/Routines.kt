@@ -99,7 +99,7 @@ fun Routines(
                         ) {
                             items(items = list) { routine ->
                                 Routine(routine, routinesViewModel, onItemClick = {
-                                    navController.navigate(Screen.RoutineDetails.route)
+                                    navController.navigate(Screen.RoutineDetails.route + "/${routine.id}")
                                 })
                             }
                         }

@@ -3,8 +3,10 @@ package ar.edu.itba.tpHciMobile.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import ar.edu.itba.tpHciMobile.ui.screens.Login
 import ar.edu.itba.tpHciMobile.ui.screens.Routines
 import ar.edu.itba.tpHciMobile.ui.screens.Favorites
@@ -44,8 +46,9 @@ fun MyAppNavHost(navController: NavHostController, modifier: Modifier) {
         composable(Screen.Favorites.route){
             Favorites(navController = navController)
         }
-        composable(Screen.RoutineDetails.route){
-            RoutineDetails()
+        composable(route = Screen.RoutineDetails.route + "/{id}", arguments = listOf(navArgument("id") { type = NavType.IntType })) {
+            RoutineDetails(navController = navController, id = it.arguments?.getInt("id")!!
+            )
         }
     }
 }

@@ -1,11 +1,16 @@
 package ar.edu.itba.tpHciMobile.ui.screens
 
+import android.text.style.BackgroundColorSpan
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollState
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -33,28 +38,47 @@ import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import ar.edu.itba.tpHciMobile.R
+import ar.edu.itba.tpHciMobile.ui.main.Screen
+import ar.edu.itba.tpHciMobile.ui.main.viewmodels.RoutinesViewModel
+import ar.edu.itba.tpHciMobile.ui.main.viewmodels.UserViewModel
+import ar.edu.itba.tpHciMobile.util.getViewModelFactory
 
 @Composable
-fun RoutineDetails() {
+fun RoutineDetails(
+    userViewModel: UserViewModel = viewModel(factory = getViewModelFactory()),
+    navController: NavController,
+    routinesViewModel: RoutinesViewModel = viewModel(factory = getViewModelFactory()),
+    id: Int
+) {
+    if (!userViewModel.uiState.isAuthenticated || userViewModel.uiState.currentUser == null) {
+        navController.navigate(Screen.Routines.route)
+    }
+    else {
 
-    @OptIn(ExperimentalMaterial3Api::class)
-    Scaffold(
-        bottomBar = { Buttons() }
-    ) { contentPadding ->
-        RoutineDetailsContent(Modifier.padding(contentPadding))
+        @OptIn(ExperimentalMaterial3Api::class)
+        Scaffold(
+            bottomBar = { Buttons() }
+        ) { contentPadding ->
+            RoutineDetailsContent(Modifier.padding(contentPadding), id, routinesViewModel)
+        }
     }
 }
 
 @Composable
-fun RoutineDetailsContent(modifier: Modifier) {
-    Row() {
+
+fun RoutineDetailsContent(modifier: Modifier, id: Int, routinesViewModel: RoutinesViewModel) {
+    Column() {
         Text(
             text = "Routine Name",
             style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.ExtraBold)
@@ -88,6 +112,7 @@ fun RoutineDetailsContent(modifier: Modifier) {
             ),
         )
     }
+
 }
 
 @Composable
