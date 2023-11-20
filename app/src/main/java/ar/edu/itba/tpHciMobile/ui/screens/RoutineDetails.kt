@@ -109,21 +109,32 @@ fun RoutineDetailsContent(modifier: Modifier) {
     CollapsableLazyColumn(
         sections = listOf(
             CollapsableSection(
-                title = "Fruits A",
-                rows = listOf("Apple", "Apricots", "Avocado")
+                title = "Entrada en Calor",
+                rows = listOf<Exercise>(
+                    Exercise("Ej de calentamiento 1", "Duración 1"),
+                    Exercise("Ej de calentamiento 2", "Duración 2"),
+                    Exercise("Ej de calentamiento 3", "Duración 3")
+                )
             ),
-            CollapsableSection(
-                title = "Fruits B",
-                rows = listOf("Banana", "Blackberries", "Blueberries")
+                CollapsableSection(
+                    title = "Principal",
+                    rows = listOf<Exercise>(
+                        Exercise("Ej 1", "Duración 1"),
+                        Exercise("Ej 2", "Duración 2"),
+                        Exercise("Ej 3", "Duración 3")
+                    )
+                ),
+                CollapsableSection(
+                    title = "Enfriamiento",
+                    rows = listOf<Exercise>(
+                        Exercise("Ej de enfriamiento 1", "Duración 1"),
+                        Exercise("Ej de enfriamiento 2", "Duración 2"),
+                        Exercise("Ej de enfriamiento 3", "Duración 3")
+                    )
+                ),
             ),
-            CollapsableSection(
-                title = "Fruits C",
-                rows = listOf("Cherimoya", "Cantaloupe", "Cherries", "Clementine")
-            ),
-        ),
+        modifier = Modifier.verticalScroll(enabled = true, state = ScrollState(0))
     )
-    
-
 }
 
 @Composable
@@ -169,6 +180,10 @@ fun Buttons() {
     }
 }
 
+
+data class CollapsableSection(val title: String, val rows: List<Exercise>)
+
+data class Exercise(val name: String, val duration: String)
 @Composable
 fun CollapsableLazyColumn(
     sections: List<CollapsableSection>,
@@ -199,9 +214,8 @@ fun CollapsableLazyColumn(
                     Text(
                         dataItem.title,
                         fontWeight = FontWeight.Bold,
-                        modifier = Modifier
-                            .padding(vertical = 10.dp)
-                            .weight(1f)
+                        style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.ExtraBold),
+                       modifier = Modifier .padding(vertical = 10.dp)
                     )
                 }
                 Divider()
@@ -210,11 +224,20 @@ fun CollapsableLazyColumn(
                 items(dataItem.rows.size) { row ->
                     Row {
                         Spacer(modifier = Modifier.size(MaterialIconDimension.dp))
-                        Text(
-                            row.toString(),
-                            modifier = Modifier
-                                .padding(vertical = 10.dp)
-                        )
+                        Column() {
+                            Text(
+                                row.toString(),
+                                modifier = Modifier
+                                    .padding(vertical = 10.dp),
+                                style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold)
+                            )
+                           /* Text(
+                                row.toString(),
+                                modifier = Modifier
+                                    .padding(vertical = 10.dp),
+                                style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold)
+                            )*/
+                        }
                     }
                     Divider()
                 }
@@ -223,6 +246,6 @@ fun CollapsableLazyColumn(
     }
 }
 
-data class CollapsableSection(val title: String, val rows: List<String>)
+
 
 const val MaterialIconDimension = 24f
