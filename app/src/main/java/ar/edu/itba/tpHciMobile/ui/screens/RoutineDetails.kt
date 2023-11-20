@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
@@ -116,24 +117,23 @@ fun RoutineDetailsContent(modifier: Modifier) {
                     Exercise("Ej de calentamiento 3", "Duración 3")
                 )
             ),
-                CollapsableSection(
-                    title = "Principal",
-                    rows = listOf<Exercise>(
-                        Exercise("Ej 1", "Duración 1"),
-                        Exercise("Ej 2", "Duración 2"),
-                        Exercise("Ej 3", "Duración 3")
-                    )
-                ),
-                CollapsableSection(
-                    title = "Enfriamiento",
-                    rows = listOf<Exercise>(
-                        Exercise("Ej de enfriamiento 1", "Duración 1"),
-                        Exercise("Ej de enfriamiento 2", "Duración 2"),
-                        Exercise("Ej de enfriamiento 3", "Duración 3")
-                    )
-                ),
+            CollapsableSection(
+                title = "Principal",
+                rows = listOf<Exercise>(
+                    Exercise("Ej 1", "Duración 1"),
+                    Exercise("Ej 2", "Duración 2"),
+                    Exercise("Ej 3", "Duración 3")
+                )
             ),
-        modifier = Modifier.verticalScroll(enabled = true, state = ScrollState(0))
+            CollapsableSection(
+                title = "Enfriamiento",
+                rows = listOf<Exercise>(
+                    Exercise("Ej de enfriamiento 1", "Duración 1"),
+                    Exercise("Ej de enfriamiento 2", "Duración 2"),
+                    Exercise("Ej de enfriamiento 3", "Duración 3")
+                )
+            ),
+        ),
     )
 }
 
@@ -184,6 +184,7 @@ fun Buttons() {
 data class CollapsableSection(val title: String, val rows: List<Exercise>)
 
 data class Exercise(val name: String, val duration: String)
+
 @Composable
 fun CollapsableLazyColumn(
     sections: List<CollapsableSection>,
@@ -215,28 +216,28 @@ fun CollapsableLazyColumn(
                         dataItem.title,
                         fontWeight = FontWeight.Bold,
                         style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.ExtraBold),
-                       modifier = Modifier .padding(vertical = 10.dp)
+                        modifier = Modifier.padding(vertical = 10.dp)
                     )
                 }
                 Divider()
             }
             if (!collapsed) {
-                items(dataItem.rows.size) { row ->
+                items(dataItem.rows) { row ->
                     Row {
                         Spacer(modifier = Modifier.size(MaterialIconDimension.dp))
                         Column() {
                             Text(
-                                row.toString(),
+                                row.name,
                                 modifier = Modifier
                                     .padding(vertical = 10.dp),
                                 style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold)
                             )
-                           /* Text(
-                                row.toString(),
+                            Text(
+                                row.duration,
                                 modifier = Modifier
                                     .padding(vertical = 10.dp),
                                 style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold)
-                            )*/
+                            )
                         }
                     }
                     Divider()
@@ -245,7 +246,6 @@ fun CollapsableLazyColumn(
         }
     }
 }
-
 
 
 const val MaterialIconDimension = 24f

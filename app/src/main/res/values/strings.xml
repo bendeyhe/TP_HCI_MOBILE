@@ -28,9 +28,13 @@
     <string name="delete_sport">DELETE SPORT</string>
     <string name="confirm">CONFIRM</string>
     <string name="password">Password</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="email">Email</string>
     <string name="long_input">Input is too long</string>
     <string name="username">Username</string>
     <string name="login_msg">Login</string>
+    <string name="logout_msg">Log out</string>
     <string name="enter_password">Password</string>
     <string name="routine_details">Routine details</string>
     <string name="share_routine">Share</string>

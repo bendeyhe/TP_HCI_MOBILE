@@ -70,6 +70,7 @@ fun Routines(
     routinesViewModel: RoutinesViewModel = viewModel(factory = getViewModelFactory()),
     userViewModel: UserViewModel = viewModel(factory = getViewModelFactory())
 ) {
+
     val routines = mutableListOf<Routine>()
     if (routinesViewModel.uiState.routines.isNullOrEmpty()){
         if(userViewModel.uiState.isAuthenticated){
