@@ -37,6 +37,22 @@ class RoutinesViewModel(
         }
     )
 
+    fun getFavoriteRoutines() = runOnViewModelScope(
+        {
+            routinesRepository.getFavoriteRoutines(true)
+        },
+        { state, response ->
+            state.copy(favouriteRoutines = response)
+        }
+    )
+
+    fun addRoutineToFavorites(routineId: Int) = runOnViewModelScope(
+        {
+            routinesRepository.addFavoriteRoutine(routineId)
+        },
+        { state, _ -> state}
+    )
+
     fun getRoutinesOrderBy(orderBy: String, direction: String) = runOnViewModelScope(
         {
             routinesRepository.getRoutinesOrderBy(orderBy, direction)
@@ -81,16 +97,6 @@ class RoutinesViewModel(
             state.copy(currentRoutineCycle = response)
         }
     )
-
-    fun getFavoriteRoutines() = runOnViewModelScope(
-        {
-            routinesRepository.getFavoriteRoutines(true)
-        },
-        { state, response ->
-            state.copy(favouriteRoutines = response)
-        }
-    )
-
 
     private fun <R> runOnViewModelScope(
         block: suspend () -> R,

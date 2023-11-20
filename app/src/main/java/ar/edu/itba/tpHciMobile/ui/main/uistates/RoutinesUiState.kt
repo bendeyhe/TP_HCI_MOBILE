@@ -22,8 +22,6 @@ data class RoutinesUiState (
 
     val favouriteRoutines: List<Routine>? = null,
 
-    //val favouriteRoutines: List<Routine>? = null,
-
     val userRoutines: List<Routine>? = null,
     val isFetchingRoutine: Boolean = false,
     val fetchingRoutineId: Int? = null,

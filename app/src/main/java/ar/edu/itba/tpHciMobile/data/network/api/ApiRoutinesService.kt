@@ -15,6 +15,9 @@ interface ApiRoutinesService {
     @GET("favourites")
     suspend fun getFavRoutines(@Query("page") page: Int): Response<NetworkPagedContent<NetworkRoutine>>
 
+    @POST("favourites/{routineId}")
+    suspend fun addFavRoutine(@Path("routineId") routineId: Int): Response<Unit>
+
     @GET("routines")
     suspend fun getRoutinesOrderBy(@Query("page") page: Int, @Query("orderBy") orderBy: String, @Query("direction") direction: String): Response<NetworkPagedContent<NetworkRoutine>>
 
