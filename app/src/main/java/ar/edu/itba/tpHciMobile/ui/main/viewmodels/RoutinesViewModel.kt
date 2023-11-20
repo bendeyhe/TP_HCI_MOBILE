@@ -82,6 +82,15 @@ class RoutinesViewModel(
         }
     )
 
+    fun getFavoriteRoutines() = runOnViewModelScope(
+        {
+            routinesRepository.getFavoriteRoutines(true)
+        },
+        { state, response ->
+            state.copy(favouriteRoutines = response)
+        }
+    )
+
 
     private fun <R> runOnViewModelScope(
         block: suspend () -> R,

@@ -45,4 +45,19 @@ class RoutinesRepository(
         return routinesMutex.withLock { routinesRemoteDataSource.getRoutine(routineId).asModel() }
     }
 
+    suspend fun getFavoriteRoutines(refresh: Boolean = false): List<Routine> {
+        var page = 0
+        if (refresh || routines.isEmpty()) {
+            this.routines = emptyList()
+            do {
+                val result = routinesRemoteDataSource.getFavRoutines(page)
+                routinesMutex.withLock {
+                    this.routines = this.routines.plus(result.content.map { it.asModel() })
+                }
+                page++
+            } while (!result.isLastPage)
+        }
+        return routinesMutex.withLock { this.routines }
+    }
+
 }

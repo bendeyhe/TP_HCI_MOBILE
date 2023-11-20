@@ -4,15 +4,20 @@ import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -62,22 +67,28 @@ fun Routines(
     navController: NavController,
     routinesViewModel: RoutinesViewModel = viewModel(factory = getViewModelFactory())
 ) {
+
+
     routinesViewModel.getRoutines()
     val routines = routinesViewModel.uiState.routines
+
 
     Surface(
         color = Color(0xFFAEB0B2)
     ) {
-        val list = routines.orEmpty()
-        if (list.isNotEmpty()) {
-            LazyVerticalGrid(
-                state = rememberLazyGridState(),
-                columns = GridCells.Adaptive(minSize = 250.dp)
-            ) {
-                items(items = list) { routine ->
-                    Routine(routine, onItemClick = {
-                        navController.navigate(Screen.RoutineDetails.route)
-                    })
+        Column(
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.End
+        ) {
+            OrderByBtn(modifier.padding(end = 8.dp), routinesViewModel = routinesViewModel)
+            val list = routines.orEmpty()
+            if (list.isNotEmpty()) {
+                LazyVerticalGrid(state = rememberLazyGridState(), columns = GridCells.Adaptive(minSize = 250.dp)) {
+                    items(items = list) { routine ->
+                        Routine(routine, onItemClick = {
+                            navController.navigate(Screen.RoutineDetails.route)
+                        })
+                    }
                 }
             }
         }
@@ -168,7 +179,7 @@ fun FavButton(fav: Boolean, onClick: () -> Unit) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun OrderByBtn(modifier: Modifier = Modifier) {
+fun OrderByBtn(modifier: Modifier = Modifier, routinesViewModel: RoutinesViewModel = viewModel(factory = getViewModelFactory())) {
 
     val options = listOf(
         stringResource(R.string.order_by_date_desc),
@@ -222,6 +233,7 @@ fun OrderByBtn(modifier: Modifier = Modifier) {
                         DropdownMenuItem(
                             text = { Text(text = selectionOption) },
                             onClick = {
+                                routinesViewModel.uiState.copy(orderBy = options.indexOf(selectionOption))
                                 selectedOptionText = selectionOption
                                 selected = false
                                 label = selectedOptionText
