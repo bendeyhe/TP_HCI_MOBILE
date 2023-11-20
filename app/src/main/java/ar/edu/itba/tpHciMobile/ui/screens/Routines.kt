@@ -4,16 +4,15 @@ import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -65,26 +64,18 @@ fun Routines(
 ) {
     routinesViewModel.getRoutines()
     val routines = routinesViewModel.uiState.routines
-    val rout = mutableListOf<Routine>()
-    if (routines != null) {
-        for (routine in routines) {
-            rout.add(routine)
-        }
-    }
-    val rating = "4.5"
-    val difficulty = "Hard"
 
     Surface(
         color = Color(0xFFAEB0B2)
     ) {
-        Column(
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.End
-        ) {
-            OrderByBtn(modifier.padding(end = 8.dp))
-            LazyColumn(modifier = modifier.padding(vertical = 4.dp)) {
-                items(items = rout) { routine ->
-                    Routine(routine.name, routine.detail, difficulty, rating, onItemClick = {
+        val list = routines.orEmpty()
+        if (list.isNotEmpty()) {
+            LazyVerticalGrid(
+                state = rememberLazyGridState(),
+                columns = GridCells.Adaptive(minSize = 250.dp)
+            ) {
+                items(items = list) { routine ->
+                    Routine(routine, onItemClick = {
                         navController.navigate(Screen.RoutineDetails.route)
                     })
                 }
@@ -96,10 +87,7 @@ fun Routines(
 
 @Composable
 fun Routine(
-    name: String,
-    description: String?,
-    difficulty: String,
-    rating: String,
+    routine: Routine,
     modifier: Modifier = Modifier,
     onItemClick: () -> Unit
 ) {
@@ -126,19 +114,19 @@ fun Routine(
                     .padding(bottom = extraPadding),
             ) { //de esta manera se le da peso a la columna
                 Text(
-                    text = "$name",
+                    text = routine.name,
                     style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.ExtraBold)
                 )
                 Text(
-                    text = "$description!",
+                    text = routine.detail ?: "",
+                    style = MaterialTheme.typography.bodyMedium.copy(fontSize = 18.sp)
+                )
+                Text(
+                    text = stringResource(R.string.difficulty) + " " + routine.difficulty,
                     style = MaterialTheme.typography.headlineMedium.copy(fontSize = 20.sp)
                 )
                 Text(
-                    text = stringResource(R.string.difficulty) + ": $difficulty",
-                    style = MaterialTheme.typography.headlineMedium.copy(fontSize = 20.sp)
-                )
-                Text(
-                    text = stringResource(R.string.rating) + ": $rating",
+                    text = stringResource(R.string.rating) + " " + routine.score,
                     style = MaterialTheme.typography.headlineMedium.copy(fontSize = 20.sp)
                 )
             }

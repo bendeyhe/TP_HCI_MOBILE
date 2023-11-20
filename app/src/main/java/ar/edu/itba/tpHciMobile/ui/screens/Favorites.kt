@@ -11,26 +11,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import ar.edu.itba.tpHciMobile.ui.main.Screen
+import ar.edu.itba.tpHciMobile.ui.main.viewmodels.RoutinesViewModel
+import ar.edu.itba.tpHciMobile.util.getViewModelFactory
 
 @Composable
-fun Favorites(modifier: Modifier = Modifier, navController: NavController){
-    val names = listOf(
-        "Rutina 1 -Fav",
-        "Rutina 2 -Fav",
-        "Rutina 3 -Fav",
-        "Rutina 4 -Fav",
-        "Rutina 5 -Fav",
-        "Rutina 6 -Fav",
-        "Rutina 7 -Fav",
-        "Rutina 8 -Fav",
-        "Rutina 9 - Fav ",
-        "Rutina 10 -Fav"
-    )
-    val description = "Estas son las rutinas favoritas"
-    val rating = "4.5"
-    val difficulty = "Hard"
+fun Favorites(
+    modifier: Modifier = Modifier,
+    navController: NavController,
+    routinesViewModel: RoutinesViewModel = viewModel(factory = getViewModelFactory())
+) {
+    routinesViewModel.getRoutines()
+    val routines = routinesViewModel.uiState.routines
 
     Surface(
         color = Color(0xFFAEB0B2)
@@ -41,8 +35,8 @@ fun Favorites(modifier: Modifier = Modifier, navController: NavController){
         ) {
             OrderByBtn(modifier.padding(end = 8.dp))
             LazyColumn(modifier = modifier.padding(vertical = 4.dp)) {
-                items(items = names) { name ->
-                    Routine(name, description, difficulty, rating, onItemClick = {
+                items(items = routines!!) { routine ->
+                    Routine(routine, onItemClick = {
                         navController.navigate(Screen.RoutineDetails.route)
                     })
                 }

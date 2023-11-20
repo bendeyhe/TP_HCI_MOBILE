@@ -5,7 +5,7 @@ import ar.edu.itba.tpHciMobile.data.network.model.user.NetworkUser
 import ar.edu.itba.tpHciMobile.data.network.model.routines.NetworkRoutine
 import java.util.Date
 
-class Routine (
+class Routine(
     var id: Int,
     var name: String,
     var detail: String? = null,
