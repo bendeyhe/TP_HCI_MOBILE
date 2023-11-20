@@ -67,9 +67,15 @@ fun Routines(
     navController: NavController,
     routinesViewModel: RoutinesViewModel = viewModel(factory = getViewModelFactory())
 ) {
+    if (routinesViewModel.uiState.isFetchingRoutine) {
+        Text(text = "Loading...", modifier = Modifier.padding(16.dp))
+    } else {
 
-    if (routinesViewModel.uiState.routines == null)
-        routinesViewModel.getRoutines()
+    val orderBy = routinesViewModel.uiState.orderBy
+    if (routinesViewModel.uiState.routines == null) {
+        routinesViewModel.getRoutinesOrderBy(routinesViewModel.uiState.filters?.get(orderBy)?.order ?: "date",
+            routinesViewModel.uiState.filters?.get(orderBy)?.dir?: "asc")
+    }
     val routines = routinesViewModel.uiState.routines
 
 
@@ -88,6 +94,7 @@ fun Routines(
                         Routine(routine, onItemClick = {
                             navController.navigate(Screen.RoutineDetails.route)
                         })
+                    }
                     }
                 }
             }

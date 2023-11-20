@@ -23,7 +23,8 @@ fun Favorites(
     navController: NavController,
     routinesViewModel: RoutinesViewModel = viewModel(factory = getViewModelFactory())
 ) {
-    routinesViewModel.getFavoriteRoutines()
+    if (routinesViewModel.uiState.favouriteRoutines == null)
+        routinesViewModel.getFavoriteRoutines()
     val routines = routinesViewModel.uiState.favouriteRoutines
 
     Surface(
