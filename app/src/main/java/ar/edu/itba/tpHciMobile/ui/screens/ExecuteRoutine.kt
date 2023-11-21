@@ -57,7 +57,7 @@ import java.lang.Math.floor
 fun ExecuteRoutine(
     modifier: Modifier = Modifier,
     navController: NavController,
-    routinesViewModel: RoutinesViewModel = viewModel(factory = getViewModelFactory()),
+    routinesViewModel: RoutinesViewModel,
     cycleNumber: Int = 0,
     exerciseNumber: Int = 0,
     routineId: Int
