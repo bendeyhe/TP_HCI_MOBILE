@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import ar.edu.itba.tpHciMobile.data.DataSourceException
 import ar.edu.itba.tpHciMobile.data.model.Error
 import ar.edu.itba.tpHciMobile.data.repository.ExercisesRepository
+import ar.edu.itba.tpHciMobile.data.model.Routine
 import ar.edu.itba.tpHciMobile.data.repository.RoutinesCycleRepository
 import ar.edu.itba.tpHciMobile.data.repository.RoutinesRepository
 import ar.edu.itba.tpHciMobile.data.repository.UserRepository
@@ -41,59 +42,66 @@ class RoutinesViewModel(
         }
     )
 
-    fun getFavoriteRoutines() = runOnViewModelScope(
-        {
+    fun getFavsRoutines() = viewModelScope.launch {
+        uiState = uiState.copy(isFetchingRoutine = true, fetchRoutineErrorStringId = null)
+        getFavoriteRoutines().join()
+        uiState = uiState.copy(updatedFavs = false)
+    }
+
+    fun getFavoriteRoutines() = viewModelScope.launch {
+        uiState = uiState.copy(isFetchingRoutine = true, fetchRoutineErrorStringId = null)
+        runCatching {
             routinesRepository.getFavoriteRoutines(true)
-        },
-        { state, response ->
-            state.copy(favouriteRoutines = response)
-        }
-    )
-
-    fun addRoutineToFavorites(routineId: Int) = runOnViewModelScope(
-        {
-            routinesRepository.addFavoriteRoutine(routineId)
-        },
-
-        { state, _ ->
-            state.copy(
-                favouriteRoutines = state.favouriteRoutines?.map {
-                    if (it.id == routineId) {
-                        it.copy(liked = true)
-                    } else {
-                        it
+        }.onSuccess { response ->
+            uiState = uiState.copy(favouriteRoutines = response)
+            val routines = uiState.routines
+            println("Routines: $routines")
+            for (routine in response) {
+                if (routines != null) {
+                    if (routine.id in routines.map { it.id }) {
+                        uiState.routines?.find { it.id == routine.id }?.liked = true
                     }
                 }
-            )
+                uiState.favouriteRoutines?.find { it.id == routine.id }?.liked = true
+            }
+            uiState = uiState.copy(isFetchingRoutine = false)
+        }.onFailure { e ->
+            uiState = uiState.copy(isFetchingRoutine = false, fetchRoutineErrorStringId = handleError(e))
         }
-    )
+    }
 
-    fun removeRoutineFromFavorites(routineId: Int) = runOnViewModelScope(
-        {
-            routinesRepository.removeFavoriteRoutine(routineId)
-        },
-        { state, _ ->
-            state.copy(
-                favouriteRoutines = state.favouriteRoutines?.map {
-                    if (it.id == routineId) {
-                        it.copy(liked = false)
-                    } else {
-                        it
-                    }
-                }
-            )
+    fun getRoutinesOrderBy() = viewModelScope.launch {
+        uiState = uiState.copy(isFetchingRoutine = true)
+        when (uiState.orderBy) {
+            0 -> getRoutinesOrderBy("date", "desc")
+            1 -> getRoutinesOrderBy("date", "asc")
+            2 -> getRoutinesOrderBy("score", "desc")
+            3 -> getRoutinesOrderBy("score", "asc")
+            4 -> getRoutinesOrderBy("difficulty", "desc")
+            5 -> getRoutinesOrderBy("difficulty", "asc")
+            6 -> getRoutinesOrderBy("category", "desc")
+            7 -> getRoutinesOrderBy("category", "asc")
         }
+    }
 
-    )
+    fun getRoutinesOrderBy(index: Int) = viewModelScope.launch {
+        uiState = uiState.copy(isFetchingRoutine = true)
+        uiState = uiState.copy(orderBy = index)
+        getRoutinesOrderBy()
+    }
 
-    fun getRoutinesOrderBy(orderBy: String, direction: String) = runOnViewModelScope(
-        {
+    fun getRoutinesOrderBy(orderBy: String, direction: String) = viewModelScope.launch {
+        uiState = uiState.copy(isFetchingRoutine = true, fetchRoutineErrorStringId = null)
+        runCatching {
             routinesRepository.getRoutinesOrderBy(orderBy, direction)
-        },
-        { state, response ->
-            state.copy(routines = response)
+        }.onSuccess { response ->
+            uiState = uiState.copy(routines = response)
+            getFavoriteRoutines().join()
+            uiState = uiState.copy(isFetchingRoutine = false)
+        }.onFailure { e ->
+            uiState = uiState.copy(isFetchingRoutine = false, fetchRoutineErrorStringId = handleError(e))
         }
-    )
+    }
 
     fun getExercisesByCycle(cycleId: Int) = runOnViewModelScope(
         {
@@ -112,6 +120,64 @@ class RoutinesViewModel(
             state.copy(currentExercise = response)
         }
     )
+
+    private fun addRoutineToFavorites(routineId: Int) = viewModelScope.launch {
+        uiState = uiState.copy(isFetchingRoutine = true, fetchRoutineErrorStringId = null)
+        runCatching {
+            routinesRepository.addFavoriteRoutine(routineId)
+        }.onSuccess { response ->
+            for (routine in uiState.routines.orEmpty()) {
+                if (routine.id == routineId) {
+                    routine.liked = true
+                    uiState = uiState.copy(favouriteRoutines = uiState.favouriteRoutines?.plus(routine))
+                    var routines = uiState.routines
+                    if (routines != null) {
+                        routines.find { it.id == routine.id }?.liked = true
+                        uiState = uiState.copy(routines = routines)
+                    }
+                }
+            }
+            getRoutinesOrderBy().join()
+            uiState = uiState.copy(isFetchingRoutine = false)
+        }.onFailure { e ->
+            uiState = uiState.copy(isFetchingRoutine = false, fetchRoutineErrorStringId = handleError(e))
+        }
+    }
+
+    private fun removeRoutineFromFavorites(routineId: Int) = viewModelScope.launch {
+        uiState = uiState.copy(isFetchingRoutine = true, fetchRoutineErrorStringId = null)
+        runCatching {
+            routinesRepository.removeFavoriteRoutine(routineId)
+        }.onSuccess { response ->
+            for (routine in uiState.routines.orEmpty()) {
+                if (routine.id == routineId) {
+                    routine.liked = false
+                    uiState = uiState.copy(favouriteRoutines = uiState.favouriteRoutines?.minus(routine))
+                    var routines = uiState.routines
+                    if (routines != null) {
+                        routines.find { it.id == routine.id }?.liked = false
+                        uiState = uiState.copy(routines = routines)
+                    }
+                }
+            }
+            getRoutinesOrderBy().join()
+            uiState = uiState.copy(isFetchingRoutine = false)
+        }.onFailure { e ->
+            uiState = uiState.copy(isFetchingRoutine = false, fetchRoutineErrorStringId = handleError(e))
+        }
+    }
+
+    fun toggleLike(routine: Routine) = viewModelScope.launch {
+        uiState = uiState.copy(isFetchingRoutine = true, fetchRoutineErrorStringId = null)
+        uiState = uiState.copy(updatedFavs = true)
+        if (routine.liked) {
+            routine.liked = false
+            removeRoutineFromFavorites(routine.id)
+        } else {
+            routine.liked = true
+            addRoutineToFavorites(routine.id)
+        }
+    }
 
     fun getRoutine(routineId: Int) = viewModelScope.launch {
         uiState.cycleDetailList = emptyList()
@@ -143,64 +209,62 @@ class RoutinesViewModel(
                 isFetchingR = false
             )
         }.onFailure { e ->
-            uiState = uiState.copy(
-                isFetchingR = false
-            )
+            uiState = uiState.copy(isFetchingR = false, fetchRoutineErrorStringId = handleError(e))
         }
 
 
     }
 
-        fun getCurrentUserRoutines() = runOnViewModelScope(
-            {
-                userRepository.getCurrentUserRoutines(true)
-            },
-            { state, response ->
-                state.copy(userRoutines = response)
-            }
-        )
-
-        fun getRoutinesCycles(routineId: Int) = runOnViewModelScope(
-            {
-                routinesCycleRepository.getRoutineCycles(routineId, true)
-            },
-            { state, response ->
-                state.copy(routineCycles = response)
-            }
-        )
-
-        fun getRoutineCycle(routineId: Int, cycleId: Int) = runOnViewModelScope(
-            {
-                routinesCycleRepository.getRoutineCycle(routineId, cycleId)
-            },
-            { state, response ->
-                state.copy(currentRoutineCycle = response)
-            }
-        )
-
-        private fun <R> runOnViewModelScope(
-            block: suspend () -> R,
-            updateState: (RoutinesUiState, R) -> RoutinesUiState
-        ): Job = viewModelScope.launch {
-            uiState = uiState.copy(isFetchingRoutine = true, fetchRoutineErrorStringId = null)
-            runCatching {
-                block()
-            }.onSuccess { response ->
-                uiState = updateState(uiState, response).copy(isFetchingRoutine = false)
-            }.onFailure { e ->
-                uiState =
-                    uiState.copy(
-                        isFetchingRoutine = false,
-                        fetchRoutineErrorStringId = handleError(e)
-                    )
-            }
+    fun getCurrentUserRoutines() = runOnViewModelScope(
+        {
+            userRepository.getCurrentUserRoutines(true)
+        },
+        { state, response ->
+            state.copy(userRoutines = response)
         }
+    )
 
-        private fun handleError(e: Throwable): Error {
-            return if (e is DataSourceException) {
-                Error(e.code, e.message ?: "", e.details)
-            } else {
-                Error(null, e.message ?: "", null)
-            }
+    fun getRoutinesCycles(routineId: Int) = runOnViewModelScope(
+        {
+            routinesCycleRepository.getRoutineCycles(routineId, true)
+        },
+        { state, response ->
+            state.copy(routineCycles = response)
+        }
+    )
+
+    fun getRoutineCycle(routineId: Int, cycleId: Int) = runOnViewModelScope(
+        {
+            routinesCycleRepository.getRoutineCycle(routineId, cycleId)
+        },
+        { state, response ->
+            state.copy(currentRoutineCycle = response)
+        }
+    )
+
+    private fun <R> runOnViewModelScope(
+        block: suspend () -> R,
+        updateState: (RoutinesUiState, R) -> RoutinesUiState
+    ): Job = viewModelScope.launch {
+        uiState = uiState.copy(isFetchingRoutine = true, fetchRoutineErrorStringId = null)
+        runCatching {
+            block()
+        }.onSuccess { response ->
+            uiState = updateState(uiState, response).copy(isFetchingRoutine = false)
+        }.onFailure { e ->
+            uiState =
+                uiState.copy(
+                    isFetchingRoutine = false,
+                    fetchRoutineErrorStringId = handleError(e)
+                )
         }
     }
+
+    private fun handleError(e: Throwable): Error {
+        return if (e is DataSourceException) {
+            Error(e.code, e.message ?: "", e.details)
+        } else {
+            Error(null, e.message ?: "", null)
+        }
+    }
+}

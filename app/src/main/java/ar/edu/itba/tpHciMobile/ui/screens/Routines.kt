@@ -1,5 +1,7 @@
 package ar.edu.itba.tpHciMobile.ui.screens
 
+import android.widget.Toast
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.spring
@@ -24,6 +26,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconToggleButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -39,6 +42,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -49,6 +53,8 @@ import ar.edu.itba.tpHciMobile.ui.main.Screen
 import ar.edu.itba.tpHciMobile.ui.main.viewmodels.RoutinesViewModel
 import ar.edu.itba.tpHciMobile.ui.main.viewmodels.UserViewModel
 import ar.edu.itba.tpHciMobile.util.getViewModelFactory
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
 @Composable
 fun Routines(
@@ -58,14 +64,13 @@ fun Routines(
     userViewModel: UserViewModel = viewModel(factory = getViewModelFactory()),
 ) {
     if (routinesViewModel.uiState.isFetchingRoutine) {
-        Text(text = "Loading...", modifier = Modifier.padding(16.dp))
+        Loading()
     } else {
-        val orderBy = routinesViewModel.uiState.orderBy
         if (routinesViewModel.uiState.routines == null) {
-            routinesViewModel.getRoutinesOrderBy(
-                routinesViewModel.uiState.filters?.get(orderBy)?.order ?: "date",
-                routinesViewModel.uiState.filters?.get(orderBy)?.dir ?: "asc"
-            )
+            routinesViewModel.getRoutinesOrderBy()
+            if (routinesViewModel.uiState.isFetchingRoutine) {
+                Loading()
+            }
         }
         val routines = routinesViewModel.uiState.routines
 
@@ -73,32 +78,49 @@ fun Routines(
             Surface(
                 color = Color(0xFFAEB0B2)
             ) {
-                Column(
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.End
+                SwipeRefresh(
+                    state = rememberSwipeRefreshState(isRefreshing = routinesViewModel.uiState.isFetchingRoutine),
+                    onRefresh = { routinesViewModel.getRoutinesOrderBy() }
                 ) {
-                    OrderByBtn(modifier.padding(end = 8.dp), routinesViewModel = routinesViewModel)
-                    val list = routines.orEmpty()
-                    if (list.isNotEmpty()) {
-                        LazyVerticalGrid(
-                            state = rememberLazyGridState(),
-                            columns = GridCells.Adaptive(minSize = 250.dp)
-                        ) {
-                            items(items = list) { routine ->
-                                Routine(routine, routinesViewModel, onItemClick = {
-                                    if (!routinesViewModel.uiState.isFetchingRoutine) {
-                                        routinesViewModel.getRoutine(routine.id)
-                                        navController.navigate(Screen.RoutineDetails.route)
-                                    }
-
-
-                                })
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        Text(
+                            text = stringResource(R.string.routines),
+                            textAlign = TextAlign.Center,
+                            fontSize = 30.sp,
+                            fontWeight = androidx.compose.ui.text.font.FontWeight.Bold
+                        )
+                        OrderByBtn(routinesViewModel = routinesViewModel)
+                        val list = routines.orEmpty()
+                        if (list.isNotEmpty()) {
+                            LazyVerticalGrid(
+                                state = rememberLazyGridState(),
+                                columns = GridCells.Adaptive(minSize = 250.dp)
+                            ) {
+                                items(items = list) { routine ->
+                                    Routine(
+                                        routine = routine,
+                                        routinesViewModel = routinesViewModel,
+                                        onItemClick = {
+                                            if (!routinesViewModel.uiState.isFetchingRoutine) {
+                                                routinesViewModel.getRoutine(routine.id)
+                                                navController.navigate(Screen.RoutineDetails.route)
+                                            }
+                                        },
+                                        likeFunc = {
+                                            routinesViewModel.toggleLike(routine)
+                                        },
+                                    )
+                                }
                             }
+                        } else {
+                            Text(text = stringResource(R.string.no_routines))
                         }
-                    } else {
-                        Text(text = stringResource(R.string.no_routines))
                     }
                 }
+
             }
         }
     }
@@ -109,7 +131,8 @@ fun Routines(
 fun Routine(
     routine: Routine,
     routinesViewModel: RoutinesViewModel,
-    onItemClick: () -> Unit
+    onItemClick: () -> Unit,
+    likeFunc: () -> Unit
 ) {
     var expanded = rememberSaveable { mutableStateOf(false) }
     var fav = rememberSaveable { mutableStateOf(false) }
@@ -151,21 +174,21 @@ fun Routine(
                 )
             }
             Column() {
-                FavButton(routine,
-                    onClick = {
-                        if (!routine.liked) {
-                            routine.liked = true
-                            routinesViewModel.removeRoutineFromFavorites(routine.id)
-                        } else {
-                            routine.liked = false
-                            routinesViewModel.addRoutineToFavorites(routine.id)
-                        }
-                    })
-                /*
-                ElevatedButton(onClick = { expanded.value = !expanded.value }) {
-                    Text(text = if (expanded.value) stringResource(R.string.show_less) else stringResource(R.string.show_more))
-                    }
-                */
+                IconToggleButton(
+                    checked = routine.liked,
+                    onCheckedChange = { likeFunc(); },
+                    modifier = Modifier.padding(end = 10.dp),
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.Favorite,
+                        "Like",
+                        modifier = Modifier.size(36.dp),
+                        tint = animateColorAsState(
+                            targetValue = if (routine.liked) Color.Red else Color.DarkGray,
+                            label = ""
+                        ).value,
+                    )
+                }
             }
         }
     }
@@ -201,14 +224,15 @@ fun OrderByBtn(
     modifier: Modifier = Modifier,
     routinesViewModel: RoutinesViewModel = viewModel(factory = getViewModelFactory())
 ) {
-
     val options = listOf(
         stringResource(R.string.order_by_date_desc),
         stringResource(R.string.order_by_date_asc),
         stringResource(R.string.order_by_rating_desc),
         stringResource(R.string.order_by_rating_asc),
         stringResource(R.string.order_by_diff_desc),
-        stringResource(R.string.order_by_diff_asc)
+        stringResource(R.string.order_by_diff_asc),
+        stringResource(R.string.order_by_cat_desc),
+        stringResource(R.string.order_by_cat_asc),
     )
     var expanded by remember { mutableStateOf(false) }
     var selectedOptionText by remember { mutableStateOf(options[0]) }
@@ -220,7 +244,6 @@ fun OrderByBtn(
         modifier = modifier
             .wrapContentSize()
             .padding(top = 8.dp),
-        //trailingIcon = Icons.Filled.KeyboardArrowDown,
         onClick = { selected = !selected },
         colors = FilterChipDefaults.filterChipColors(
             labelColor = Color.Black,
@@ -239,7 +262,6 @@ fun OrderByBtn(
                 )
             )
             Icon(Icons.Filled.KeyboardArrowDown, "Share", tint = Color.Black)
-
         },
         selected = selected,
         leadingIcon = if (selected) {
@@ -250,15 +272,11 @@ fun OrderByBtn(
                         selected = false
                     }
                 ) {
-                    options.forEach { selectionOption ->
+                    options.forEachIndexed { index, selectionOption ->
                         DropdownMenuItem(
                             text = { Text(text = selectionOption) },
                             onClick = {
-                                routinesViewModel.uiState.copy(
-                                    orderBy = options.indexOf(
-                                        selectionOption
-                                    )
-                                )
+                                routinesViewModel.getRoutinesOrderBy(index)
                                 selectedOptionText = selectionOption
                                 selected = false
                                 label = selectedOptionText

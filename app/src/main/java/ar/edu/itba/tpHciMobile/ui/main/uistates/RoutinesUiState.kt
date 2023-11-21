@@ -37,4 +37,6 @@ data class RoutinesUiState (
     val isFetchingRoutine: Boolean = false,
     val fetchingRoutineId: Int? = null,
     val fetchRoutineErrorStringId: Error? = null,
+
+    val updatedFavs: Boolean = false,
 )

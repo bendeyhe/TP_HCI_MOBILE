@@ -2,6 +2,7 @@ package ar.edu.itba.tpHciMobile.ui.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -11,12 +12,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import ar.edu.itba.tpHciMobile.R
+import ar.edu.itba.tpHciMobile.data.model.Routine
 import ar.edu.itba.tpHciMobile.ui.main.Screen
 import ar.edu.itba.tpHciMobile.ui.main.viewmodels.RoutinesViewModel
 import ar.edu.itba.tpHciMobile.util.getViewModelFactory
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
 @Composable
 fun Favorites(
@@ -24,30 +32,50 @@ fun Favorites(
     navController: NavController,
     routinesViewModel: RoutinesViewModel = viewModel(factory = getViewModelFactory())
 ) {
-    if (routinesViewModel.uiState.isFetchingRoutine) {
-        Text(text = "Loading...", modifier = Modifier.padding(16.dp))
-    } else {
-        if (routinesViewModel.uiState.favouriteRoutines == null)
-            routinesViewModel.getFavoriteRoutines()
-        val routines = routinesViewModel.uiState.favouriteRoutines
+    SwipeRefresh(
+        state = rememberSwipeRefreshState(isRefreshing = routinesViewModel.uiState.isFetchingRoutine),
+        onRefresh = { routinesViewModel.getFavoriteRoutines() }
+    ) {
+        if (routinesViewModel.uiState.isFetchingRoutine) {
+            Loading()
+        } else {
+            if (routinesViewModel.uiState.favouriteRoutines == null || routinesViewModel.uiState.updatedFavs)
+                routinesViewModel.getFavsRoutines()
+            var routines = mutableListOf<Routine>()
+            if(!routinesViewModel.uiState.isFetchingRoutine)
+                routines = routinesViewModel.uiState.favouriteRoutines.orEmpty().toMutableList()
 
-        Surface(
-            color = Color(0xFFAEB0B2)
-        ) {
-            Column(
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.End
+            Surface(
+                color = Color(0xFFAEB0B2)
             ) {
-                OrderByBtn(modifier.padding(end = 8.dp))
-                val list = routines.orEmpty()
-                LazyColumn(modifier = modifier.padding(vertical = 4.dp)) {
-                    items(items = list) { routine ->
-                        Routine(routine, routinesViewModel, onItemClick = {
-                            navController.navigate(Screen.RoutineDetails.route)
-                        })
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        text = stringResource(R.string.favorites),
+                        textAlign = TextAlign.Center,
+                        fontSize = 30.sp,
+                        fontWeight = androidx.compose.ui.text.font.FontWeight.Bold
+                    )
+                    val list = routines.orEmpty()
+                    LazyColumn(modifier = modifier.padding(vertical = 4.dp)) {
+                        items(items = list) { routine ->
+                            Routine(
+                                routine = routine,
+                                routinesViewModel = routinesViewModel,
+                                onItemClick = {
+                                    navController.navigate(Screen.RoutineDetails.route + "/${routine.id}")
+                                },
+                                likeFunc = {
+                                    routinesViewModel.toggleLike(routine)
+                                },
+                            )
+                        }
                     }
                 }
             }
         }
     }
+
 }

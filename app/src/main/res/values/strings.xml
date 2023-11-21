@@ -17,6 +17,8 @@
     <string name="order_by_rating_desc">Rating: high</string>
     <string name="order_by_diff_asc">Difficulty: low</string>
     <string name="order_by_diff_desc">Difficulty: high</string>
+    <string name="order_by_cat_asc">Category: low</string>
+    <string name="order_by_cat_desc">Category: high</string>
     <string name="close">CLOSE</string>
     <string name="login">LOGIN</string>
     <string name="logout">LOGOUT</string>
