@@ -70,7 +70,7 @@ fun RoutineDetails(
         if (currentRoutine != null) {
             Scaffold(
                 bottomBar = {
-                    Buttons(currentRoutine, navController)
+                    Buttons(currentRoutine, navController, routineId = routineId)
                 }
             ) { contentPadding ->
                 RoutineDetailsContent(
@@ -129,22 +129,12 @@ fun RoutineDetailsContent(
     }
 
 
-}/*
-    Column() {
-        Text(
-            text = currentRoutine.name,
-            style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.ExtraBold)
-        )
-        CollapsableLazyColumn(
-
-            sections = mutzaa
-        )
-    }
-    */
+}
 
 
 @Composable
-fun Buttons(routine: Routine, navController: NavController) {
+
+fun Buttons(routine: Routine, navController: NavController, routineId: Int) {
     val sendIntent: Intent = Intent().apply {
         action = Intent.ACTION_SEND
         putExtra(Intent.EXTRA_TEXT, "https://toobig.com/routine/" + routine.id)
@@ -177,7 +167,7 @@ fun Buttons(routine: Routine, navController: NavController) {
             Icon(Icons.Filled.Share, "Share", tint = Color.Black)
         }
         Button(
-            onClick = { navController.navigate(Screen.ExecuteRoutine.route) },
+            onClick = { navController.navigate(Screen.ExecuteRoutine.route + "/${routineId}") },
             contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF8EFE00)),
             modifier = Modifier.padding(16.dp),

@@ -30,7 +30,7 @@ data class RoutinesUiState(
     val routineCycles: List<CompleteCycle> = emptyList(),
 
     val currentRoutineCycle: CompleteCycle? = null,
-    val exercises: List<CycleExercise>? = null,
+    val exercises: List<CycleExercise> = emptyList(),
     val currentExercise: Exercises? = null,
 
 

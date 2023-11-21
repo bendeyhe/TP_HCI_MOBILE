@@ -29,5 +29,9 @@ sealed class Screen(val title: String, val icon: ImageVector, val route: String)
         "routine_details"
     )
 
-    object ExecuteRoutine : Screen (MyApplication.instance.getString(R.string.execute_routine), Icons.Filled.Home, "execute_routine")
+    object ExecuteRoutine : Screen(
+        MyApplication.instance.getString(R.string.execute_routine),
+        Icons.Filled.Home,
+        "execute_routine"
+    )
 }

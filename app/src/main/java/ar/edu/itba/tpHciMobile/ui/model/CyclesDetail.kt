@@ -5,6 +5,6 @@ import ar.edu.itba.tpHciMobile.data.model.CycleExercise
 import ar.edu.itba.tpHciMobile.data.model.Exercises
 
 class CyclesDetail(
-    val exercises: List<CycleExercise>? = null,
+    val exercises: List<CycleExercise> = emptyList(),
     val cycle: CompleteCycle? = null
 )
