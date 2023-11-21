@@ -248,6 +248,11 @@ class RoutinesViewModel(
         }
     )
 
+    fun nextExercise() = viewModelScope.launch {
+        uiState = uiState.copy(isExecuting = true)
+    }
+
+
     private fun <R> runOnViewModelScope(
         block: suspend () -> R,
         updateState: (RoutinesUiState, R) -> RoutinesUiState

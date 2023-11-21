@@ -101,8 +101,6 @@ fun RoutineDetailsContent(
             Text(text = it.exercise.name)
         }
     }*/
-
-
     Column {
         Routine(
             routine = currentRoutine,

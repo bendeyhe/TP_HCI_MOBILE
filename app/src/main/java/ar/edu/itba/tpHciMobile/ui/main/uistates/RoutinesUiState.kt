@@ -48,4 +48,5 @@ data class RoutinesUiState(
     val labelOrderBy: String = MyApplication.instance.getString(R.string.order_by),
 
     val updatedFavs: Boolean = false,
+    val isExecuting: Boolean = false,
 )
