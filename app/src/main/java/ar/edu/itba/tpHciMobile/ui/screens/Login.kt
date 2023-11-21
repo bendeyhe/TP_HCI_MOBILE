@@ -3,6 +3,7 @@ package ar.edu.itba.tpHciMobile.ui.screens
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -70,7 +71,7 @@ fun Login(
     }
 
     if (userViewModel.uiState.currentUser == null || !userViewModel.uiState.isAuthenticated) {
-        Surface() {
+        Surface(modifier = Modifier.fillMaxSize()) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -82,9 +83,9 @@ fun Login(
                     text = stringResource(R.string.login_msg),
                     textAlign = TextAlign.Center,
                     fontSize = 30.sp,
-                    fontWeight = androidx.compose.ui.text.font.FontWeight.Bold
+                    fontWeight = androidx.compose.ui.text.font.FontWeight.Bold,
                 )
-
+                Spacer(modifier = Modifier.weight(1f))
                 TextField(
                     value = username,
                     onValueChange = {
@@ -203,7 +204,7 @@ fun Login(
                         )
                     )
                 }
-
+                Spacer(modifier = Modifier.weight(2f))
             }
         }
     } else {
