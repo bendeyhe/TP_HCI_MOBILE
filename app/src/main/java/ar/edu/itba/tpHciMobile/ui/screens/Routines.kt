@@ -71,67 +71,64 @@ fun Routines(
     if (routinesViewModel.uiState.isFetchingRoutine) {
         Loading()
     } else {
-        if (routinesViewModel.uiState.routines == null) {
+        if (routinesViewModel.uiState.routines == null)
             routinesViewModel.getRoutinesOrderBy()
-            if (routinesViewModel.uiState.isFetchingRoutine) {
-                Loading()
-            }
-        }
-        val routines = routinesViewModel.uiState.routines
 
-        if (!routines.isNullOrEmpty()) {
-            Surface(
-                color = Color(0xFFAEB0B2),
-                modifier = modifier.fillMaxHeight()
+        var routines = emptyList<Routine>()
+        if (!routinesViewModel.uiState.isFetchingRoutine)
+            routines = routinesViewModel.uiState.routines.orEmpty()
+
+        Surface(
+            color = Color(0xFFAEB0B2),
+            modifier = modifier.fillMaxHeight()
+        ) {
+            SwipeRefresh(
+                state = rememberSwipeRefreshState(isRefreshing = routinesViewModel.uiState.isFetchingRoutine),
+                onRefresh = { routinesViewModel.getRoutinesOrderBy() }
             ) {
-                SwipeRefresh(
-                    state = rememberSwipeRefreshState(isRefreshing = routinesViewModel.uiState.isFetchingRoutine),
-                    onRefresh = { routinesViewModel.getRoutinesOrderBy() }
-                ) {
 
-                    Column(
-                        horizontalAlignment = Alignment.Start,
-                        verticalArrangement = Arrangement.Top
-                    ) {
-                        Row() {
-                            Text(
-                                text = stringResource(R.string.routines),
-                                textAlign = TextAlign.Left,
-                                fontSize = 30.sp,
-                                fontWeight = androidx.compose.ui.text.font.FontWeight.Bold,
-                                modifier = Modifier.padding(8.dp)
-                            )
-                            Spacer(modifier = Modifier.weight(1f))
-                            OrderByBtn(
-                                routinesViewModel = routinesViewModel,
-                                modifier = modifier.padding(end = 8.dp)
-                            )
-                        }
-                        val list = routines.orEmpty()
-                        if (list.isNotEmpty()) {
-                            LazyVerticalGrid(
-                                state = rememberLazyGridState(),
-                                columns = GridCells.Adaptive(minSize = 300.dp)
-                            ) {
-                                items(items = list) { routine ->
-                                    Routine(
-                                        routine = routine,
-                                        routinesViewModel = routinesViewModel,
-                                        onItemClick = {
-                                            if (!routinesViewModel.uiState.isFetchingRoutine) {
-                                                routinesViewModel.getRoutine(routine.id)
-                                                navController.navigate(Screen.RoutineDetails.route + "/${routine.id}")
-                                            }
-                                        },
-                                        likeFunc = {
-                                            routinesViewModel.toggleLike(routine)
-                                        },
-                                    )
-                                }
+                Column(
+                    horizontalAlignment = Alignment.Start,
+                    verticalArrangement = Arrangement.Top
+                ) {
+                    Row() {
+                        Text(
+                            text = stringResource(R.string.routines),
+                            textAlign = TextAlign.Left,
+                            fontSize = 30.sp,
+                            fontWeight = androidx.compose.ui.text.font.FontWeight.Bold,
+                            modifier = Modifier.padding(8.dp)
+                        )
+                        Spacer(modifier = Modifier.weight(1f))
+                        OrderByBtn(
+                            routinesViewModel = routinesViewModel,
+                            modifier = modifier.padding(end = 8.dp)
+                        )
+                    }
+                    val list = routines
+                    if (list.isNotEmpty()) {
+                        LazyVerticalGrid(
+                            state = rememberLazyGridState(),
+                            columns = GridCells.Adaptive(minSize = 300.dp)
+                        ) {
+                            items(items = list) { routine ->
+                                Routine(
+                                    routine = routine,
+                                    routinesViewModel = routinesViewModel,
+                                    onItemClick = {
+                                        if (!routinesViewModel.uiState.isFetchingRoutine) {
+                                            routinesViewModel.getRoutine(routine.id)
+                                            navController.navigate(Screen.RoutineDetails.route + "/${routine.id}")
+                                        }
+                                    },
+                                    likeFunc = {
+                                        routinesViewModel.toggleLike(routine)
+                                    },
+                                )
                             }
-                        } else {
-                            Text(text = stringResource(R.string.no_routines))
                         }
+                    } else {
+                        Text(text = stringResource(R.string.no_routines))
                     }
                 }
             }

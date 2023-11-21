@@ -51,6 +51,7 @@
     <string name="not_valid_password">La contraseña ingresada no es válida</string>
     <string name="not_valid_credentials">Las credenciales ingresadas no son válidas</string>
     <string name="no_routines">No hay rutinas para mostrar</string>
+    <string name="no_favorites">No hay rutinas favoritas para mostrar, agregue una para verla aquí o actualice la pantalla</string>
     <string name="not_logged_in">Debe estar logueado para realizar esta acción</string>
     <string name="limit">Limite</string>
     <string name="execute_routine">ejecutar_rutina</string>
