@@ -232,10 +232,7 @@ fun OrderByBtn(
         stringResource(R.string.order_by_cat_desc),
         stringResource(R.string.order_by_cat_asc),
     )
-    var expanded by remember { mutableStateOf(false) }
-    var selectedOptionText by remember { mutableStateOf(options[0]) }
-    val msg = stringResource(R.string.order_by)
-    var label by remember { mutableStateOf(msg) }
+
     var selected by remember { mutableStateOf(false) }
 
     FilterChip(
@@ -253,7 +250,7 @@ fun OrderByBtn(
         border = null,
         label = {
             Text(
-                text = label,
+                text = routinesViewModel.uiState.labelOrderBy,
                 style = MaterialTheme.typography.bodyMedium.copy(
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Medium
@@ -274,10 +271,8 @@ fun OrderByBtn(
                         DropdownMenuItem(
                             text = { Text(text = selectionOption) },
                             onClick = {
-                                routinesViewModel.getRoutinesOrderBy(index)
-                                selectedOptionText = selectionOption
+                                routinesViewModel.getRoutinesOrderBy(index, selectionOption)
                                 selected = false
-                                label = selectedOptionText
                             }
                         )
                     }
@@ -287,6 +282,4 @@ fun OrderByBtn(
             null
         },
     )
-
-
 }

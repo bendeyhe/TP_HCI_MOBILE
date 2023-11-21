@@ -50,7 +50,6 @@ fun MyAppNavHost(navController: NavHostController, modifier: Modifier) {
             route = Screen.RoutineDetails.route + "/{id}",
             arguments = listOf(navArgument("id") { type = NavType.IntType })
         ) {
-            println("2. ${it.arguments?.getInt("id")} ")
             RoutineDetails(navController = navController, routineId = it.arguments?.getInt("id")!!)
         }
     }

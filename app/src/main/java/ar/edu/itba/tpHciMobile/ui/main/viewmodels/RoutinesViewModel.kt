@@ -85,9 +85,8 @@ class RoutinesViewModel(
         }
     }
 
-    fun getRoutinesOrderBy(index: Int) = viewModelScope.launch {
-        uiState = uiState.copy(isFetchingRoutine = true)
-        uiState = uiState.copy(orderBy = index)
+    fun getRoutinesOrderBy(index: Int, label: String) = viewModelScope.launch {
+        uiState = uiState.copy(isFetchingRoutine = true, orderBy = index, labelOrderBy = label)
         getRoutinesOrderBy()
     }
 

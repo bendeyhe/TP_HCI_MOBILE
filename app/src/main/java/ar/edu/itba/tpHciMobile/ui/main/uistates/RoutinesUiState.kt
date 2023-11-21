@@ -3,11 +3,14 @@ package ar.edu.itba.tpHciMobile.ui.main.uistates
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.res.stringResource
+import ar.edu.itba.tpHciMobile.R
 import ar.edu.itba.tpHciMobile.data.model.CompleteCycle
 import ar.edu.itba.tpHciMobile.data.model.Error
 import ar.edu.itba.tpHciMobile.data.model.Exercises
 import ar.edu.itba.tpHciMobile.data.model.Routine
 import ar.edu.itba.tpHciMobile.ui.components.FilterOptions
+import ar.edu.itba.tpHciMobile.ui.main.MyApplication
 import ar.edu.itba.tpHciMobile.ui.model.CyclesDetail
 
 
@@ -40,6 +43,8 @@ data class RoutinesUiState(
     val isFetchingRoutine: Boolean = false,
     val fetchingRoutineId: Int? = null,
     val fetchRoutineErrorStringId: Error? = null,
+
+    val labelOrderBy: String = MyApplication.instance.getString(R.string.order_by),
 
     val updatedFavs: Boolean = false,
 )
