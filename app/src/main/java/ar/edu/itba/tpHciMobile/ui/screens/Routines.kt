@@ -174,6 +174,10 @@ fun Routine(
                     text = stringResource(R.string.rating) + " " + routine.score,
                     style = MaterialTheme.typography.headlineMedium.copy(fontSize = 20.sp)
                 )
+                Text(
+                    text = stringResource(R.string.category) + " " + routine.category.name,
+                    style = MaterialTheme.typography.headlineMedium.copy(fontSize = 20.sp)
+                )
             }
             Column() {
                 IconToggleButton(
