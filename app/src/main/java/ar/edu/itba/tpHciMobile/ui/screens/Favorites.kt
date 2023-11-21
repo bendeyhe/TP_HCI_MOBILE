@@ -41,9 +41,9 @@ fun Favorites(
         } else {
             if (routinesViewModel.uiState.favouriteRoutines == null || routinesViewModel.uiState.updatedFavs)
                 routinesViewModel.getFavsRoutines()
-            var routines = mutableListOf<Routine>()
+            var routines = emptyList<Routine>()
             if(!routinesViewModel.uiState.isFetchingRoutine)
-                routines = routinesViewModel.uiState.favouriteRoutines.orEmpty().toMutableList()
+                routines = routinesViewModel.uiState.favouriteRoutines.orEmpty()
 
             Surface(
                 color = Color(0xFFAEB0B2)
@@ -58,13 +58,14 @@ fun Favorites(
                         fontSize = 30.sp,
                         fontWeight = androidx.compose.ui.text.font.FontWeight.Bold
                     )
-                    val list = routines.orEmpty()
+                    val list = routines
                     LazyColumn(modifier = modifier.padding(vertical = 4.dp)) {
                         items(items = list) { routine ->
                             Routine(
                                 routine = routine,
                                 routinesViewModel = routinesViewModel,
                                 onItemClick = {
+                                    println("1. ${routine.id}")
                                     navController.navigate(Screen.RoutineDetails.route + "/${routine.id}")
                                 },
                                 likeFunc = {

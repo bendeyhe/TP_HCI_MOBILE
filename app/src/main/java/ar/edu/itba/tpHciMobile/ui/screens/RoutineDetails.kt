@@ -60,22 +60,36 @@ fun RoutineDetails(
     userViewModel: UserViewModel = viewModel(factory = getViewModelFactory()),
     navController: NavController,
     routinesViewModel: RoutinesViewModel = viewModel(factory = getViewModelFactory()),
+    routineId: Int
 ) {
-    if (!routinesViewModel.uiState.isFetchingR && routinesViewModel.uiState.currentRoutine != null ) {
-        val currentRoutine = routinesViewModel.uiState.currentRoutine!!
+    if (!routinesViewModel.uiState.isFetchingRoutine) {
+        val currentRoutine = routinesViewModel.uiState.currentRoutine
         @OptIn(ExperimentalMaterial3Api::class)
         Scaffold(
             bottomBar = { Buttons() }
         ) { contentPadding ->
-            RoutineDetailsContent(Modifier.padding(contentPadding), routinesViewModel, currentRoutine)
+            if (currentRoutine != null) {
+                RoutineDetailsContent(
+                    Modifier.padding(contentPadding),
+                    routinesViewModel,
+                    currentRoutine
+                )
+            } else {
+                routinesViewModel.getRoutine(routineId)
+            }
         }
-
+    } else {
+        Loading()
     }
-    else Text(text = "Loading")
 }
+
 @Composable
 
-fun RoutineDetailsContent(modifier: Modifier, routinesViewModel: RoutinesViewModel, currentRoutine: Routine) {
+fun RoutineDetailsContent(
+    modifier: Modifier,
+    routinesViewModel: RoutinesViewModel,
+    currentRoutine: Routine
+) {
     Column() {
         Text(
             text = currentRoutine.name,

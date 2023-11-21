@@ -106,7 +106,7 @@ fun Routines(
                                         onItemClick = {
                                             if (!routinesViewModel.uiState.isFetchingRoutine) {
                                                 routinesViewModel.getRoutine(routine.id)
-                                                navController.navigate(Screen.RoutineDetails.route)
+                                                navController.navigate(Screen.RoutineDetails.route + "/${routine.id}")
                                             }
                                         },
                                         likeFunc = {
