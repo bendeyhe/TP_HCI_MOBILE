@@ -20,6 +20,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -256,7 +257,10 @@ fun OrderByBtn(
                     fontWeight = FontWeight.Medium
                 )
             )
-            Icon(Icons.Filled.KeyboardArrowDown, "Share", tint = Color.Black)
+            if(selected) {
+                Icon(Icons.Filled.KeyboardArrowUp, "Share", tint = Color(0xFF8EFE00))}
+            else{
+                Icon(Icons.Filled.KeyboardArrowDown, "Share", tint = Color.Black)}
         },
         selected = selected,
         leadingIcon = if (selected) {
