@@ -70,7 +70,7 @@ fun RoutineDetails(
         if (currentRoutine != null) {
             Scaffold(
                 bottomBar = {
-                    Buttons(currentRoutine)
+                    Buttons(currentRoutine, navController)
                 }
             ) { contentPadding ->
                 RoutineDetailsContent(
@@ -117,7 +117,7 @@ fun RoutineDetailsContent(
 }
 
 @Composable
-fun Buttons(routine: Routine) {
+fun Buttons(routine: Routine, navController: NavController){
     val sendIntent: Intent = Intent().apply {
         action = Intent.ACTION_SEND
         putExtra(Intent.EXTRA_TEXT, "https://toobig.com/routine/" + routine.id)
@@ -138,9 +138,8 @@ fun Buttons(routine: Routine) {
             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF8EFE00)),
             modifier = Modifier.padding(16.dp),
         ) {
-            Icon(Icons.Filled.Share, "Share", tint = Color.Black)
             Text(
-                text = stringResource(R.string.share_routine),
+                text = stringResource(R.string.share_routine) + " ",
                 color = Color.Black,
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.headlineMedium.copy(
@@ -148,16 +147,16 @@ fun Buttons(routine: Routine) {
                     fontWeight = FontWeight.Medium
                 )
             )
+            Icon(Icons.Filled.Share, "Share", tint = Color.Black)
         }
         Button(
-            onClick = { /*todo empezar rutina */ },
+            onClick = { navController.navigate(Screen.ExecuteRoutine.route) },
             contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF8EFE00)),
             modifier = Modifier.padding(16.dp),
         ) {
-            Icon(Icons.Filled.PlayArrow, "Share", tint = Color.Black)
             Text(
-                text = stringResource(R.string.start_routine),
+                text = stringResource(R.string.start_routine) + " ",
                 color = Color.Black,
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.headlineMedium.copy(
@@ -165,6 +164,7 @@ fun Buttons(routine: Routine) {
                     fontWeight = FontWeight.Medium
                 )
             )
+            Icon(Icons.Filled.PlayArrow, "Play", tint = Color.Black)
         }
     }
 }

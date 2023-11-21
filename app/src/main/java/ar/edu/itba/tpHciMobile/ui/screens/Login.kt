@@ -155,8 +155,7 @@ fun Login(
                             val visibilityIcon =
                                 if (passwordHidden) painterResource(R.drawable.visibility_off) else painterResource(
                                     R.drawable.visibility
-                                )//todo buscar como hacer que funcione Visibility
-                            // Please provide localized description for accessibility services
+                                )
                             val description =
                                 if (passwordHidden) "Show password" else "Hide password"
                             Icon(painter = visibilityIcon, contentDescription = description)

@@ -13,6 +13,7 @@ import ar.edu.itba.tpHciMobile.ui.screens.Routines
 import ar.edu.itba.tpHciMobile.ui.screens.Favorites
 import ar.edu.itba.tpHciMobile.ui.screens.RoutineDetails
 import ar.edu.itba.tpHciMobile.ui.main.Screen
+import ar.edu.itba.tpHciMobile.ui.screens.ExecuteRoutine
 
 
 @Composable
@@ -46,6 +47,9 @@ fun MyAppNavHost(navController: NavHostController, modifier: Modifier) {
         }
         composable(Screen.Favorites.route) {
             Favorites(navController = navController)
+        }
+        composable(Screen.ExecuteRoutine.route){
+            ExecuteRoutine(navController = navController)
         }
         composable(
             route = Screen.RoutineDetails.route + "/{id}",

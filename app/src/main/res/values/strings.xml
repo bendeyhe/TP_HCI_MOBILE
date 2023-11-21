@@ -52,4 +52,9 @@
     <string name="no_routines">There are no routines to show</string>
     <string name="not_logged_in">You must be logged in to perform this action</string>
     <string name="limit">Limit</string>
+    <string name="execute_routine">execute_routine</string>
+    <string name="time_left">Time left</string>
+    <string name="remaining_reps">Remaining repetitions</string>
+    <string name="next">NEXT</string>
+    <string name="back">BACK</string>
 </resources>

@@ -53,4 +53,9 @@
     <string name="no_routines">No hay rutinas para mostrar</string>
     <string name="not_logged_in">Debe estar logueado para realizar esta acción</string>
     <string name="limit">Limite</string>
+    <string name="execute_routine">ejecutar_rutina</string>
+    <string name="time_left">Tiempo restante</string>
+    <string name="remaining_reps">Repeticiones restantes</string>
+    <string name="next">SIGUIENTE</string>
+    <string name="back">ANTERIOR</string>
 </resources>
