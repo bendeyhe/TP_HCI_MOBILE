@@ -64,7 +64,7 @@ fun RoutineDetails(
     routinesViewModel: RoutinesViewModel = viewModel(factory = getViewModelFactory()),
     routineId: Int
 ) {
-    if (!routinesViewModel.uiState.isFetchingRoutine) {
+    if (!routinesViewModel.uiState.isFetchingR) {
         val currentRoutine = routinesViewModel.uiState.currentRoutine
         @OptIn(ExperimentalMaterial3Api::class)
         if (currentRoutine != null) {
@@ -94,40 +94,25 @@ fun RoutineDetailsContent(
     routinesViewModel: RoutinesViewModel,
     currentRoutine: Routine
 ) {
+    for (cycle in routinesViewModel.uiState.cycleDetailList) {
+        if (cycle.cycle?.name != null)
+            Text(text = cycle.cycle.name)
+        cycle.exercises?.forEach {
+            Text(text = it.name)
+        }
+
+    }/*
     Column() {
         Text(
             text = currentRoutine.name,
             style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.ExtraBold)
         )
         CollapsableLazyColumn(
-            sections = listOf(
-                CollapsableSection(
-                    title = "Entrada en Calor",
-                    rows = listOf<Exercise>(
-                        Exercise("Ej de calentamiento 1", "Duración 1"),
-                        Exercise("Ej de calentamiento 2", "Duración 2"),
-                        Exercise("Ej de calentamiento 3", "Duración 3")
-                    )
-                ),
-                CollapsableSection(
-                    title = "Principal",
-                    rows = listOf<Exercise>(
-                        Exercise("Ej 1", "Duración 1"),
-                        Exercise("Ej 2", "Duración 2"),
-                        Exercise("Ej 3", "Duración 3")
-                    )
-                ),
-                CollapsableSection(
-                    title = "Enfriamiento",
-                    rows = listOf<Exercise>(
-                        Exercise("Ej de enfriamiento 1", "Duración 1"),
-                        Exercise("Ej de enfriamiento 2", "Duración 2"),
-                        Exercise("Ej de enfriamiento 3", "Duración 3")
-                    )
-                ),
-            ),
+
+            sections = mutzaa
         )
     }
+    */
 
 }
 

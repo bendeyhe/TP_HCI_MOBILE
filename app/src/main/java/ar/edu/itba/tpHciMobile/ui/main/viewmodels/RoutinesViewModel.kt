@@ -202,6 +202,7 @@ class RoutinesViewModel(
 
             for (cycle in uiState.routineCycles) {
                 getExercisesByCycle(cycle.id).join()
+                println(uiState.exercises)
                 uiState.cycleDetailList = uiState.cycleDetailList.plus(
                     CyclesDetail(
                         exercises = uiState.exercises,

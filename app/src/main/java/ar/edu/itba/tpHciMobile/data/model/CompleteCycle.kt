@@ -14,10 +14,12 @@ class CompleteCycle(
     var metadata: String? = null
 ) {
     fun asModel(): NetworkCompleteCycle {
-        val toReturn = mutableListOf<NetworkExercise>()
+        /*val toReturn = mutableListOf<NetworkExercise>()
         for (exercise in exercises) {
             toReturn.add(exercise.asModel())
         }
+
+         */
         return NetworkCompleteCycle(
             id = id,
             type = type,
@@ -25,7 +27,7 @@ class CompleteCycle(
             detail = detail,
             name = name,
             repetitions = repetitions,
-            exercises = toReturn,
+            //exercises = toReturn,
             metadata = metadata
         )
     }

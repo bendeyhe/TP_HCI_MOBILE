@@ -14,9 +14,7 @@ class NetworkExercise(
     @SerializedName("type")
     var type: String,
     @SerializedName("date")
-    var date: Date? = null,
-    @SerializedName("metadata")
-    var metadata: String? = null
+    var date: Date? = null
 ) {
     fun asModel(): Exercises {
         return Exercises(
@@ -24,6 +22,7 @@ class NetworkExercise(
             name = name,
             detail = detail,
             type = type,
+            date = date,
         )
     }
 }
