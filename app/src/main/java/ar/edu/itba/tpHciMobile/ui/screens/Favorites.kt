@@ -2,6 +2,7 @@ package ar.edu.itba.tpHciMobile.ui.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -46,17 +47,19 @@ fun Favorites(
                 routines = routinesViewModel.uiState.favouriteRoutines.orEmpty()
 
             Surface(
-                color = Color(0xFFAEB0B2)
+                color = Color(0xFFAEB0B2),
+                modifier = modifier.fillMaxHeight()
             ) {
                 Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
+                    horizontalAlignment = Alignment.Start,
+                    verticalArrangement = Arrangement.Top
                 ) {
                     Text(
                         text = stringResource(R.string.favorites),
-                        textAlign = TextAlign.Center,
+                        textAlign = TextAlign.Left,
                         fontSize = 30.sp,
-                        fontWeight = androidx.compose.ui.text.font.FontWeight.Bold
+                        fontWeight = androidx.compose.ui.text.font.FontWeight.Bold,
+                        modifier = Modifier.padding(8.dp)
                     )
                     val list = routines
                     LazyColumn(modifier = modifier.padding(vertical = 4.dp)) {

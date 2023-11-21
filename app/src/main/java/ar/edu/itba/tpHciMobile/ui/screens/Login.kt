@@ -217,7 +217,7 @@ fun Login(
                 verticalArrangement = Arrangement.Center
             ) {
                 Text(
-                    text = stringResource(R.string.logout_msg),
+                    text = stringResource(R.string.profile),
                     textAlign = TextAlign.Center,
                     fontSize = 30.sp,
                     fontWeight = androidx.compose.ui.text.font.FontWeight.Bold,

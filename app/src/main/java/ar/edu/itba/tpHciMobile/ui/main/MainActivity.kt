@@ -66,6 +66,8 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 val scrollBehavior =
                     TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
+                val navBackStackEntry by navController.currentBackStackEntryAsState()
+                val currentRoute = navBackStackEntry?.destination?.route
                 Scaffold(
                     topBar = {
                         CenterAlignedTopAppBar(
@@ -75,14 +77,17 @@ class MainActivity : ComponentActivity() {
                                     "TOOBIG",
                                     maxLines = 1,
                                     overflow = TextOverflow.Ellipsis,
-                                    color = Color(0xFF8EFE00)
+                                    color = Color(0xFF8EFE00),
+                                    style = MaterialTheme.typography.headlineLarge.copy(
+                                        fontWeight = FontWeight.Bold
+                                    )
                                 )
                             },
 
                             navigationIcon = {
-                                if (navController.currentBackStackEntry?.destination?.route == Screen.Routines.route
-                                    || navController.currentBackStackEntry?.destination?.route == Screen.Favorites.route
-                                    || navController.currentBackStackEntry?.destination?.route == Screen.LoginScreen.route
+                                if (currentRoute != Screen.Routines.route
+                                    && currentRoute != Screen.Favorites.route
+                                    && currentRoute != Screen.LoginScreen.route
                                 ) {
                                     IconButton(onClick = {
                                         navController.popBackStack()

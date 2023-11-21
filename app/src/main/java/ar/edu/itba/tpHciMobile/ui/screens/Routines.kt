@@ -5,10 +5,13 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.spring
+import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
@@ -78,28 +81,37 @@ fun Routines(
 
         if (!routines.isNullOrEmpty()) {
             Surface(
-                color = Color(0xFFAEB0B2)
+                color = Color(0xFFAEB0B2),
+                modifier = modifier.fillMaxHeight()
             ) {
                 SwipeRefresh(
                     state = rememberSwipeRefreshState(isRefreshing = routinesViewModel.uiState.isFetchingRoutine),
                     onRefresh = { routinesViewModel.getRoutinesOrderBy() }
                 ) {
+
                     Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center
+                        horizontalAlignment = Alignment.Start,
+                        verticalArrangement = Arrangement.Top
                     ) {
-                        Text(
-                            text = stringResource(R.string.routines),
-                            textAlign = TextAlign.Center,
-                            fontSize = 30.sp,
-                            fontWeight = androidx.compose.ui.text.font.FontWeight.Bold
-                        )
-                        OrderByBtn(routinesViewModel = routinesViewModel)
+                        Row() {
+                            Text(
+                                text = stringResource(R.string.routines),
+                                textAlign = TextAlign.Left,
+                                fontSize = 30.sp,
+                                fontWeight = androidx.compose.ui.text.font.FontWeight.Bold,
+                                modifier = Modifier.padding(8.dp)
+                            )
+                            Spacer(modifier = Modifier.weight(1f))
+                            OrderByBtn(
+                                routinesViewModel = routinesViewModel,
+                                modifier = modifier.padding(end = 8.dp)
+                            )
+                        }
                         val list = routines.orEmpty()
                         if (list.isNotEmpty()) {
                             LazyVerticalGrid(
                                 state = rememberLazyGridState(),
-                                columns = GridCells.Adaptive(minSize = 250.dp)
+                                columns = GridCells.Adaptive(minSize = 300.dp)
                             ) {
                                 items(items = list) { routine ->
                                     Routine(
@@ -122,7 +134,6 @@ fun Routines(
                         }
                     }
                 }
-
             }
         }
     }
@@ -150,7 +161,8 @@ fun Routine(
     Surface(
         modifier = Modifier
             .padding(vertical = 4.dp, horizontal = 8.dp)
-            .clickable(onClick = onItemClick)
+            .clickable(onClick = onItemClick),
+        shape = MaterialTheme.shapes.medium,
     ) {
         Row(modifier = Modifier.padding(horizontal = 20.dp, vertical = 4.dp)) {
             Column(
@@ -186,7 +198,7 @@ fun Routine(
                     modifier = Modifier.padding(end = 10.dp),
                 ) {
                     Icon(
-                        imageVector = if(routine.liked) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
+                        imageVector = if (routine.liked) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
                         "Like",
                         modifier = Modifier.size(36.dp),
                         tint = Color.Black
@@ -261,10 +273,11 @@ fun OrderByBtn(
                     fontWeight = FontWeight.Medium
                 )
             )
-            if(selected) {
-                Icon(Icons.Filled.KeyboardArrowUp, "Share", tint = Color(0xFF8EFE00))}
-            else{
-                Icon(Icons.Filled.KeyboardArrowDown, "Share", tint = Color.Black)}
+            if (selected) {
+                Icon(Icons.Filled.KeyboardArrowUp, "Share", tint = Color(0xFF8EFE00))
+            } else {
+                Icon(Icons.Filled.KeyboardArrowDown, "Share", tint = Color.Black)
+            }
         },
         selected = selected,
         leadingIcon = if (selected) {
