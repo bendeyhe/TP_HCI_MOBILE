@@ -1,6 +1,7 @@
 package ar.edu.itba.tpHciMobile.data.network.datasources
 
 import ar.edu.itba.tpHciMobile.data.network.api.ApiExercisesService
+import ar.edu.itba.tpHciMobile.data.network.model.exercises.NetworkCycleExercise
 import ar.edu.itba.tpHciMobile.data.network.model.exercises.NetworkExercise
 import ar.edu.itba.tpHciMobile.data.network.model.util.NetworkPagedContent
 
@@ -19,9 +20,9 @@ class ExercisesRemoteDataSource(
         }
     }
 
-    suspend fun getExercisesByCycle(cycleId: Int): NetworkPagedContent<NetworkExercise> {
+    suspend fun getExercisesByCycle(cycleId: Int, page: Int): NetworkPagedContent<NetworkCycleExercise> {
         return handleApiResponse {
-            exercisesService.getExercisesByCycle(cycleId)
+            exercisesService.getExercisesByCycle(cycleId, page)
         }
     }
 

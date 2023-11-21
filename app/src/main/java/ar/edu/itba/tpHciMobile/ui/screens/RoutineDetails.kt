@@ -94,12 +94,36 @@ fun RoutineDetailsContent(
     routinesViewModel: RoutinesViewModel,
     currentRoutine: Routine
 ) {
-    for (cycle in routinesViewModel.uiState.cycleDetailList) {
+
+    /*for (cycle in routinesViewModel.uiState.cycleDetailList) {
         if (cycle.cycle?.name != null)
             Text(text = cycle.cycle.name)
         cycle.exercises?.forEach {
-            Text(text = it.name)
+            Text(text = it.exercise.name)
         }
+    }*/
+    Column {
+        Text(
+            text = currentRoutine.name,
+            style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.ExtraBold)
+        )
+        CollapsableLazyColumn(
+            sections = routinesViewModel.uiState.cycleDetailList.map {
+                CollapsableSection(
+                    title = it.cycle?.name ?: "",
+                    rows = it.exercises?.map { exercise ->
+                        Exercise(
+                            name = exercise.exercise.name,
+                            duration = exercise.duration.toString()
+                        )
+                    } ?: emptyList()
+                )
+            }
+        )
+    }
+
+
+
 
     }/*
     Column() {
@@ -114,7 +138,7 @@ fun RoutineDetailsContent(
     }
     */
 
-}
+
 
 @Composable
 fun Buttons(routine: Routine, navController: NavController){

@@ -6,6 +6,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.res.stringResource
 import ar.edu.itba.tpHciMobile.R
 import ar.edu.itba.tpHciMobile.data.model.CompleteCycle
+import ar.edu.itba.tpHciMobile.data.model.CycleExercise
 import ar.edu.itba.tpHciMobile.data.model.Error
 import ar.edu.itba.tpHciMobile.data.model.Exercises
 import ar.edu.itba.tpHciMobile.data.model.Routine
@@ -29,7 +30,7 @@ data class RoutinesUiState(
     val routineCycles: List<CompleteCycle> = emptyList(),
 
     val currentRoutineCycle: CompleteCycle? = null,
-    val exercises: List<Exercises>? = null,
+    val exercises: List<CycleExercise>? = null,
     val currentExercise: Exercises? = null,
 
 

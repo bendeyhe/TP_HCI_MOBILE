@@ -9,6 +9,7 @@ class Exercises(
     var detail: String? = null,
     var type: String,
     var date: Date? = null,
+    var order: Int,
 
     ) {
     fun asModel(): NetworkExercise {
@@ -18,6 +19,7 @@ class Exercises(
             detail = detail,
             type = type,
             date = date,
+            order = order
         )
     }
 }

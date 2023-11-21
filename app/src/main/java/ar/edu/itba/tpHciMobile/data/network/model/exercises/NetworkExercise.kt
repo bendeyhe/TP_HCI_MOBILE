@@ -14,7 +14,9 @@ class NetworkExercise(
     @SerializedName("type")
     var type: String,
     @SerializedName("date")
-    var date: Date? = null
+    var date: Date? = null,
+    @SerializedName("order")
+    var order: Int,
 ) {
     fun asModel(): Exercises {
         return Exercises(
@@ -23,6 +25,7 @@ class NetworkExercise(
             detail = detail,
             type = type,
             date = date,
+            order = order
         )
     }
 }

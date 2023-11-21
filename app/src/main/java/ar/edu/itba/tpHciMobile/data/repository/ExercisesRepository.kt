@@ -1,5 +1,6 @@
 package ar.edu.itba.tpHciMobile.data.repository
 
+import ar.edu.itba.tpHciMobile.data.model.CycleExercise
 import ar.edu.itba.tpHciMobile.data.model.Exercises
 import ar.edu.itba.tpHciMobile.data.network.datasources.ExercisesRemoteDataSource
 import kotlinx.coroutines.sync.Mutex
@@ -32,15 +33,16 @@ class ExercisesRepository(
         }
     }
 
-    suspend fun getExercisesByCycle(cycleId: Int): List<Exercises> {
+    suspend fun getExercisesByCycle(cycleId: Int): List<CycleExercise> {
         var page = 0
-        var exercises: List<Exercises> = emptyList()
+        val cycleExercises = mutableListOf<CycleExercise>()
         do {
-            val result = exercisesRemoteDataSource.getExercisesByCycle(cycleId)
-            exercises = exercises.plus(result.content.map { it.asModel() })
+            val result = exercisesRemoteDataSource.getExercisesByCycle(cycleId, page)
+            println(result)
+            cycleExercises.addAll(result.content.map { it.asModel() })
             page++
         } while (!result.isLastPage)
-        return exercises
+        return cycleExercises
     }
 
     suspend fun getExerciseByCycle(cycleId: Int, exerciseId: Int): Exercises {
