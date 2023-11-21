@@ -7,6 +7,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import androidx.navigation.navDeepLink
 import ar.edu.itba.tpHciMobile.ui.screens.Login
 import ar.edu.itba.tpHciMobile.ui.screens.Routines
 import ar.edu.itba.tpHciMobile.ui.screens.Favorites
@@ -48,6 +49,10 @@ fun MyAppNavHost(navController: NavHostController, modifier: Modifier) {
         }
         composable(
             route = Screen.RoutineDetails.route + "/{id}",
+            deepLinks = listOf(
+                navDeepLink { uriPattern = "$uri/routine/{id}" },
+                navDeepLink { uriPattern = "$secureUri/routine/{id}" }
+            ),
             arguments = listOf(navArgument("id") { type = NavType.IntType })
         ) {
             RoutineDetails(navController = navController, routineId = it.arguments?.getInt("id")!!)

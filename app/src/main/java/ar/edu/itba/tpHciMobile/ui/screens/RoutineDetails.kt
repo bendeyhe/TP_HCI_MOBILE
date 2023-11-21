@@ -1,5 +1,6 @@
 package ar.edu.itba.tpHciMobile.ui.screens
 
+import android.content.Intent
 import android.text.style.BackgroundColorSpan
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollState
@@ -39,6 +40,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -65,18 +67,20 @@ fun RoutineDetails(
     if (!routinesViewModel.uiState.isFetchingRoutine) {
         val currentRoutine = routinesViewModel.uiState.currentRoutine
         @OptIn(ExperimentalMaterial3Api::class)
-        Scaffold(
-            bottomBar = { Buttons() }
-        ) { contentPadding ->
-            if (currentRoutine != null) {
+        if (currentRoutine != null) {
+            Scaffold(
+                bottomBar = {
+                    Buttons(currentRoutine)
+                }
+            ) { contentPadding ->
                 RoutineDetailsContent(
                     Modifier.padding(contentPadding),
                     routinesViewModel,
                     currentRoutine
                 )
-            } else {
-                routinesViewModel.getRoutine(routineId)
             }
+        } else {
+            routinesViewModel.getRoutine(routineId)
         }
     } else {
         Loading()
@@ -128,13 +132,23 @@ fun RoutineDetailsContent(
 }
 
 @Composable
-fun Buttons() {
+fun Buttons(routine: Routine) {
+    val sendIntent: Intent = Intent().apply {
+        action = Intent.ACTION_SEND
+        putExtra(Intent.EXTRA_TEXT, "https://toobig.com/routine/" + routine.id)
+        type = "text/plain"
+    }
+    val shareIntent = Intent.createChooser(sendIntent, null)
+    val context = LocalContext.current
+
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.Center
     ) {
         Button(
-            onClick = { /*todo compartir rutina */ },
+            onClick = {
+                context.startActivity(shareIntent)
+            },
             contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF8EFE00)),
             modifier = Modifier.padding(16.dp),
@@ -236,6 +250,5 @@ fun CollapsableLazyColumn(
         }
     }
 }
-
 
 const val MaterialIconDimension = 24f
