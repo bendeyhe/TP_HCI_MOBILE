@@ -10,7 +10,7 @@ class   CompleteCycle (
     var detail: String? = null,
     var name: String,
     var exercises: List<Exercises> = emptyList(),
-    var repetitions: Int
+    var repetitions: Int,
     var metadata: String? = null
 ) {
     fun asModel() : NetworkCompleteCycle {

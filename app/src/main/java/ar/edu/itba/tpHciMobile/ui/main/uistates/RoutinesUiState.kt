@@ -21,6 +21,7 @@ data class RoutinesUiState (
         FilterOptions.DifficultyDown,
     ),
     val routineCycles: List<CompleteCycle> = emptyList(),
+
     val currentRoutineCycle: CompleteCycle? = null,
     val exercises: List<Exercises>? = null,
     val currentExercise: Exercises? = null,

@@ -13,7 +13,7 @@ class RoutinesCycleRepository (
 
     suspend fun getRoutineCycles(routineId: Int, refresh: Boolean = false): List<CompleteCycle> {
 
-        return routinesRemoteDataSource.getCycles(routineId, 0).content.map { it.asModel() }
+        return routinesRemoteDataSource.getCycles(routineId).content.map { it.asModel() }
     }
 
     suspend fun getRoutineCycle(routineId: Int, cycleId: Int): CompleteCycle {

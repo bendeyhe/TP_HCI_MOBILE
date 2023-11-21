@@ -54,7 +54,7 @@ class RoutinesViewModel(
         {
             routinesRepository.addFavoriteRoutine(routineId)
         },
-<<<<<<< Updated upstream
+
         { state, _ ->
             state.copy(
                 favouriteRoutines = state.favouriteRoutines?.map {
@@ -83,9 +83,7 @@ class RoutinesViewModel(
                 }
             )
         }
-=======
-        { state, _ -> state }
->>>>>>> Stashed changes
+
     )
 
     fun getRoutinesOrderBy(orderBy: String, direction: String) = runOnViewModelScope(
