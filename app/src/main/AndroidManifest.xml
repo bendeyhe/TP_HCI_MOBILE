@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" >
+    xmlns:tools="http://schemas.android.com/tools">
 
     <!--damos permiso a conexion a internet-->
     <uses-permission android:name="android.permission.INTERNET" />
@@ -15,14 +15,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TP_HCI_MOBILE"
         android:usesCleartextTraffic="true"
-        tools:targetApi="31" >
+        tools:targetApi="31">
         <!--con la linea android:usesCleartextTraffic="true" permitirmos que la api
         se comunique mediante http y no en https que es el default-->
         <activity
             android:name=".ui.main.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme.TP_HCI_MOBILE" >
+            android:theme="@style/Theme.TP_HCI_MOBILE">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -30,12 +30,14 @@
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-                <data android:scheme="http"/>
-                <data android:scheme="https"/>
-                <data android:host="www.example.com"/>
-                <data android:pathPrefix="/other"/>
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="http" />
+                <data android:scheme="https" />
+                <data android:host="www.example.com" />
+                <data android:pathPrefix="/other" />
             </intent-filter>
         </activity>
     </application>

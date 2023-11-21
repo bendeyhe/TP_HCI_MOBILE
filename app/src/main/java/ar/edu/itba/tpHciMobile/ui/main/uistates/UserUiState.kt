@@ -3,7 +3,7 @@ package ar.edu.itba.tpHciMobile.ui.main.uistates
 import ar.edu.itba.tpHciMobile.data.model.Error
 import ar.edu.itba.tpHciMobile.data.model.User
 
-data class UserUiState (
+data class UserUiState(
     val isAuthenticated: Boolean = false,
     val isFetching: Boolean = false,
     val currentUser: User? = null,

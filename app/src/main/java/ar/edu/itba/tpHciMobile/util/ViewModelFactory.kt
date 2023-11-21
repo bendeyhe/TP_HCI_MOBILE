@@ -38,7 +38,13 @@ class ViewModelFactory constructor(
                 UserViewModel(sessionManager, userRepository)
 
             isAssignableFrom(RoutinesViewModel::class.java) ->
-                RoutinesViewModel(routinesRepository, userRepository, routinesCycleRepository,exercisesRepository,sessionManager)
+                RoutinesViewModel(
+                    routinesRepository,
+                    userRepository,
+                    routinesCycleRepository,
+                    exercisesRepository,
+                    sessionManager
+                )
 
             else ->
                 throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")

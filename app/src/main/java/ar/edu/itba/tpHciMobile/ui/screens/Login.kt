@@ -185,7 +185,8 @@ fun Login(
                                 if (isAuth)
                                     navController.navigate(Screen.Routines.route)
                                 else
-                                    Toast.makeText(context, notValidCredentials, Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(context, notValidCredentials, Toast.LENGTH_SHORT)
+                                        .show()
                             }
                         }
                     },

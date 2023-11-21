@@ -18,7 +18,7 @@ class Routine(
     var liked: Boolean = false,
     var fromCUser: Boolean = false
 ) {
-    fun asNetworkModel(): NetworkRoutine{
+    fun asNetworkModel(): NetworkRoutine {
         return NetworkRoutine(
             id = id,
             name = name,

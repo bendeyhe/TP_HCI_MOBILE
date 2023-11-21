@@ -5,7 +5,7 @@ import ar.edu.itba.tpHciMobile.data.network.datasources.RoutinesRemoteDataSource
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
-class RoutinesCycleRepository (
+class RoutinesCycleRepository(
     private val routinesRemoteDataSource: RoutinesRemoteDataSource
 ) {
     private var routinesCyclesMutex = Mutex()
@@ -17,6 +17,8 @@ class RoutinesCycleRepository (
     }
 
     suspend fun getRoutineCycle(routineId: Int, cycleId: Int): CompleteCycle {
-        return routinesCyclesMutex.withLock { routinesRemoteDataSource.getCycle(routineId, cycleId).asModel() }
+        return routinesCyclesMutex.withLock {
+            routinesRemoteDataSource.getCycle(routineId, cycleId).asModel()
+        }
     }
 }

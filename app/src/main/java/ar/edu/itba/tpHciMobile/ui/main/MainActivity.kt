@@ -82,7 +82,8 @@ class MainActivity : ComponentActivity() {
                             navigationIcon = {
                                 if (navController.currentBackStackEntry?.destination?.route == Screen.Routines.route
                                     || navController.currentBackStackEntry?.destination?.route == Screen.Favorites.route
-                                    || navController.currentBackStackEntry?.destination?.route == Screen.LoginScreen.route) {
+                                    || navController.currentBackStackEntry?.destination?.route == Screen.LoginScreen.route
+                                ) {
                                     IconButton(onClick = {
                                         navController.popBackStack()
                                     }) {

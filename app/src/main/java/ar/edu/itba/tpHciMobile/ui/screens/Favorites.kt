@@ -42,7 +42,7 @@ fun Favorites(
             if (routinesViewModel.uiState.favouriteRoutines == null || routinesViewModel.uiState.updatedFavs)
                 routinesViewModel.getFavsRoutines()
             var routines = emptyList<Routine>()
-            if(!routinesViewModel.uiState.isFetchingRoutine)
+            if (!routinesViewModel.uiState.isFetchingRoutine)
                 routines = routinesViewModel.uiState.favouriteRoutines.orEmpty()
 
             Surface(

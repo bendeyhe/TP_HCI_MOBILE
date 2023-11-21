@@ -3,7 +3,7 @@ package ar.edu.itba.tpHciMobile.data.model
 import ar.edu.itba.tpHciMobile.data.network.model.exercises.NetworkExercise
 import ar.edu.itba.tpHciMobile.data.network.model.routines.NetworkCompleteCycle
 
-class   CompleteCycle (
+class CompleteCycle(
     var id: Int,
     var type: String,
     var order: Int,
@@ -13,7 +13,7 @@ class   CompleteCycle (
     var repetitions: Int,
     var metadata: String? = null
 ) {
-    fun asModel() : NetworkCompleteCycle {
+    fun asModel(): NetworkCompleteCycle {
         val toReturn = mutableListOf<NetworkExercise>()
         for (exercise in exercises) {
             toReturn.add(exercise.asModel())

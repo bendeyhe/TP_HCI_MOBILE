@@ -66,7 +66,8 @@ class RoutinesViewModel(
             }
             uiState = uiState.copy(isFetchingRoutine = false)
         }.onFailure { e ->
-            uiState = uiState.copy(isFetchingRoutine = false, fetchRoutineErrorStringId = handleError(e))
+            uiState =
+                uiState.copy(isFetchingRoutine = false, fetchRoutineErrorStringId = handleError(e))
         }
     }
 
@@ -99,7 +100,8 @@ class RoutinesViewModel(
             getFavoriteRoutines().join()
             uiState = uiState.copy(isFetchingRoutine = false)
         }.onFailure { e ->
-            uiState = uiState.copy(isFetchingRoutine = false, fetchRoutineErrorStringId = handleError(e))
+            uiState =
+                uiState.copy(isFetchingRoutine = false, fetchRoutineErrorStringId = handleError(e))
         }
     }
 
@@ -129,7 +131,8 @@ class RoutinesViewModel(
             for (routine in uiState.routines.orEmpty()) {
                 if (routine.id == routineId) {
                     routine.liked = true
-                    uiState = uiState.copy(favouriteRoutines = uiState.favouriteRoutines?.plus(routine))
+                    uiState =
+                        uiState.copy(favouriteRoutines = uiState.favouriteRoutines?.plus(routine))
                     var routines = uiState.routines
                     if (routines != null) {
                         routines.find { it.id == routine.id }?.liked = true
@@ -140,7 +143,8 @@ class RoutinesViewModel(
             getRoutinesOrderBy().join()
             uiState = uiState.copy(isFetchingRoutine = false)
         }.onFailure { e ->
-            uiState = uiState.copy(isFetchingRoutine = false, fetchRoutineErrorStringId = handleError(e))
+            uiState =
+                uiState.copy(isFetchingRoutine = false, fetchRoutineErrorStringId = handleError(e))
         }
     }
 
@@ -152,7 +156,8 @@ class RoutinesViewModel(
             for (routine in uiState.routines.orEmpty()) {
                 if (routine.id == routineId) {
                     routine.liked = false
-                    uiState = uiState.copy(favouriteRoutines = uiState.favouriteRoutines?.minus(routine))
+                    uiState =
+                        uiState.copy(favouriteRoutines = uiState.favouriteRoutines?.minus(routine))
                     var routines = uiState.routines
                     if (routines != null) {
                         routines.find { it.id == routine.id }?.liked = false
@@ -163,7 +168,8 @@ class RoutinesViewModel(
             getRoutinesOrderBy().join()
             uiState = uiState.copy(isFetchingRoutine = false)
         }.onFailure { e ->
-            uiState = uiState.copy(isFetchingRoutine = false, fetchRoutineErrorStringId = handleError(e))
+            uiState =
+                uiState.copy(isFetchingRoutine = false, fetchRoutineErrorStringId = handleError(e))
         }
     }
 

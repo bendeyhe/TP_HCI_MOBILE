@@ -11,7 +11,7 @@ import ar.edu.itba.tpHciMobile.ui.components.FilterOptions
 import ar.edu.itba.tpHciMobile.ui.model.CyclesDetail
 
 
-data class RoutinesUiState (
+data class RoutinesUiState(
     val routines: List<Routine>? = null,
     val currentRoutine: Routine? = null,
     val orderBy: Int = 0,

@@ -15,9 +15,9 @@ import ar.edu.itba.tpHciMobile.R
 
 @Composable
 fun HomeScreen(
-    onNavigateToOtherScreen: (id:Int) -> Unit
+    onNavigateToOtherScreen: (id: Int) -> Unit
 ) {
-    Surface{
+    Surface {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,

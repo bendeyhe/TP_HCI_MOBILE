@@ -49,8 +49,9 @@ class MyApplication : Application() {
 
     val exercisesRepository: ExercisesRepository
         get() = ExercisesRepository(exercisesRemoteDataSource)
+
     companion object {
-            lateinit var instance: MyApplication
-                private set
+        lateinit var instance: MyApplication
+            private set
     }
 }

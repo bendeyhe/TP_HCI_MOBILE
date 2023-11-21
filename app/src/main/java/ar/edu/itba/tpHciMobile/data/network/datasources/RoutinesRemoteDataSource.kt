@@ -5,16 +5,16 @@ import ar.edu.itba.tpHciMobile.data.network.model.util.NetworkPagedContent
 import ar.edu.itba.tpHciMobile.data.network.model.routines.NetworkCompleteCycle
 import ar.edu.itba.tpHciMobile.data.network.model.routines.NetworkRoutine
 
-class RoutinesRemoteDataSource (
+class RoutinesRemoteDataSource(
     private val routinesService: ApiRoutinesService
 ) : RemoteDataSource() {
-    suspend fun getRoutines(page: Int) : NetworkPagedContent<NetworkRoutine> {
+    suspend fun getRoutines(page: Int): NetworkPagedContent<NetworkRoutine> {
         return handleApiResponse {
             routinesService.getRoutines(page)
         }
     }
 
-    suspend fun getFavRoutines(page: Int) : NetworkPagedContent<NetworkRoutine> {
+    suspend fun getFavRoutines(page: Int): NetworkPagedContent<NetworkRoutine> {
         return handleApiResponse {
             routinesService.getFavRoutines(page)
         }
@@ -32,7 +32,11 @@ class RoutinesRemoteDataSource (
         }
     }
 
-    suspend fun getRoutinesOrderBy(page: Int, orderBy: String, direction: String) : NetworkPagedContent<NetworkRoutine> {
+    suspend fun getRoutinesOrderBy(
+        page: Int,
+        orderBy: String,
+        direction: String
+    ): NetworkPagedContent<NetworkRoutine> {
         return handleApiResponse {
             routinesService.getRoutinesOrderBy(page, orderBy, direction)
         }
@@ -43,11 +47,13 @@ class RoutinesRemoteDataSource (
             routinesService.getRoutine(routineId)
         }
     }
+
     suspend fun getCycles(routineId: Int): NetworkPagedContent<NetworkCompleteCycle> {
         return handleApiResponse {
             routinesService.getCycles(routineId)
         }
     }
+
     suspend fun getCycle(routineId: Int, cycleId: Int): NetworkCompleteCycle {
         return handleApiResponse {
             routinesService.getCycle(routineId, cycleId)

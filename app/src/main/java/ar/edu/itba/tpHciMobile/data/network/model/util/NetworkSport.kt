@@ -3,7 +3,7 @@ package ar.edu.itba.tpHciMobile.data.network.model.util
 import ar.edu.itba.tpHciMobile.data.model.Sport
 import com.google.gson.annotations.SerializedName
 
-data class NetworkSport (
+data class NetworkSport(
     @SerializedName("id")
     var id: Int?,
     @SerializedName("name")

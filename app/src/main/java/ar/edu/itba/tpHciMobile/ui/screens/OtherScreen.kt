@@ -15,7 +15,7 @@ import ar.edu.itba.tpHciMobile.R
 import ar.edu.itba.tpHciMobile.ui.theme.TP_HCI_MOBILETheme
 
 @Composable
-fun OtherScreen(id:Int?){
+fun OtherScreen(id: Int?) {
     Surface {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,

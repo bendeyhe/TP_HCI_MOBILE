@@ -54,7 +54,7 @@ class UserViewModel(
         { state, _ -> state }
     )
 
-    fun login(username: String, password: String) : Boolean {
+    fun login(username: String, password: String): Boolean {
         runOnViewModelScope(
             {
                 userRepository.login(username, password)

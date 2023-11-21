@@ -36,6 +36,7 @@ class MyAppState(
                 SnackbarResult.ActionPerformed -> {
                     actionPerformed()
                 }
+
                 SnackbarResult.Dismissed -> {
                     dismissed()
                 }

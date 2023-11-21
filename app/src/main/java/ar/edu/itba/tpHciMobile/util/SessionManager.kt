@@ -3,7 +3,7 @@ package ar.edu.itba.tpHciMobile.util
 import android.content.Context
 import android.content.SharedPreferences
 
-class SessionManager (context: Context){
+class SessionManager(context: Context) {
     private var preferences: SharedPreferences =
         context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE)
 

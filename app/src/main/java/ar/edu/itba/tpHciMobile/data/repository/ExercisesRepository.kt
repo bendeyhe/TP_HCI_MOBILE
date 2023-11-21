@@ -5,9 +5,9 @@ import ar.edu.itba.tpHciMobile.data.network.datasources.ExercisesRemoteDataSourc
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
-class ExercisesRepository (
+class ExercisesRepository(
     private val exercisesRemoteDataSource: ExercisesRemoteDataSource
-){
+) {
     private val exercisesMutex = Mutex()
     private var exercises: List<Exercises> = emptyList()
 
@@ -27,7 +27,9 @@ class ExercisesRepository (
     }
 
     suspend fun getExercise(exerciseId: Int): Exercises {
-        return exercisesMutex.withLock { exercisesRemoteDataSource.getExercise(exerciseId).asModel() }
+        return exercisesMutex.withLock {
+            exercisesRemoteDataSource.getExercise(exerciseId).asModel()
+        }
     }
 
     suspend fun getExercisesByCycle(cycleId: Int): List<Exercises> {

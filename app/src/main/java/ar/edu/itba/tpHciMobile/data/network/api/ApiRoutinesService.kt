@@ -22,15 +22,22 @@ interface ApiRoutinesService {
     suspend fun removeFavRoutine(@Path("routineId") routineId: Int): Response<Unit>
 
     @GET("routines")
-    suspend fun getRoutinesOrderBy(@Query("page") page: Int, @Query("orderBy") orderBy: String, @Query("direction") direction: String): Response<NetworkPagedContent<NetworkRoutine>>
+    suspend fun getRoutinesOrderBy(
+        @Query("page") page: Int,
+        @Query("orderBy") orderBy: String,
+        @Query("direction") direction: String
+    ): Response<NetworkPagedContent<NetworkRoutine>>
 
     @GET("routines/{routineId}")
-    suspend fun getRoutine(@Path("routineId") routineId: Int) : Response<NetworkRoutine>
+    suspend fun getRoutine(@Path("routineId") routineId: Int): Response<NetworkRoutine>
 
     @GET("routines/{routineId}/cycles")
-    suspend fun getCycles(@Path("routineId") routineId: Int) : Response<NetworkPagedContent<NetworkCompleteCycle>>
+    suspend fun getCycles(@Path("routineId") routineId: Int): Response<NetworkPagedContent<NetworkCompleteCycle>>
 
     @GET("routines/{routineId}/cycles/{cycleId}")
-    suspend fun getCycle(@Path("routineId") routineId: Int, @Path("cycleId") cycleId: Int) : Response<NetworkCompleteCycle>
+    suspend fun getCycle(
+        @Path("routineId") routineId: Int,
+        @Path("cycleId") cycleId: Int
+    ): Response<NetworkCompleteCycle>
 
 }

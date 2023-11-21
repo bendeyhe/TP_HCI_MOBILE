@@ -15,18 +15,20 @@ class UserRemoteDataSource(
     private val apiUserService: ApiUserService
 ) : RemoteDataSource() {
 
-    suspend fun register(user: NetworkUser) : NetworkUser {
+    suspend fun register(user: NetworkUser): NetworkUser {
         val response = handleApiResponse { apiUserService.register(user) }
         sessionManager.saveEmail(response.email) // todo no se si es necesario
         return response
     }
 
     suspend fun resendVerification(email: String) {
-        val response = handleApiResponse { apiUserService.resendVerification(NetworkUser(email = email)) }
+        val response =
+            handleApiResponse { apiUserService.resendVerification(NetworkUser(email = email)) }
     }
 
     suspend fun verifyEmail(email: String, code: String) {
-        val response = handleApiResponse { apiUserService.verifyEmail(NetworkVerifyUser(email, code)) }
+        val response =
+            handleApiResponse { apiUserService.verifyEmail(NetworkVerifyUser(email, code)) }
         sessionManager.saveAuthToken(email) // todo no se si es necesario
     }
 
@@ -42,7 +44,7 @@ class UserRemoteDataSource(
         sessionManager.removeAuthToken()
     }
 
-    suspend fun updateCurrentUser(user: NetworkUser) : NetworkUser {
+    suspend fun updateCurrentUser(user: NetworkUser): NetworkUser {
         return handleApiResponse { apiUserService.updateCurrentUser(user) }
     }
 

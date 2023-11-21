@@ -17,36 +17,39 @@ import ar.edu.itba.tpHciMobile.ui.main.Screen
 @Composable
 fun MyAppNavHost(navController: NavHostController, modifier: Modifier) {
     val uri = "http://www.example.com"
-    val secureUri="https://www.example.com"
+    val secureUri = "https://www.example.com"
     NavHost(
         navController = navController,
         startDestination = Screen.Routines.route,
         modifier = modifier
-    ){
-      /*  composable("home"){
-            HomeScreen(onNavigateToOtherScreen = {id -> navController.navigate("other/$id") })
-        }
-        composable(
-            "other/{id}",
-            arguments = listOf(navArgument("id") { type = NavType.IntType }),
-            deepLinks = listOf(navDeepLink { uriPattern = "$uri/other?id={id}"},
-            navDeepLink{uriPattern = "$secureUri/other?id={id}" }
-            )
-        ){
-            route -> OtherScreen(route.arguments?.getInt("id"))
-        }
+    ) {
+        /*  composable("home"){
+              HomeScreen(onNavigateToOtherScreen = {id -> navController.navigate("other/$id") })
+          }
+          composable(
+              "other/{id}",
+              arguments = listOf(navArgument("id") { type = NavType.IntType }),
+              deepLinks = listOf(navDeepLink { uriPattern = "$uri/other?id={id}"},
+              navDeepLink{uriPattern = "$secureUri/other?id={id}" }
+              )
+          ){
+              route -> OtherScreen(route.arguments?.getInt("id"))
+          }
 
-       */
-        composable(Screen.Routines.route){
+         */
+        composable(Screen.Routines.route) {
             Routines(navController = navController)
         }
-        composable(Screen.LoginScreen.route){
+        composable(Screen.LoginScreen.route) {
             Login(navController = navController)
         }
-        composable(Screen.Favorites.route){
+        composable(Screen.Favorites.route) {
             Favorites(navController = navController)
         }
-        composable(route = Screen.RoutineDetails.route + "/{id}", arguments = listOf(navArgument("id") { type = NavType.IntType }))  {
+        composable(
+            route = Screen.RoutineDetails.route + "/{id}",
+            arguments = listOf(navArgument("id") { type = NavType.IntType })
+        ) {
             println("2. ${it.arguments?.getInt("id")} ")
             RoutineDetails(navController = navController, routineId = it.arguments?.getInt("id")!!)
         }
