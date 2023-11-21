@@ -50,4 +50,5 @@
     <string name="not_valid_credentials">The credentials are not valid</string>
     <string name="no_routines">There are no routines to show</string>
     <string name="not_logged_in">You must be logged in to perform this action</string>
+    <string name="limit">Limit</string>
 </resources>

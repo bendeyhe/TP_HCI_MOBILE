@@ -103,7 +103,7 @@ fun Login(
                     supportingText = {
                         Text(
                             modifier = Modifier.fillMaxWidth(),
-                            text = "Limit: ${username.length}/$charLimit",
+                            text = stringResource(R.string.limit) + ": ${username.length}/$charLimit",
                         )
                     },
                     isError = isError,
@@ -138,7 +138,7 @@ fun Login(
                     supportingText = {
                         Text(
                             modifier = Modifier.fillMaxWidth(),
-                            text = "Limit: ${password.length}/$charLimit",
+                            text = stringResource(R.string.limit) + ": ${password.length}/$charLimit",
                         )
                     },
                     isError = isError,

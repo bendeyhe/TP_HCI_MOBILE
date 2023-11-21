@@ -18,6 +18,7 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.DropdownMenu
@@ -180,13 +181,10 @@ fun Routine(
                     modifier = Modifier.padding(end = 10.dp),
                 ) {
                     Icon(
-                        imageVector = Icons.Filled.Favorite,
+                        imageVector = if(routine.liked) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
                         "Like",
                         modifier = Modifier.size(36.dp),
-                        tint = animateColorAsState(
-                            targetValue = if (routine.liked) Color.Red else Color.DarkGray,
-                            label = ""
-                        ).value,
+                        tint = Color.Black
                     )
                 }
             }
