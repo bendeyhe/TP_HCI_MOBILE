@@ -142,7 +142,8 @@ fun Routine(
     routine: Routine,
     routinesViewModel: RoutinesViewModel,
     onItemClick: () -> Unit,
-    likeFunc: () -> Unit
+    likeFunc: () -> Unit,
+    color: Color = Color.White
 ) {
     var expanded = rememberSaveable { mutableStateOf(false) }
     var fav = rememberSaveable { mutableStateOf(false) }
@@ -160,6 +161,7 @@ fun Routine(
             .padding(vertical = 4.dp, horizontal = 8.dp)
             .clickable(onClick = onItemClick),
         shape = MaterialTheme.shapes.medium,
+        color = color
     ) {
         Row(modifier = Modifier.padding(horizontal = 20.dp, vertical = 4.dp)) {
             Column(
@@ -192,7 +194,6 @@ fun Routine(
                 IconToggleButton(
                     checked = routine.liked,
                     onCheckedChange = { likeFunc(); },
-                    modifier = Modifier.padding(end = 10.dp),
                 ) {
                     Icon(
                         imageVector = if (routine.liked) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,

@@ -88,7 +88,6 @@ fun RoutineDetails(
 }
 
 @Composable
-
 fun RoutineDetailsContent(
     modifier: Modifier,
     routinesViewModel: RoutinesViewModel,
@@ -102,10 +101,17 @@ fun RoutineDetailsContent(
             Text(text = it.exercise.name)
         }
     }*/
+
+
     Column {
-        Text(
-            text = currentRoutine.name,
-            style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.ExtraBold)
+        Routine(
+            routine = currentRoutine,
+            routinesViewModel = routinesViewModel,
+            onItemClick = {},
+            likeFunc = {
+                routinesViewModel.toggleLike(currentRoutine)
+            },
+            color = Color.LightGray
         )
         CollapsableLazyColumn(
             sections = routinesViewModel.uiState.cycleDetailList.map {
@@ -118,14 +124,12 @@ fun RoutineDetailsContent(
                         )
                     } ?: emptyList()
                 )
-            }
+            },
         )
     }
 
 
-
-
-    }/*
+}/*
     Column() {
         Text(
             text = currentRoutine.name,
@@ -139,9 +143,8 @@ fun RoutineDetailsContent(
     */
 
 
-
 @Composable
-fun Buttons(routine: Routine, navController: NavController){
+fun Buttons(routine: Routine, navController: NavController) {
     val sendIntent: Intent = Intent().apply {
         action = Intent.ACTION_SEND
         putExtra(Intent.EXTRA_TEXT, "https://toobig.com/routine/" + routine.id)
@@ -215,6 +218,13 @@ fun CollapsableLazyColumn(
                             collapsedState[i] = !collapsed
                         }
                 ) {
+                    Text(
+                        dataItem.title,
+                        fontWeight = FontWeight.Bold,
+                        style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
+                        modifier = Modifier.padding(10.dp)
+                    )
+                    Spacer(modifier = Modifier.weight(1f))
                     Icon(
                         Icons.Default.run {
                             if (collapsed)
@@ -222,14 +232,9 @@ fun CollapsableLazyColumn(
                             else
                                 KeyboardArrowUp
                         },
+                        modifier = Modifier.padding(10.dp),
                         contentDescription = "",
                         tint = Color.LightGray,
-                    )
-                    Text(
-                        dataItem.title,
-                        fontWeight = FontWeight.Bold,
-                        style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.ExtraBold),
-                        modifier = Modifier.padding(vertical = 10.dp)
                     )
                 }
                 Divider()
@@ -239,18 +244,21 @@ fun CollapsableLazyColumn(
                     Row {
                         Spacer(modifier = Modifier.size(MaterialIconDimension.dp))
                         Column() {
-                            Text(
-                                row.name,
-                                modifier = Modifier
-                                    .padding(vertical = 10.dp),
-                                style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold)
-                            )
-                            Text(
-                                row.duration,
-                                modifier = Modifier
-                                    .padding(vertical = 10.dp),
-                                style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold)
-                            )
+                            Row() {
+                                Text(
+                                    row.name,
+                                    modifier = Modifier
+                                        .padding(vertical = 10.dp),
+                                    style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Medium)
+                                )
+                                Spacer(modifier = Modifier.weight(1f))
+                                Text(
+                                    row.duration + " unidad", //todo gonza poner segundos o repeticiones en vez de unidad
+                                    modifier = Modifier
+                                        .padding(10.dp),
+                                    style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Medium)
+                                )
+                            }
                         }
                     }
                     Divider()
