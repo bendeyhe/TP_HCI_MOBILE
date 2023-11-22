@@ -276,79 +276,94 @@ fun ExecuteRoutineContent(
                 else {
                     //TODO ESTO NO ES UN TODO, SOLO QUERIA QUE SE ME MARQUE LA SEGUNDA VIEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 
-                    Surface(modifier = Modifier.padding(top = 50.dp)) {
+                    Surface(modifier = modifier.fillMaxSize()) {
                         Column {
                             for (cycle in routinesViewModel.uiState.cycleDetailList) {
                                 if (cycle == routinesViewModel.uiState.cycleDetailList[routinesViewModel.uiState.currentCycleIndex]) {
                                     Row (Modifier.background(Color.LightGray)){
                                         Text(
                                             text = cycle.cycle!!.name,
-                                            style = MaterialTheme.typography.headlineMedium.copy(
+                                            style = MaterialTheme.typography.headlineSmall.copy(
                                                 fontWeight = FontWeight.Bold
-                                            )
+                                            ),
+                                            modifier = Modifier.padding(start = 8.dp)
                                         )
                                         Spacer(modifier = Modifier.weight(1f))
                                         Text(
                                             text = "" + (routinesViewModel.uiState.currentRepetitionIndex + 1) + "/" + routinesViewModel.uiState.cycleDetailList[routinesViewModel.uiState.currentCycleIndex].cycle!!.repetitions,
-                                            style = MaterialTheme.typography.headlineMedium.copy(
+                                            style = MaterialTheme.typography.headlineSmall.copy(
                                                 fontWeight = FontWeight.Bold
-                                            )
+                                            ),
+                                            modifier = Modifier.padding(end = 8.dp)
                                         )
                                     }
                                 }
                                 else
                                     Text(
                                         text = cycle.cycle!!.name,
-                                        style = MaterialTheme.typography.headlineMedium.copy(
+                                        style = MaterialTheme.typography.headlineSmall.copy(
                                             fontWeight = FontWeight.Normal
-                                        )
+                                        ),
+                                        modifier = Modifier.padding(start = 8.dp)
                                     )
                                 Divider()
                                 for (exercise in cycle.exercises) {
                                     if (exercise == routinesViewModel.uiState.currentExercise) {
-                                        Row(Modifier.background(Color(0xFF8EFE00))) {
-                                            Text(
-                                                text = exercise.exercise.name,
-                                                style = MaterialTheme.typography.headlineMedium.copy(
-                                                    fontWeight = FontWeight.ExtraBold,
-                                                ),
-                                            )
-                                            Spacer(modifier = Modifier.weight(1f))
-                                            if (exercise.repetitions!! > 0) {
-                                                var txt = if(exercise.repetitions!! > 1) "${exercise.repetitions} " + stringResource(R.string.repetitions) else "${exercise.repetitions} " + stringResource(R.string.repetition)
-                                                if(exercise.duration!! > 0)
-                                                    txt += " " + stringResource(R.string.`in`) + " "
-                                                Text(
-                                                    text = txt,
-                                                    style = MaterialTheme.typography.headlineMedium.copy(
-                                                        fontWeight = FontWeight.ExtraBold,
-                                                    ),
-                                                )
-                                            }
-                                            if (exercise.duration!! > 0) {
-                                                Text(
-                                                    text = if(timeLeft!! > 1) "$timeLeft " + stringResource(R.string.seconds) else "$timeLeft " + stringResource(R.string.second),
-                                                    style = MaterialTheme.typography.headlineMedium.copy(
-                                                        fontWeight = FontWeight.ExtraBold,
-                                                    ),
-                                                )
-                                                LaunchedEffect(
-                                                    key1 = timeLeft,
-                                                    key2 = isPaused
+                                        Surface(modifier = Modifier.fillMaxWidth()) {
+                                            Column(
+                                                Modifier.background(Color(0xFF8EFE00)),
+                                                horizontalAlignment = Alignment.CenterHorizontally
                                                 ) {
-                                                    while (timeLeft!! > 0 && !isPaused) {
-                                                        delay(1000L)
-                                                        timeLeft = timeLeft!! - 1
-                                                        if (timeLeft == 0)
-                                                            if (!routinesViewModel.uiState.isFetchingRoutine) {
-                                                                routinesViewModel.nextExercise()
-                                                                timeLeft =
-                                                                    routinesViewModel.uiState.currentExercise?.duration
-                                                            }
+                                                Text(
+                                                    text = exercise.exercise.name,
+                                                    style = MaterialTheme.typography.headlineMedium.copy(
+                                                        fontWeight = FontWeight.ExtraBold,
+                                                    ),
+                                                )
+                                                //Spacer(modifier = Modifier.weight(1f))
+                                                if (exercise.repetitions!! > 0) {
+                                                    var txt =
+                                                        if (exercise.repetitions!! > 1) "${exercise.repetitions} " + stringResource(
+                                                            R.string.repetitions
+                                                        ) else "${exercise.repetitions} " + stringResource(
+                                                            R.string.repetition
+                                                        )
+                                                    if (exercise.duration!! > 0)
+                                                        txt += " " + stringResource(R.string.`in`) + " "
+                                                    Text(
+                                                        text = txt,
+                                                        style = MaterialTheme.typography.headlineMedium.copy(
+                                                            fontWeight = FontWeight.ExtraBold,
+                                                        ),
+                                                    )
+                                                }
+                                                if (exercise.duration!! > 0) {
+                                                    Text(
+                                                        text = if (timeLeft!! > 1) "$timeLeft " + stringResource(
+                                                            R.string.seconds
+                                                        ) else "$timeLeft " + stringResource(R.string.second),
+                                                        style = MaterialTheme.typography.headlineMedium.copy(
+                                                            fontWeight = FontWeight.ExtraBold,
+                                                        ),
+                                                    )
+                                                    LaunchedEffect(
+                                                        key1 = timeLeft,
+                                                        key2 = isPaused
+                                                    ) {
+                                                        while (timeLeft!! > 0 && !isPaused) {
+                                                            delay(1000L)
+                                                            timeLeft = timeLeft!! - 1
+                                                            if (timeLeft == 0)
+                                                                if (!routinesViewModel.uiState.isFetchingRoutine) {
+                                                                    routinesViewModel.nextExercise()
+                                                                    timeLeft =
+                                                                        routinesViewModel.uiState.currentExercise?.duration
+                                                                }
+                                                        }
                                                     }
                                                 }
-                                            }
 
+                                            }
                                         }
                                     } else {
                                         Row() {
@@ -357,6 +372,7 @@ fun ExecuteRoutineContent(
                                                 style = MaterialTheme.typography.bodyLarge.copy(
                                                     fontWeight = FontWeight.Normal
                                                 ),
+                                                modifier = Modifier.padding(start = 8.dp)
                                             )
                                             Spacer(modifier = Modifier.weight(1f))
                                             if (exercise.repetitions!! > 0) {
@@ -378,7 +394,7 @@ fun ExecuteRoutineContent(
                                                     ),
                                                 )
                                             }
-
+                                            Text(" ")
                                         }
                                     }
                                     Divider()
