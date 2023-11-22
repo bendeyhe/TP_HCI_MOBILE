@@ -167,7 +167,8 @@ fun ExecuteRoutineContent(
                             modifier = Modifier
                                 .background(
                                     color = Color.LightGray,
-                                    shape = RoundedCornerShape(16.dp))
+                                    shape = RoundedCornerShape(16.dp)
+                                )
                                 .padding(16.dp)
                         ) {
                             Column(
@@ -232,7 +233,8 @@ fun ExecuteRoutineContent(
                                     )
                                     {
                                         if (isPaused) {
-                                            Icon(Icons.Filled.PlayArrow,
+                                            Icon(
+                                                Icons.Filled.PlayArrow,
                                                 "Play",
                                                 tint = Color.Black,
                                                 modifier = Modifier.size(35.dp)
@@ -286,7 +288,9 @@ fun ExecuteRoutineContent(
                             fontWeight = FontWeight.Bold
                         )
                     )
-                    RatingBar(currentRating = currentRating, onRatingChanged = { currentRating = it })
+                    RatingBar(
+                        currentRating = currentRating,
+                        onRatingChanged = { currentRating = it })
                     Row() {
                         Button(
                             onClick = { navController.navigate("routine/${routinesViewModel.uiState.currentRoutine?.id}") },
@@ -307,7 +311,10 @@ fun ExecuteRoutineContent(
                                 var review: Review = Review()
                                 review.review = ""
                                 review.score = 3 // TODO CAMBIAR ESTO A LO QUE SEA QUE ELIJA
-                                routinesViewModel.setReview(routinesViewModel.uiState.currentRoutine!!.id, review)
+                                routinesViewModel.setReview(
+                                    routinesViewModel.uiState.currentRoutine!!.id,
+                                    review
+                                )
                                 navController.navigate(Screen.RoutineDetails.route + "/${routinesViewModel.uiState.currentRoutine!!.id}")
                             },
                             modifier = Modifier.padding(16.dp),
@@ -343,17 +350,26 @@ fun RatingBar(
 ) {
     Row {
         for (i in 1..maxRating) {
-            Icon(
-                imageVector = if (i <= currentRating) Icons.Filled.Star
-                else Icons.Outlined.Star,
-                contentDescription = null,
-                tint = if (i <= currentRating) starsColor
-                else Color.LightGray,
-                modifier = Modifier
-                    .padding(5.dp)
-                    .size(50.dp)
-                    .clickable { onRatingChanged(i) }
-            )
+            if (i <= currentRating)
+                Icon(
+                    Icons.Outlined.Star,
+                    contentDescription = null,
+                    tint = Color.Black,
+                    modifier = Modifier
+                        .size(50.dp)
+                        .padding(5.dp)
+                        .clickable { onRatingChanged(i) }
+                )
+            else
+                Icon(
+                    painterResource(R.drawable.star_border),
+                    contentDescription = null,
+                    tint = Color.Black,
+                    modifier = Modifier
+                        .size(50.dp)
+                        .padding(5.dp)
+                        .clickable { onRatingChanged(i) }
+                )
         }
     }
 }
