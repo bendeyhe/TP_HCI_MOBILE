@@ -1,5 +1,6 @@
 package ar.edu.itba.tpHciMobile.ui.screens
 
+import android.widget.Toast
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.spring
@@ -54,6 +55,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import ar.edu.itba.tpHciMobile.R
 import ar.edu.itba.tpHciMobile.data.model.Routine
+import ar.edu.itba.tpHciMobile.ui.main.MyApplication
 import ar.edu.itba.tpHciMobile.ui.main.Screen
 import ar.edu.itba.tpHciMobile.ui.main.viewmodels.RoutinesViewModel
 import ar.edu.itba.tpHciMobile.ui.main.viewmodels.UserViewModel
@@ -136,7 +138,6 @@ fun Routines(
     }
 }
 
-
 @Composable
 fun Routine(
     routine: Routine,
@@ -157,10 +158,22 @@ fun Routine(
         ), label = ""
     )
 
+    val notLoggedIn = stringResource(R.string.not_logged_in)
+
     Surface(
         modifier = Modifier
             .padding(vertical = 4.dp, horizontal = 8.dp)
-            .clickable(onClick = onItemClick),
+            .clickable(onClick = {
+                if(userViewModel.uiState.isAuthenticated) {
+                    onItemClick()
+                } else {
+                    Toast.makeText(
+                        MyApplication.instance,
+                        notLoggedIn,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }),
         shape = MaterialTheme.shapes.medium,
         color = color
     ) {
@@ -176,6 +189,7 @@ fun Routine(
                 ) {
                     Text(
                         text = routine.name + " ",
+                        color = Color.Black,
                         style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.ExtraBold)
                     )
                     ShowRatingBar(
@@ -188,18 +202,21 @@ fun Routine(
                 Row {
                     Text(
                         text = routine.detail ?: "",
+                        color = Color.Black,
                         style = MaterialTheme.typography.bodyMedium.copy(fontSize = 20.sp)
                     )
                 }
                 Row {
                     Text(
                         text = stringResource(R.string.category) + ": " + routine.category.name,
+                        color = Color.Black,
                         style = MaterialTheme.typography.headlineMedium.copy(fontSize = 18.sp)
                     )
                 }
                 Row {
                     Text(
                         text = stringResource(R.string.difficulty) + ": " + routine.difficulty,
+                        color = Color.Black,
                         style = MaterialTheme.typography.headlineMedium.copy(fontSize = 18.sp)
                     )
                 }
@@ -217,10 +234,7 @@ fun Routine(
                             tint = Color.Black
                         )
                     }
-                } else {
-                    Text("a")
                 }
-                //ShowDifficulty(routine.difficulty!!)
             }
         }
     }

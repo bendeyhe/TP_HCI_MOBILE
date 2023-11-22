@@ -65,6 +65,11 @@ class UserViewModel(
         return uiState.isAuthenticated
     }
 
+    fun getCurrentUser() = runOnViewModelScope(
+        { userRepository.getCurrentUser(true) },
+        { state, response -> state.copy(currentUser = response) }
+    )
+
     fun logout() = runOnViewModelScope(
         { userRepository.logout() },
         { state, _ ->

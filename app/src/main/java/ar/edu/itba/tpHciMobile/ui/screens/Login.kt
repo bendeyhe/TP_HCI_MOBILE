@@ -70,7 +70,7 @@ fun Login(
         isError = text.length > charLimit
     }
 
-    if (userViewModel.uiState.currentUser == null || !userViewModel.uiState.isAuthenticated) {
+    if (!userViewModel.uiState.isAuthenticated) {
         Surface(modifier = Modifier.fillMaxSize()) {
             Column(
                 modifier = Modifier
@@ -208,7 +208,10 @@ fun Login(
             }
         }
     } else {
-        Surface() {
+        if(userViewModel.uiState.currentUser == null)
+            userViewModel.getCurrentUser()
+        if(!userViewModel.uiState.isFetching) {
+            Surface() {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -378,6 +381,8 @@ fun Login(
                 }
             }
         }
+        } else
+            Loading()
     }
 }
 /*

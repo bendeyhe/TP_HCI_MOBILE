@@ -42,81 +42,91 @@ fun Favorites(
     routinesViewModel: RoutinesViewModel,
     userViewModel: UserViewModel
 ) {
-
-    if (routinesViewModel.uiState.isFetchingRoutine) {
-        Loading()
+    if (!userViewModel.uiState.isAuthenticated) {
+        // TODO BEN PONER ESTO FACHERAZO MAL RE PIOLANGA
+        Text(
+            text = stringResource(R.string.not_logged_in),
+            fontSize = MaterialTheme.typography.bodyMedium.fontSize,
+            fontWeight = FontWeight.Medium,
+            modifier = Modifier.padding(start = 10.dp, top = 5.dp),
+            textAlign = TextAlign.Center
+        )
     } else {
-        if (routinesViewModel.uiState.favouriteRoutines == null || routinesViewModel.uiState.updatedFavs)
-            routinesViewModel.getFavsRoutines()
-        var routines = emptyList<Routine>()
-        if (!routinesViewModel.uiState.isFetchingRoutine)
-            routines = routinesViewModel.uiState.favouriteRoutines.orEmpty()
+        if (routinesViewModel.uiState.isFetchingRoutine) {
+            Loading()
+        } else {
+            if (routinesViewModel.uiState.favouriteRoutines == null || routinesViewModel.uiState.updatedFavs)
+                routinesViewModel.getFavsRoutines()
+            var routines = emptyList<Routine>()
+            if (!routinesViewModel.uiState.isFetchingRoutine)
+                routines = routinesViewModel.uiState.favouriteRoutines.orEmpty()
 
-        Surface(
-            color = Color(0xFFAEB0B2),
-            modifier = modifier.fillMaxHeight()
-        ) {
-            Column(
-                horizontalAlignment = Alignment.Start,
-                verticalArrangement = Arrangement.Top
+            Surface(
+                color = Color(0xFFAEB0B2),
+                modifier = modifier.fillMaxHeight()
             ) {
-                Row() {
-                    Text(
-                        text = stringResource(R.string.favorites),
-                        textAlign = TextAlign.Left,
-                        fontSize = 30.sp,
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier.padding(8.dp)
-                    )
-                }
-                val list = routines
-                if (list.isNotEmpty()) {
-                    SwipeRefresh(
-                        state = rememberSwipeRefreshState(isRefreshing = routinesViewModel.uiState.isFetchingRoutine),
-                        onRefresh = { routinesViewModel.getFavoriteRoutines() }
-                    ) {
-                        LazyVerticalGrid(
-                            state = rememberLazyGridState(),
-                            columns = GridCells.Adaptive(minSize = 300.dp)
+                Column(
+                    horizontalAlignment = Alignment.Start,
+                    verticalArrangement = Arrangement.Top
+                ) {
+                    Row() {
+                        Text(
+                            text = stringResource(R.string.favorites),
+                            textAlign = TextAlign.Left,
+                            fontSize = 30.sp,
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier.padding(8.dp)
+                        )
+                    }
+                    val list = routines
+                    if (list.isNotEmpty()) {
+                        SwipeRefresh(
+                            state = rememberSwipeRefreshState(isRefreshing = routinesViewModel.uiState.isFetchingRoutine),
+                            onRefresh = { routinesViewModel.getFavoriteRoutines() }
                         ) {
-                            items(items = list) { routine ->
-                                Routine(
-                                    routine = routine,
-                                    routinesViewModel = routinesViewModel,
-                                    userViewModel = userViewModel,
-                                    onItemClick = {
-                                        if (!routinesViewModel.uiState.isFetchingRoutine) {
-                                            routinesViewModel.getRoutine(routine.id)
-                                            navController.navigate(Screen.RoutineDetails.route + "/${routine.id}")
-                                        }
-                                    },
-                                    likeFunc = {
-                                        routinesViewModel.toggleLike(routine)
-                                    },
-                                )
+                            LazyVerticalGrid(
+                                state = rememberLazyGridState(),
+                                columns = GridCells.Adaptive(minSize = 300.dp)
+                            ) {
+                                items(items = list) { routine ->
+                                    Routine(
+                                        routine = routine,
+                                        routinesViewModel = routinesViewModel,
+                                        userViewModel = userViewModel,
+                                        onItemClick = {
+                                            if (!routinesViewModel.uiState.isFetchingRoutine) {
+                                                routinesViewModel.getRoutine(routine.id)
+                                                navController.navigate(Screen.RoutineDetails.route + "/${routine.id}")
+                                            }
+                                        },
+                                        likeFunc = {
+                                            routinesViewModel.toggleLike(routine)
+                                        },
+                                    )
+                                }
                             }
                         }
-                    }
-                } else {
-                    SwipeRefresh(
-                        state = rememberSwipeRefreshState(isRefreshing = routinesViewModel.uiState.isFetchingRoutine),
-                        onRefresh = { routinesViewModel.getFavoriteRoutines() }
-                    ) {
-                        LazyColumn(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .fillMaxHeight(0.91f)
-                                .padding(bottom = 5.dp),
-                            horizontalAlignment = Alignment.CenterHorizontally,
+                    } else {
+                        SwipeRefresh(
+                            state = rememberSwipeRefreshState(isRefreshing = routinesViewModel.uiState.isFetchingRoutine),
+                            onRefresh = { routinesViewModel.getFavoriteRoutines() }
                         ) {
-                            item {
-                                Text(
-                                    text = stringResource(R.string.no_favorites),
-                                    fontSize = MaterialTheme.typography.bodyMedium.fontSize,
-                                    fontWeight = FontWeight.Medium,
-                                    modifier = Modifier.padding(start = 10.dp, top = 5.dp),
-                                    textAlign = TextAlign.Center
-                                )
+                            LazyColumn(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .fillMaxHeight(0.91f)
+                                    .padding(bottom = 5.dp),
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                            ) {
+                                item {
+                                    Text(
+                                        text = stringResource(R.string.no_favorites),
+                                        fontSize = MaterialTheme.typography.bodyMedium.fontSize,
+                                        fontWeight = FontWeight.Medium,
+                                        modifier = Modifier.padding(start = 10.dp, top = 5.dp),
+                                        textAlign = TextAlign.Center
+                                    )
+                                }
                             }
                         }
                     }

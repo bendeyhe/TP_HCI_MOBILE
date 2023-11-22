@@ -385,7 +385,7 @@ fun ExecuteRoutineContent(
                     )
                     RatingBar(
                         currentRating = currentRating,
-                        onRatingChanged = { Unit })
+                        onRatingChanged = { currentRating = it })
                     Row {
                         Button(
                             onClick = {
