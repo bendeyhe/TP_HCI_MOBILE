@@ -70,15 +70,19 @@ const val MaterialIconDimension = 24f
 
 @Composable
 fun RoutineDetails(
-    userViewModel: UserViewModel = viewModel(factory = getViewModelFactory()),
+    userViewModel: UserViewModel,
     navController: NavController,
-    routinesViewModel: RoutinesViewModel = viewModel(factory = getViewModelFactory()),
+    routinesViewModel: RoutinesViewModel,
     routineId: Int
 ) {
     var toastShown by rememberSaveable { mutableStateOf(false) }
     if (routinesViewModel.uiState.fetchRoutineErrorStringId != null) {
         if (!toastShown)
-            Toast.makeText(MyApplication.instance, stringResource(R.string.no_routines), Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                MyApplication.instance,
+                stringResource(R.string.no_routines),
+                Toast.LENGTH_SHORT
+            ).show()
         toastShown = true
         navController.navigate(Screen.Routines.route)
     }
@@ -94,6 +98,7 @@ fun RoutineDetails(
                 RoutineDetailsContent(
                     Modifier.padding(contentPadding),
                     routinesViewModel,
+                    userViewModel,
                     currentRoutine
                 )
             }
@@ -109,12 +114,14 @@ fun RoutineDetails(
 fun RoutineDetailsContent(
     modifier: Modifier = Modifier,
     routinesViewModel: RoutinesViewModel,
+    userViewModel: UserViewModel,
     currentRoutine: Routine
 ) {
     Column {
         Routine(
             routine = currentRoutine,
             routinesViewModel = routinesViewModel,
+            userViewModel = userViewModel,
             onItemClick = {},
             likeFunc = {
                 routinesViewModel.toggleLike(currentRoutine)
@@ -178,7 +185,10 @@ fun Buttons(
             Icon(Icons.Filled.Share, "Share", tint = Color.Black)
         }
         Button(
-            onClick = { navController.navigate(Screen.ExecuteRoutine.route + "/" + routineId) },
+            onClick = {
+                routinesViewModel.startExecution(routineId)
+                navController.navigate(Screen.ExecuteRoutine.route + "/" + routineId)
+            },
             contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF8EFE00)),
             modifier = Modifier.padding(16.dp),

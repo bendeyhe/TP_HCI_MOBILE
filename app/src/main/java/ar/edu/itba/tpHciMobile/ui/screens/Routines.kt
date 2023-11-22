@@ -65,8 +65,8 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 fun Routines(
     modifier: Modifier = Modifier,
     navController: NavController,
-    routinesViewModel: RoutinesViewModel = viewModel(factory = getViewModelFactory()),
-    userViewModel: UserViewModel = viewModel(factory = getViewModelFactory()),
+    routinesViewModel: RoutinesViewModel,
+    userViewModel: UserViewModel,
 ) {
     if (routinesViewModel.uiState.isFetchingRoutine) {
         Loading()
@@ -114,6 +114,7 @@ fun Routines(
                                 Routine(
                                     routine = routine,
                                     routinesViewModel = routinesViewModel,
+                                    userViewModel = userViewModel,
                                     onItemClick = {
                                         if (!routinesViewModel.uiState.isFetchingRoutine) {
                                             routinesViewModel.getRoutine(routine.id)
@@ -140,6 +141,7 @@ fun Routines(
 fun Routine(
     routine: Routine,
     routinesViewModel: RoutinesViewModel,
+    userViewModel: UserViewModel,
     onItemClick: () -> Unit,
     likeFunc: () -> Unit,
     color: Color = Color.White
@@ -203,16 +205,20 @@ fun Routine(
                 }
             }
             Column() {
-                IconToggleButton(
-                    checked = routine.liked,
-                    onCheckedChange = { likeFunc(); },
-                ) {
-                    Icon(
-                        imageVector = if (routine.liked) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
-                        "Like",
-                        modifier = Modifier.size(36.dp),
-                        tint = Color.Black
-                    )
+                if(userViewModel.uiState.isAuthenticated) {
+                    IconToggleButton(
+                        checked = routine.liked,
+                        onCheckedChange = { likeFunc(); },
+                    ) {
+                        Icon(
+                            imageVector = if (routine.liked) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
+                            "Like",
+                            modifier = Modifier.size(36.dp),
+                            tint = Color.Black
+                        )
+                    }
+                } else {
+                    Text("a")
                 }
                 //ShowDifficulty(routine.difficulty!!)
             }
@@ -224,7 +230,7 @@ fun Routine(
 @Composable
 fun OrderByBtn(
     modifier: Modifier = Modifier,
-    routinesViewModel: RoutinesViewModel = viewModel(factory = getViewModelFactory())
+    routinesViewModel: RoutinesViewModel
 ) {
     val options = listOf(
         stringResource(R.string.order_by_date_desc),

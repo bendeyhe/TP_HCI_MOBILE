@@ -58,8 +58,8 @@
     <string name="remaining_reps">Remaining repetitions</string>
     <string name="next">NEXT</string>
     <string name="back">BACK</string>
-    <string name="routine_finished">Congratulations! You have finished the routine.</string>
-    <string name="rank_routine">Did you like the it?</string>
+    <string name="routine_finished">Congratulations! You have finished</string>
+    <string name="rank_routine">Did you like it?</string>
     <string name="skip">SKIP</string>
     <string name="repetitions">Repetitions</string>
     <string name="repetition">Repetition</string>

@@ -48,6 +48,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -55,6 +56,7 @@ import androidx.navigation.compose.rememberNavController
 import ar.edu.itba.tpHciMobile.R
 import ar.edu.itba.tpHciMobile.navigation.MyAppNavHost
 import ar.edu.itba.tpHciMobile.ui.theme.TP_HCI_MOBILETheme
+import ar.edu.itba.tpHciMobile.util.getViewModelFactory
 
 class MainActivity : ComponentActivity() {
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -121,6 +123,9 @@ class MainActivity : ComponentActivity() {
                 ) { contentPadding ->
                     MyAppNavHost(
                         navController = navController,
+                        userViewModel = viewModel(factory = getViewModelFactory()),
+                        routinesViewModel = viewModel(factory = getViewModelFactory()),
+                        mainViewModel = viewModel(factory = getViewModelFactory()),
                         modifier = Modifier.padding(contentPadding)
                     )
                 }

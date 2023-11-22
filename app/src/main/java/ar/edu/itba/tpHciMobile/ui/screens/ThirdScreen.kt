@@ -32,12 +32,12 @@ import ar.edu.itba.tpHciMobile.util.getViewModelFactory
 import kotlin.random.Random
 
 @Composable
-fun ThirdScreen(navController: NavController) {
+fun ThirdScreen(navController: NavController, viewModel: MainViewModel) {
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
     ) {
-        MainScreen(navController = navController)
+        MainScreen(navController = navController, viewModel = viewModel)
         // Text(text = "Third Screen", fontSize=30.sp)
     }
 }
@@ -65,7 +65,7 @@ fun ActionButton(
 
 @Composable
 fun MainScreen(
-    viewModel: MainViewModel = viewModel(factory = getViewModelFactory()),
+    viewModel: MainViewModel,
     navController: NavController
 ) {
     val uiState = viewModel.uiState

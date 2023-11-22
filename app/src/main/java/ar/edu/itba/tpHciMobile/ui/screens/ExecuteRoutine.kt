@@ -60,7 +60,7 @@ var routineFinished by mutableStateOf(false)
 fun ExecuteRoutine(
     modifier: Modifier = Modifier,
     navController: NavController,
-    routinesViewModel: RoutinesViewModel = viewModel(factory = getViewModelFactory()),
+    routinesViewModel: RoutinesViewModel,
     routineId: Int
 ) {
     @OptIn(ExperimentalMaterial3Api::class)
@@ -119,14 +119,14 @@ fun ExecuteRoutine(
 fun ExecuteRoutineContent(
     modifier: Modifier = Modifier,
     navController: NavController,
-    routinesViewModel: RoutinesViewModel = viewModel(factory = getViewModelFactory()),
+    routinesViewModel: RoutinesViewModel,
     routineId: Int
 ) {
     var currentRating by remember { mutableStateOf(0) }
     if (routinesViewModel.uiState.isFetchingExecution) {
         Loading()
     } else {
-        if (routinesViewModel.uiState.currentRoutine == null)
+        if (routinesViewModel.uiState.finishedExecution || (!routinesViewModel.uiState.isFetchingExecution && (routinesViewModel.uiState.currentRoutine == null || routinesViewModel.uiState.currentRoutineCycle == null || routinesViewModel.uiState.currentExercise == null)))
             routinesViewModel.startExecution(routineId)
         if (!routinesViewModel.uiState.isFetchingExecution) {
             if (routinesViewModel.uiState.isExecuting) {
@@ -370,7 +370,7 @@ fun ExecuteRoutineContent(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        text = stringResource(R.string.routine_finished), //TODO TRADUCIR
+                        text = stringResource(R.string.routine_finished) + " " + routinesViewModel.uiState.currentRoutine!!.name + "!",
                         style = MaterialTheme.typography.headlineLarge.copy(
                             fontWeight = FontWeight.Bold
                         ),
@@ -378,24 +378,20 @@ fun ExecuteRoutineContent(
                         textAlign = androidx.compose.ui.text.style.TextAlign.Center,
                     )
                     Text(
-                        text = stringResource(R.string.rank_routine),// TODO TRADUCIR
+                        text = stringResource(R.string.rank_routine),
                         style = MaterialTheme.typography.headlineLarge.copy(
                             fontWeight = FontWeight.Bold
                         )
                     )
                     RatingBar(
                         currentRating = currentRating,
-                        onRatingChanged = {
-                            currentRating = it * 2
-                            routinesViewModel.setReview(
-                                routinesViewModel.uiState.currentRoutine!!.id,
-                                Review(currentRating)
-                            )
-
-                        })
+                        onRatingChanged = { Unit })
                     Row {
                         Button(
-                            onClick = { navController.navigate("routine/${routinesViewModel.uiState.currentRoutine?.id}") },
+                            onClick = {
+                                routinesViewModel.finishExecution()
+                                navController.navigate(Screen.Routines.route)
+                            },
                             modifier = Modifier.padding(16.dp),
                             colors = ButtonDefaults.buttonColors(containerColor = Color.LightGray)
                         ) {
@@ -410,12 +406,14 @@ fun ExecuteRoutineContent(
                         }
                         Button(
                             onClick = {
-                                var review: Review = Review(currentRating)
-                                routinesViewModel.setReview(
-                                    routinesViewModel.uiState.currentRoutine!!.id,
-                                    review
-                                )
-                                navController.navigate(Screen.RoutineDetails.route + "/${routinesViewModel.uiState.currentRoutine!!.id}")
+                                if (!routinesViewModel.uiState.isFetchingRoutine) {
+                                    var review: Review = Review(currentRating)
+                                    routinesViewModel.setReview(
+                                        routinesViewModel.uiState.currentRoutine!!.id, review
+                                    )
+                                }
+                                routinesViewModel.finishExecution()
+                                navController.navigate(Screen.Routines.route)
                             },
                             modifier = Modifier.padding(16.dp),
                             colors = ButtonDefaults.buttonColors(

@@ -57,7 +57,7 @@ import ar.edu.itba.tpHciMobile.util.getViewModelFactory
 @Composable
 fun Login(
     navController: NavController,
-    userViewModel: UserViewModel = viewModel(factory = getViewModelFactory())
+    userViewModel: UserViewModel
 ) {
     var username by rememberSaveable { mutableStateOf("") }
     var password by rememberSaveable { mutableStateOf("") }

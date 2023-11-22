@@ -30,6 +30,7 @@ import ar.edu.itba.tpHciMobile.R
 import ar.edu.itba.tpHciMobile.data.model.Routine
 import ar.edu.itba.tpHciMobile.ui.main.Screen
 import ar.edu.itba.tpHciMobile.ui.main.viewmodels.RoutinesViewModel
+import ar.edu.itba.tpHciMobile.ui.main.viewmodels.UserViewModel
 import ar.edu.itba.tpHciMobile.util.getViewModelFactory
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
@@ -38,7 +39,8 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 fun Favorites(
     modifier: Modifier = Modifier,
     navController: NavController,
-    routinesViewModel: RoutinesViewModel = viewModel(factory = getViewModelFactory())
+    routinesViewModel: RoutinesViewModel,
+    userViewModel: UserViewModel
 ) {
 
     if (routinesViewModel.uiState.isFetchingRoutine) {
@@ -81,6 +83,7 @@ fun Favorites(
                                 Routine(
                                     routine = routine,
                                     routinesViewModel = routinesViewModel,
+                                    userViewModel = userViewModel,
                                     onItemClick = {
                                         if (!routinesViewModel.uiState.isFetchingRoutine) {
                                             routinesViewModel.getRoutine(routine.id)

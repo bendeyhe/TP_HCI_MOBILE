@@ -249,7 +249,11 @@ class RoutinesViewModel(
     )
 
     fun nextExercise() = viewModelScope.launch {
-        uiState = uiState.copy(isFetchingRoutine = true, fetchRoutineErrorStringId = null, hasChangedExercise = true)
+        uiState = uiState.copy(
+            isFetchingRoutine = true,
+            fetchRoutineErrorStringId = null,
+            hasChangedExercise = true
+        )
         if (uiState.currentCycleIndex == uiState.cycleDetailList.size - 1 && uiState.currentExerciseIndex == uiState.cycleDetailList.last().exercises.size - 1) {
             uiState = uiState.copy(isExecuting = false)
         }
@@ -258,9 +262,11 @@ class RoutinesViewModel(
             uiState =
                 uiState.copy(currentExercise = uiState.cycleDetailList[uiState.currentCycleIndex].exercises[uiState.currentExerciseIndex])
             if (uiState.currentExerciseIndex < uiState.cycleDetailList[uiState.currentCycleIndex].exercises.size - 1) {
-                uiState = uiState.copy(nextExercise = uiState.cycleDetailList[uiState.currentCycleIndex].exercises[uiState.currentExerciseIndex + 1])
+                uiState =
+                    uiState.copy(nextExercise = uiState.cycleDetailList[uiState.currentCycleIndex].exercises[uiState.currentExerciseIndex + 1])
             } else if (uiState.currentCycleIndex < uiState.cycleDetailList.size - 1) {
-                uiState = uiState.copy(nextExercise = uiState.cycleDetailList[uiState.currentCycleIndex + 1].exercises[0])
+                uiState =
+                    uiState.copy(nextExercise = uiState.cycleDetailList[uiState.currentCycleIndex + 1].exercises[0])
             } else {
                 uiState = uiState.copy(nextExercise = null)
             }
@@ -270,11 +276,14 @@ class RoutinesViewModel(
                 uiState = uiState.copy(currentCycleIndex = uiState.currentCycleIndex + 1)
                 uiState =
                     uiState.copy(currentRoutineCycle = uiState.cycleDetailList[uiState.currentCycleIndex].cycle)
-                uiState = uiState.copy(currentExercise = uiState.cycleDetailList[uiState.currentCycleIndex].exercises[0])
+                uiState =
+                    uiState.copy(currentExercise = uiState.cycleDetailList[uiState.currentCycleIndex].exercises[0])
                 if (uiState.currentExerciseIndex < uiState.cycleDetailList[uiState.currentCycleIndex].exercises.size - 1) {
-                    uiState = uiState.copy(nextExercise = uiState.cycleDetailList[uiState.currentCycleIndex].exercises[uiState.currentExerciseIndex + 1])
+                    uiState =
+                        uiState.copy(nextExercise = uiState.cycleDetailList[uiState.currentCycleIndex].exercises[uiState.currentExerciseIndex + 1])
                 } else if (uiState.currentCycleIndex < uiState.cycleDetailList.size - 1) {
-                    uiState = uiState.copy(nextExercise = uiState.cycleDetailList[uiState.currentCycleIndex + 1].exercises[0])
+                    uiState =
+                        uiState.copy(nextExercise = uiState.cycleDetailList[uiState.currentCycleIndex + 1].exercises[0])
                 } else {
                     uiState = uiState.copy(nextExercise = null)
                 }
@@ -288,7 +297,11 @@ class RoutinesViewModel(
     }
 
     fun previousExercise() = viewModelScope.launch {
-        uiState = uiState.copy(isFetchingRoutine = true, fetchRoutineErrorStringId = null, hasChangedExercise = true)
+        uiState = uiState.copy(
+            isFetchingRoutine = true,
+            fetchRoutineErrorStringId = null,
+            hasChangedExercise = true
+        )
         if (uiState.currentExerciseIndex > 0) {
             uiState = uiState.copy(nextExercise = uiState.currentExercise)
             uiState = uiState.copy(currentExerciseIndex = uiState.currentExerciseIndex - 1)
@@ -304,7 +317,8 @@ class RoutinesViewModel(
                 uiState = uiState.copy(currentCycleIndex = uiState.currentCycleIndex - 1)
                 uiState =
                     uiState.copy(currentRoutineCycle = uiState.cycleDetailList[uiState.currentCycleIndex].cycle)
-                uiState = uiState.copy(currentExerciseIndex = uiState.cycleDetailList[uiState.currentCycleIndex].exercises.size - 1)
+                uiState =
+                    uiState.copy(currentExerciseIndex = uiState.cycleDetailList[uiState.currentCycleIndex].exercises.size - 1)
                 uiState =
                     uiState.copy(currentExercise = uiState.cycleDetailList[uiState.currentCycleIndex].exercises[uiState.currentExerciseIndex])
             } else {
@@ -317,32 +331,41 @@ class RoutinesViewModel(
         }
         uiState = uiState.copy(isFetchingRoutine = false)
     }
+
     fun changeHasChangedExercise() = viewModelScope.launch {
         uiState = uiState.copy(hasChangedExercise = false)
     }
 
     fun startExecution(routineId: Int) = viewModelScope.launch {
-        uiState = uiState.copy(isFetchingExecution = true, fetchRoutineErrorStringId = null)
-        if (!uiState.aux) {
-            uiState = uiState.copy(aux = true)
-            getRoutine(routineId).join()
-            uiState = uiState.copy(isExecuting = true)
-            uiState = uiState.copy(currentRoutineCycle = uiState.cycleDetailList.first().cycle)
-            uiState =
-                uiState.copy(currentExercise = uiState.cycleDetailList.first().exercises.first())
-            uiState = uiState.copy(currentCycleIndex = 0)
-            uiState = uiState.copy(currentExerciseIndex = 0)
-            if (uiState.cycleDetailList.first().exercises.size > 1) {
-                uiState = uiState.copy(nextExercise = uiState.cycleDetailList.first().exercises[1])
-            } else if (uiState.cycleDetailList.size > 1) {
-                uiState = uiState.copy(nextExercise = uiState.cycleDetailList[1].exercises[0])
-            } else {
-                uiState = uiState.copy(nextExercise = null)
-            }
+        uiState = uiState.copy(
+            isFetchingExecution = true,
+            fetchRoutineErrorStringId = null,
+            finishedExecution = false
+        )
+        getRoutine(routineId).join()
+        uiState = uiState.copy(isExecuting = true)
+        uiState = uiState.copy(currentRoutineCycle = uiState.cycleDetailList.first().cycle)
+        uiState =
+            uiState.copy(currentExercise = uiState.cycleDetailList.first().exercises.first())
+        uiState = uiState.copy(currentCycleIndex = 0)
+        uiState = uiState.copy(currentExerciseIndex = 0)
+        if (uiState.cycleDetailList.first().exercises.size > 1) {
+            uiState = uiState.copy(nextExercise = uiState.cycleDetailList.first().exercises[1])
+        } else if (uiState.cycleDetailList.size > 1) {
+            uiState = uiState.copy(nextExercise = uiState.cycleDetailList[1].exercises[0])
+        } else {
+            uiState = uiState.copy(nextExercise = null)
         }
         uiState = uiState.copy(isFetchingRoutine = false, isFetchingExecution = false)
     }
 
+    fun finishExecution() = viewModelScope.launch {
+        uiState = uiState.copy(
+            currentRoutineCycle = null,
+            currentExercise = null,
+            finishedExecution = true
+        )
+    }
 
     fun setReview(routineId: Int, review: Review) = runOnViewModelScope(
         {
