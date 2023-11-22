@@ -31,8 +31,10 @@ data class RoutinesUiState(
 
     val currentRoutineCycle: CompleteCycle? = null,
     val exercises: List<CycleExercise> = emptyList(),
-    val currentExercise: Exercises? = null,
+    val currentExercise: CycleExercise? = null,
 
+    val currentCycleIndex: Int = 0,
+    val currentExerciseIndex: Int = 0,
 
     var cycleDetailList: List<CyclesDetail> = emptyList(),
 
@@ -44,9 +46,11 @@ data class RoutinesUiState(
     val isFetchingRoutine: Boolean = false,
     val fetchingRoutineId: Int? = null,
     val fetchRoutineErrorStringId: Error? = null,
+    val isFetchingExecution: Boolean = false,
 
     val labelOrderBy: String = MyApplication.instance.getString(R.string.order_by),
 
     val updatedFavs: Boolean = false,
-    val isExecuting: Boolean = false,
+    val isExecuting: Boolean = true,
+    val aux: Boolean = false,
 )

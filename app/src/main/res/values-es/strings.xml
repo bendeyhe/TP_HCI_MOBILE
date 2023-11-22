@@ -62,4 +62,8 @@
     <string name="routine_finished">Felicitaciones! Terminaste la rutina.</string>
     <string name="rank_routine">¿Te ha gustado la rutina?</string>
     <string name="skip">Omitir</string>
+    <string name="repetitions">Repeticiones</string>
+    <string name="repetition">Repetición</string>
+    <string name="seconds">Segundos</string>
+    <string name="second">Segundo</string>
 </resources>

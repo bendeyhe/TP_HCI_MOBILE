@@ -38,7 +38,6 @@ class ExercisesRepository(
         val cycleExercises = mutableListOf<CycleExercise>()
         do {
             val result = exercisesRemoteDataSource.getExercisesByCycle(cycleId, page)
-            println(result)
             cycleExercises.addAll(result.content.map { it.asModel() })
             page++
         } while (!result.isLastPage)

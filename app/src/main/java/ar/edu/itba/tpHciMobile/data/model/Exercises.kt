@@ -10,7 +10,6 @@ class Exercises(
     var type: String,
     var date: Date? = null,
     var order: Int,
-
     ) {
     fun asModel(): NetworkExercise {
         return NetworkExercise(

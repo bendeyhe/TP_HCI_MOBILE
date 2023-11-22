@@ -20,7 +20,10 @@ import ar.edu.itba.tpHciMobile.util.getViewModelFactory
 
 
 @Composable
-fun MyAppNavHost(navController: NavHostController, modifier: Modifier, routinesViewModel: RoutinesViewModel = viewModel(factory = getViewModelFactory()) ) {
+fun MyAppNavHost(
+    navController: NavHostController,
+    modifier: Modifier
+) {
     val uri = "http://www.example.com"
     val secureUri = "https://www.example.com"
     NavHost(
@@ -28,7 +31,7 @@ fun MyAppNavHost(navController: NavHostController, modifier: Modifier, routinesV
         startDestination = Screen.Routines.route,
         modifier = modifier,
 
-    ) {
+        ) {
         /*  composable("home"){
               HomeScreen(onNavigateToOtherScreen = {id -> navController.navigate("other/$id") })
           }
@@ -52,8 +55,8 @@ fun MyAppNavHost(navController: NavHostController, modifier: Modifier, routinesV
         composable(Screen.Favorites.route) {
             Favorites(navController = navController)
         }
-        composable(Screen.ExecuteRoutine.route, arguments = listOf(navArgument("id") { type = NavType.IntType })) {
-            ExecuteRoutine(navController = navController, routinesViewModel = routinesViewModel, routineId = it.arguments?.getInt("id")!!)
+        composable(route = Screen.ExecuteRoutine.route + "/{id}", arguments = listOf(navArgument("id") { type = NavType.IntType }) ) {
+            ExecuteRoutine(navController = navController, routineId = it.arguments?.getInt("id")!!)
         }
         composable(
             route = Screen.RoutineDetails.route + "/{id}",

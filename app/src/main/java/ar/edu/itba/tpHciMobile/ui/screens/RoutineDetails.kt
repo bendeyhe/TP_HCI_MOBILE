@@ -57,6 +57,11 @@ import ar.edu.itba.tpHciMobile.ui.main.viewmodels.RoutinesViewModel
 import ar.edu.itba.tpHciMobile.ui.main.viewmodels.UserViewModel
 import ar.edu.itba.tpHciMobile.util.getViewModelFactory
 
+data class CollapsableSection(val title: String, val rows: List<Exercise>)
+data class Exercise(val name: String, val duration: Int, val repetitions: Int)
+
+const val MaterialIconDimension = 24f
+
 @Composable
 fun RoutineDetails(
     userViewModel: UserViewModel = viewModel(factory = getViewModelFactory()),
@@ -70,7 +75,7 @@ fun RoutineDetails(
         if (currentRoutine != null) {
             Scaffold(
                 bottomBar = {
-                    Buttons(currentRoutine, navController, routineId = routineId)
+                    Buttons(currentRoutine, routinesViewModel, navController, routineId = routineId)
                 }
             ) { contentPadding ->
                 RoutineDetailsContent(
@@ -93,14 +98,6 @@ fun RoutineDetailsContent(
     routinesViewModel: RoutinesViewModel,
     currentRoutine: Routine
 ) {
-
-    /*for (cycle in routinesViewModel.uiState.cycleDetailList) {
-        if (cycle.cycle?.name != null)
-            Text(text = cycle.cycle.name)
-        cycle.exercises?.forEach {
-            Text(text = it.exercise.name)
-        }
-    }*/
     Column {
         Routine(
             routine = currentRoutine,
@@ -118,21 +115,23 @@ fun RoutineDetailsContent(
                     rows = it.exercises?.map { exercise ->
                         Exercise(
                             name = exercise.exercise.name,
-                            duration = exercise.duration.toString()
+                            duration = exercise.duration!!,
+                            repetitions = exercise.repetitions!!
                         )
                     } ?: emptyList()
                 )
             },
         )
     }
-
-
 }
 
-
 @Composable
-
-fun Buttons(routine: Routine, navController: NavController, routineId: Int) {
+fun Buttons(
+    routine: Routine,
+    routinesViewModel: RoutinesViewModel,
+    navController: NavController,
+    routineId: Int
+) {
     val sendIntent: Intent = Intent().apply {
         action = Intent.ACTION_SEND
         putExtra(Intent.EXTRA_TEXT, "https://toobig.com/routine/" + routine.id)
@@ -165,7 +164,7 @@ fun Buttons(routine: Routine, navController: NavController, routineId: Int) {
             Icon(Icons.Filled.Share, "Share", tint = Color.Black)
         }
         Button(
-            onClick = { navController.navigate(Screen.ExecuteRoutine.route + "/${routineId}") },
+            onClick = { navController.navigate(Screen.ExecuteRoutine.route + "/" + routineId) },
             contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF8EFE00)),
             modifier = Modifier.padding(16.dp),
@@ -183,11 +182,6 @@ fun Buttons(routine: Routine, navController: NavController, routineId: Int) {
         }
     }
 }
-
-
-data class CollapsableSection(val title: String, val rows: List<Exercise>)
-
-data class Exercise(val name: String, val duration: String)
 
 @Composable
 fun CollapsableLazyColumn(
@@ -240,8 +234,23 @@ fun CollapsableLazyColumn(
                                     style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Medium)
                                 )
                                 Spacer(modifier = Modifier.weight(1f))
+                                var textDurRep = ""
+                                if (row.repetitions != 0) {
+                                    textDurRep += if (row.repetitions == 1)
+                                        row.repetitions.toString() + " " + stringResource(R.string.repetition)
+                                    else
+                                        row.repetitions.toString() + " " + stringResource(R.string.repetitions)
+                                }
+                                if (row.duration != 0) {
+                                    if (textDurRep != "")
+                                        textDurRep += ", "
+                                    textDurRep += if (row.duration == 1)
+                                        row.duration.toString() + " " + stringResource(R.string.second)
+                                    else
+                                        row.duration.toString() + " " + stringResource(R.string.seconds)
+                                }
                                 Text(
-                                    row.duration + " unidad", //todo gonza poner segundos o repeticiones en vez de unidad
+                                    textDurRep,
                                     modifier = Modifier
                                         .padding(10.dp),
                                     style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Medium)
@@ -256,4 +265,3 @@ fun CollapsableLazyColumn(
     }
 }
 
-const val MaterialIconDimension = 24f

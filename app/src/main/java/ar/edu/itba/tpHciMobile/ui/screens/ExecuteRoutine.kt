@@ -57,111 +57,177 @@ import java.lang.Math.floor
 fun ExecuteRoutine(
     modifier: Modifier = Modifier,
     navController: NavController,
-    routinesViewModel: RoutinesViewModel,
-    cycleNumber: Int = 0,
-    exerciseNumber: Int = 0,
+    routinesViewModel: RoutinesViewModel = viewModel(factory = getViewModelFactory()),
     routineId: Int
 ) {
-    if (!routinesViewModel.uiState.isFetchingR) {
-        if (!routinesViewModel.uiState.cycleDetailList.isEmpty()) {
-            var timeLeft by remember { mutableStateOf(routinesViewModel.uiState.cycleDetailList[cycleNumber].exercises[exerciseNumber].duration) }
-            var isPaused by remember { mutableStateOf(false) }
+    if (routinesViewModel.uiState.isFetchingExecution) {
+        Loading()
+    } else {
+        if (routinesViewModel.uiState.currentRoutine == null)
+            routinesViewModel.startExecution(routineId)
+        if (!routinesViewModel.uiState.isFetchingExecution) {
+            if (routinesViewModel.uiState.isExecuting) {
+                var timeLeft by remember { mutableStateOf(routinesViewModel.uiState.currentExercise?.duration) }
+                var isPaused by remember { mutableStateOf(false) }
 
-
-            if (timeLeft == null || timeLeft == 0)
-                timeLeft = 5
-            /*if (exerciseNumber == routinesViewModel.uiState.cycleDetailList[cycleNumber].exercises.size - 1) {
-            if (cycleNumber == routinesViewModel.uiState.cycleDetailList.size - 1) {*/
-            Surface(
-                modifier = modifier.fillMaxSize()
-            )
-            //if la rutina es con tiempo:
-            {
-                LaunchedEffect(key1 = timeLeft, key2 = isPaused) {
-                    while (timeLeft!! > 0 && !isPaused) {
-                        delay(1000L)
-                        timeLeft = timeLeft!! - 1
+                if (timeLeft == null || timeLeft == 0)
+                    timeLeft = 5
+                Surface(
+                    modifier = modifier.fillMaxSize()
+                )
+                {
+                    if (routinesViewModel.uiState.currentExercise?.duration!! > 0 && routinesViewModel.uiState.currentExercise?.repetitions!! > 0) {
+                        println("1")
+                        LaunchedEffect(key1 = timeLeft, key2 = isPaused) {
+                            while (timeLeft!! > 0 && !isPaused) {
+                                delay(1000L)
+                                timeLeft = timeLeft!! - 1
+                            }
+                        }
+                        Column(
+                            modifier = Modifier.fillMaxHeight(),
+                            verticalArrangement = Arrangement.Center,
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Text(
+                                text = routinesViewModel.uiState.currentExercise!!.exercise.name,
+                                style = MaterialTheme.typography.headlineLarge.copy(
+                                    fontWeight = FontWeight.Bold
+                                )
+                            )
+                            Text(
+                                text = stringResource(R.string.time_left) + ":",
+                                style = MaterialTheme.typography.headlineLarge.copy(
+                                    fontWeight = FontWeight.Bold
+                                )
+                            )
+                            Text(
+                                text = "$timeLeft",
+                                style = MaterialTheme.typography.displayLarge.copy(
+                                    fontWeight = FontWeight.Bold
+                                ),
+                                textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+                            )
+                            Button(
+                                onClick = { isPaused = !isPaused },
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = Color(
+                                        0xFF8EFE00
+                                    )
+                                ),
+                            )
+                            {
+                                if (isPaused) {
+                                    Icon(Icons.Filled.PlayArrow, "Play", tint = Color.Black)
+                                } else {
+                                    Icon(
+                                        painterResource(R.drawable.pause),
+                                        "Pause",
+                                        tint = Color.Black
+                                    )
+                                }
+                            }
+                        }
                     }
-                }
-                Column(
-                    modifier = Modifier.fillMaxHeight(),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text(
-                        text = routinesViewModel.uiState.cycleDetailList[cycleNumber].exercises[exerciseNumber].exercise.name,
-                        style = MaterialTheme.typography.headlineLarge.copy(
-                            fontWeight = FontWeight.Bold
-                        )
-                    )
-                    Text(
-                        text = stringResource(R.string.time_left) + ":",
-                        style = MaterialTheme.typography.headlineLarge.copy(
-                            fontWeight = FontWeight.Bold
-                        )
-                    )
-                    Text(
-                        text = "$timeLeft",
-                        style = MaterialTheme.typography.displayLarge.copy(
-                            fontWeight = FontWeight.Bold
-                        ),
-                        textAlign = androidx.compose.ui.text.style.TextAlign.Center,
-                    )
-                    Button(
-                        onClick = { isPaused = !isPaused },
-                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF8EFE00)),
-                    )
-                    {
-                        /*Text(
-                        text = if (isPaused) "Resume " else "Pause ",
-                        color = Color.Black
-                    )*/
-                        if (isPaused) {
-                            Icon(Icons.Filled.PlayArrow, "Play", tint = Color.Black)
-                        } else {
-                            Icon(painterResource(R.drawable.pause), "Pause", tint = Color.Black)
+                    else if (routinesViewModel.uiState.currentExercise?.duration!! > 0) {
+                        println("2")
+                        LaunchedEffect(key1 = timeLeft, key2 = isPaused) {
+                            while (timeLeft!! > 0 && !isPaused) {
+                                delay(1000L)
+                                timeLeft = timeLeft!! - 1
+                            }
+                        }
+                        Column(
+                            modifier = Modifier.fillMaxHeight(),
+                            verticalArrangement = Arrangement.Center,
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Text(
+                                text = routinesViewModel.uiState.currentExercise!!.exercise.name,
+                                style = MaterialTheme.typography.headlineLarge.copy(
+                                    fontWeight = FontWeight.Bold
+                                )
+                            )
+                            Text(
+                                text = stringResource(R.string.time_left) + ":",
+                                style = MaterialTheme.typography.headlineLarge.copy(
+                                    fontWeight = FontWeight.Bold
+                                )
+                            )
+                            Text(
+                                text = "$timeLeft",
+                                style = MaterialTheme.typography.displayLarge.copy(
+                                    fontWeight = FontWeight.Bold
+                                ),
+                                textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+                            )
+                            Button(
+                                onClick = { isPaused = !isPaused },
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = Color(
+                                        0xFF8EFE00
+                                    )
+                                ),
+                            )
+                            {
+                                /*Text(
+                            text = if (isPaused) "Resume " else "Pause ",
+                            color = Color.Black
+                        )*/
+                                if (isPaused) {
+                                    Icon(Icons.Filled.PlayArrow, "Play", tint = Color.Black)
+                                } else {
+                                    Icon(
+                                        painterResource(R.drawable.pause),
+                                        "Pause",
+                                        tint = Color.Black
+                                    )
+                                }
+                            }
+                        }
+                    }
+                    else if (routinesViewModel.uiState.currentExercise?.repetitions!! > 0) {
+                        println("3")
+                        println(routinesViewModel.uiState.currentExercise?.exercise?.name)
+                        println(routinesViewModel.uiState.currentExercise?.repetitions)
+                        println(routinesViewModel.uiState.currentExercise?.duration)
+                        Column(
+                            modifier = Modifier.fillMaxHeight(),
+                            verticalArrangement = Arrangement.Center,
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Text(
+                                text = "Ejercicio",
+                                style = MaterialTheme.typography.headlineLarge.copy(
+                                    fontWeight = FontWeight.Bold
+                                )
+                            )
+                            Text(
+                                text = stringResource(R.string.remaining_reps) + ":",
+                                style = MaterialTheme.typography.headlineLarge.copy(
+                                    fontWeight = FontWeight.Bold
+                                )
+                            )
+                            Text(
+                                text = "10",
+                                style = MaterialTheme.typography.displayLarge.copy(
+                                    fontWeight = FontWeight.Bold
+                                ),
+                                textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+                            )
                         }
                     }
                 }
 
-                //else
-                /*
-            Column(
-                modifier = Modifier.fillMaxHeight(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(
-                    text = "Ejercicio",
-                    style = MaterialTheme.typography.headlineLarge.copy(
-                        fontWeight = FontWeight.Bold
-                    )
-                )
-                Text(
-                    text = stringResource(R.string.remaining_reps) + ":",
-                    style = MaterialTheme.typography.headlineLarge.copy(
-                        fontWeight = FontWeight.Bold
-                    )
-                )
-                Text(
-                    text = "10",
-                    style = MaterialTheme.typography.displayLarge.copy(
-                        fontWeight = FontWeight.Bold
-                    ),
-                    textAlign = androidx.compose.ui.text.style.TextAlign.Center,
-                )
-
-            }
-            */
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.Bottom,
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
-                    //si es el primer ejercicio no mostrar el boton BACK
                     Button(
-                        onClick = {/*TODO*/ },
+                        onClick = { routinesViewModel.previousExercise() },
                         modifier = Modifier.padding(16.dp),
+                        enabled = !(routinesViewModel.uiState.currentCycleIndex == 0 && routinesViewModel.uiState.currentExerciseIndex == 0),
                         colors = ButtonDefaults.buttonColors(containerColor = Color.LightGray)
                     ) {
                         Text(
@@ -174,7 +240,7 @@ fun ExecuteRoutine(
                         )
                     }
                     Button(
-                        onClick = {/*TODO*/ },
+                        onClick = { routinesViewModel.nextExercise() },
                         modifier = Modifier.padding(16.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF8EFE00))
                     ) {
@@ -188,81 +254,43 @@ fun ExecuteRoutine(
                         )
                     }
                 }
-
-            }
-        } else {
-            routinesViewModel.getRoutine(routineId)
-        }
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.Bottom,
-            horizontalArrangement = Arrangement.SpaceEvenly
-        ) {
-            //si es el primer ejercicio no mostrar el boton BACK
-            Button(
-                onClick = {/*TODO*/ },
-                modifier = Modifier.padding(16.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Color.LightGray)
-            ) {
-                Text(
-                    text = stringResource(R.string.back),
-                    color = Color.Black,
-                    style = MaterialTheme.typography.headlineMedium.copy(
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Medium
+            } else {
+                Column(
+                    modifier = Modifier.fillMaxHeight(),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = stringResource(R.string.routine_finished),
+                        style = MaterialTheme.typography.headlineLarge.copy(
+                            fontWeight = FontWeight.Bold
+                        )
                     )
-                )
-            }
-            Button(
-                onClick = { routinesViewModel.nextExercise() },
-                modifier = Modifier.padding(16.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF8EFE00))
-            ) {
-                Text(
-                    text = stringResource(R.string.next),
-                    color = Color.Black,
-                    style = MaterialTheme.typography.headlineMedium.copy(
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Medium
+                    Text(
+                        text = stringResource(R.string.rank_routine),
+                        style = MaterialTheme.typography.headlineLarge.copy(
+                            fontWeight = FontWeight.Bold
+                        )
                     )
-                )
+                    RatingBar(rating = 2.5)
+                    Button(
+                        onClick = { /*TODO*/ },
+                        modifier = Modifier.padding(16.dp),
+                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF8EFE00))
+                    ) {
+                        Text(
+                            text = stringResource(R.string.skip),
+                            color = Color.Black,
+                            style = MaterialTheme.typography.headlineMedium.copy(
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.Medium
+                            )
+                        )
+                    }
+                }
             }
-        }
-    }
-    if (routinesViewModel.uiState.isExecuting) {
-        Column(
-            modifier = Modifier.fillMaxHeight(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(
-                text = stringResource(R.string.routine_finished),
-                style = MaterialTheme.typography.headlineLarge.copy(
-                    fontWeight = FontWeight.Bold
-                )
-            )
-            Text(
-                text = stringResource(R.string.rank_routine),
-                style = MaterialTheme.typography.headlineLarge.copy(
-                    fontWeight = FontWeight.Bold
-                )
-            )
-            RatingBar(rating = 2.5)
-            Button(
-                onClick = { /*TODO*/ },
-                modifier = Modifier.padding(16.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF8EFE00))
-            ) {
-                Text(
-                    text = stringResource(R.string.skip),
-                    color = Color.Black,
-                    style = MaterialTheme.typography.headlineMedium.copy(
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Medium
-                    )
-                )
-            }
-        }
+        } else
+            Loading()
     }
 }
 
