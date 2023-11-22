@@ -49,6 +49,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -164,14 +165,16 @@ fun Routine(
         modifier = Modifier
             .padding(vertical = 4.dp, horizontal = 8.dp)
             .clickable(onClick = {
-                if(userViewModel.uiState.isAuthenticated) {
+                if (userViewModel.uiState.isAuthenticated) {
                     onItemClick()
                 } else {
-                    Toast.makeText(
-                        MyApplication.instance,
-                        notLoggedIn,
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    Toast
+                        .makeText(
+                            MyApplication.instance,
+                            notLoggedIn,
+                            Toast.LENGTH_SHORT
+                        )
+                        .show()
                 }
             }),
         shape = MaterialTheme.shapes.medium,
@@ -183,28 +186,50 @@ fun Routine(
                     .weight(1f)
                     .padding(bottom = extraPadding),
             ) { //de esta manera se le da peso a la columna
-                Row (
+                Row(
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(
-                        text = routine.name + " ",
-                        color = Color.Black,
-                        style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.ExtraBold)
-                    )
-                    ShowRatingBar(
-                        modifier = Modifier.padding(top = 4.dp),
-                        rating = routine.score,
-                        stars = 4,
-                        starsColor = Color.Yellow
-                    )
+                    if(color == Color.White) {
+                        Text(
+                            text = routine.name + " ",
+                            color = Color.Black,
+                            style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.ExtraBold),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    }
+                    else{
+                        Text(
+                            text = routine.name + " ",
+                            color = Color.Black,
+                            style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.ExtraBold),
+                        )
+                    }
                 }
+                ShowRatingBar(
+                    modifier = Modifier.padding(top = 4.dp),
+                    rating = routine.score,
+                    stars = 4,
+                    starsColor = Color.Yellow
+                )
                 Row {
-                    Text(
-                        text = routine.detail ?: "",
-                        color = Color.Black,
-                        style = MaterialTheme.typography.bodyMedium.copy(fontSize = 20.sp)
-                    )
+                    if (color == Color.White) {
+                        Text(
+                            text = routine.detail ?: "",
+                            color = Color.Black,
+                            style = MaterialTheme.typography.headlineMedium.copy(fontSize = 20.sp),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+
+                        )
+                    } else {
+                        Text(
+                            text = routine.detail ?: "",
+                            color = Color.Black,
+                            style = MaterialTheme.typography.headlineMedium.copy(fontSize = 20.sp),
+                            )
+                    }
                 }
                 Row {
                     Text(
@@ -222,7 +247,7 @@ fun Routine(
                 }
             }
             Column() {
-                if(userViewModel.uiState.isAuthenticated) {
+                if (userViewModel.uiState.isAuthenticated) {
                     IconToggleButton(
                         checked = routine.liked,
                         onCheckedChange = { likeFunc(); },
@@ -319,9 +344,9 @@ fun ShowRatingBar(
     stars: Int = 5,
     starsColor: Color = Color.Yellow,
 ) {
-    val filledStars = Math.floor((rating/2).toDouble()).toInt()
-    val unfilledStars = (stars - Math.ceil((rating/2).toDouble())).toInt()
-    val halfStar = !((rating/2).rem(1).equals(0.0))
+    val filledStars = Math.floor((rating / 2).toDouble()).toInt()
+    val unfilledStars = (stars - Math.ceil((rating / 2).toDouble())).toInt()
+    val halfStar = !((rating / 2).rem(1).equals(0.0))
     Row(
         modifier = modifier,
         Arrangement.Center,
@@ -366,6 +391,7 @@ fun ShowDifficulty(
                 modifier = Modifier.size(30.dp)
             )
         }
+
         "beginner" -> {
             Icon(
                 Icons.Filled.AddCircle,
@@ -374,6 +400,7 @@ fun ShowDifficulty(
                 modifier = Modifier.size(30.dp)
             )
         }
+
         "intermediate" -> {
             Icon(
                 Icons.Filled.AddCircle,
@@ -382,6 +409,7 @@ fun ShowDifficulty(
                 modifier = Modifier.size(30.dp)
             )
         }
+
         "advanced" -> {
             Icon(
                 Icons.Filled.AddCircle,
@@ -390,6 +418,7 @@ fun ShowDifficulty(
                 modifier = Modifier.size(30.dp)
             )
         }
+
         "expert" -> {
             Icon(
                 Icons.Filled.AddCircle,
