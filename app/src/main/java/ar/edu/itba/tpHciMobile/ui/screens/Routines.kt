@@ -49,6 +49,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -164,14 +165,16 @@ fun Routine(
         modifier = Modifier
             .padding(vertical = 4.dp, horizontal = 8.dp)
             .clickable(onClick = {
-                if(userViewModel.uiState.isAuthenticated) {
+                if (userViewModel.uiState.isAuthenticated) {
                     onItemClick()
                 } else {
-                    Toast.makeText(
-                        MyApplication.instance,
-                        notLoggedIn,
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    Toast
+                        .makeText(
+                            MyApplication.instance,
+                            notLoggedIn,
+                            Toast.LENGTH_SHORT
+                        )
+                        .show()
                 }
             }),
         shape = MaterialTheme.shapes.medium,
@@ -183,57 +186,97 @@ fun Routine(
                     .weight(1f)
                     .padding(bottom = extraPadding),
             ) { //de esta manera se le da peso a la columna
-                Row (
+                Row(
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(
-                        text = routine.name + " ",
-                        color = Color.Black,
-                        style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.ExtraBold)
-                    )
+                    if (color == Color.White) {
+                        Text(
+                            text = routine.name + " ",
+                            color = Color.Black,
+                            style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.ExtraBold),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    } else {
+                        Text(
+                            text = routine.name + " ",
+                            color = Color.Black,
+                            style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.ExtraBold),
+                        )
+                    }
+                    Spacer(modifier = Modifier.weight(1f))
+                    Column() {
+                        if (userViewModel.uiState.isAuthenticated) {
+                            IconToggleButton(
+                                checked = routine.liked,
+                                onCheckedChange = { likeFunc(); },
+                            ) {
+                                Icon(
+                                    imageVector = if (routine.liked) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
+                                    "Like",
+                                    modifier = Modifier.size(36.dp),
+                                    tint = Color.Black
+                                )
+                            }
+                        }
+                    }
+                }
+                Row() {
                     ShowRatingBar(
                         modifier = Modifier.padding(top = 4.dp),
                         rating = routine.score,
-                        stars = 4,
+                        stars = 5,
                         starsColor = Color.Yellow
                     )
-                }
-                Row {
                     Text(
-                        text = routine.detail ?: "",
+                        text = " (" + ((routine.score.toDouble()/2)) + ")",
                         color = Color.Black,
-                        style = MaterialTheme.typography.bodyMedium.copy(fontSize = 20.sp)
+                        style = MaterialTheme.typography.headlineMedium.copy(fontSize = 20.sp),
+                        modifier = Modifier.padding(top = 4.dp)
                     )
                 }
                 Row {
-                    Text(
-                        text = stringResource(R.string.category) + ": " + routine.category.name,
-                        color = Color.Black,
-                        style = MaterialTheme.typography.headlineMedium.copy(fontSize = 18.sp)
-                    )
+                    if (color == Color.White) {
+                        Text(
+                            text = routine.detail ?: "",
+                            color = Color.Black,
+                            style = MaterialTheme.typography.headlineMedium.copy(fontSize = 20.sp),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+
+                        )
+                    } else {
+                        Text(
+                            text = routine.detail ?: "",
+                            color = Color.Black,
+                            style = MaterialTheme.typography.headlineMedium.copy(fontSize = 20.sp),
+                        )
+                    }
+                }
+                Row {
+                    if (color == Color.White) {
+                        Text(
+                            text = stringResource(R.string.category) + ": " + routine.category.name,
+                            color = Color.Black,
+                            style = MaterialTheme.typography.headlineMedium.copy(fontSize = 20.sp),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    } else {
+                        Text(
+                            text = stringResource(R.string.category) + ": " + routine.category.name,
+                            color = Color.Black,
+                            style = MaterialTheme.typography.headlineMedium.copy(fontSize = 20.sp)
+                        )
+                    }
                 }
                 Row {
                     Text(
                         text = stringResource(R.string.difficulty) + ": " + routine.difficulty,
                         color = Color.Black,
-                        style = MaterialTheme.typography.headlineMedium.copy(fontSize = 18.sp)
+                        style = MaterialTheme.typography.headlineMedium.copy(fontSize = 20.sp)
                     )
-                }
-            }
-            Column() {
-                if(userViewModel.uiState.isAuthenticated) {
-                    IconToggleButton(
-                        checked = routine.liked,
-                        onCheckedChange = { likeFunc(); },
-                    ) {
-                        Icon(
-                            imageVector = if (routine.liked) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
-                            "Like",
-                            modifier = Modifier.size(36.dp),
-                            tint = Color.Black
-                        )
-                    }
                 }
             }
         }
@@ -319,9 +362,11 @@ fun ShowRatingBar(
     stars: Int = 5,
     starsColor: Color = Color.Yellow,
 ) {
-    val filledStars = Math.floor((rating/2).toDouble()).toInt()
-    val unfilledStars = (stars - Math.ceil((rating/2).toDouble())).toInt()
-    val halfStar = !((rating/2).rem(1).equals(0.0))
+    val filledStars = Math.floor((rating / 2).toDouble()).toInt()
+    var unfilledStars = (stars - Math.ceil((rating / 2).toDouble())).toInt()
+    val halfStar = (rating.toDouble()/2 - rating/2) > 0
+    if(halfStar)
+        unfilledStars -=  1
     Row(
         modifier = modifier,
         Arrangement.Center,
@@ -366,6 +411,7 @@ fun ShowDifficulty(
                 modifier = Modifier.size(30.dp)
             )
         }
+
         "beginner" -> {
             Icon(
                 Icons.Filled.AddCircle,
@@ -374,6 +420,7 @@ fun ShowDifficulty(
                 modifier = Modifier.size(30.dp)
             )
         }
+
         "intermediate" -> {
             Icon(
                 Icons.Filled.AddCircle,
@@ -382,6 +429,7 @@ fun ShowDifficulty(
                 modifier = Modifier.size(30.dp)
             )
         }
+
         "advanced" -> {
             Icon(
                 Icons.Filled.AddCircle,
@@ -390,6 +438,7 @@ fun ShowDifficulty(
                 modifier = Modifier.size(30.dp)
             )
         }
+
         "expert" -> {
             Icon(
                 Icons.Filled.AddCircle,

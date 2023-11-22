@@ -236,7 +236,7 @@ fun Login(
                     fontWeight = androidx.compose.ui.text.font.FontWeight.Bold,
                     modifier = Modifier.padding(16.dp)
                 )
-
+                Spacer(modifier = Modifier.weight(1f))
                 TextField(
                     value = userViewModel.uiState.currentUser?.username.toString(),
                     onValueChange = {
@@ -344,7 +344,7 @@ fun Login(
                             if (isError) error(errorMessage)
                         }
                 )
-
+                Spacer(modifier = Modifier.weight(1f))
                 Button(
                     onClick = {
                         userViewModel.logout()

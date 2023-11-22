@@ -404,6 +404,7 @@ fun ExecuteRoutineContent(
                     RatingBar(
                         currentRating = currentRating,
                         onRatingChanged = { currentRating = it })
+                    Spacer(modifier = Modifier.weight(1f))
                     Row {
                         Button(
                             onClick = {
