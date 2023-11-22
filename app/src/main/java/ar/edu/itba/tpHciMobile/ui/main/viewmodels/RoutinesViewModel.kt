@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ar.edu.itba.tpHciMobile.data.DataSourceException
 import ar.edu.itba.tpHciMobile.data.model.Error
+import ar.edu.itba.tpHciMobile.data.model.Review
 import ar.edu.itba.tpHciMobile.data.repository.ExercisesRepository
 import ar.edu.itba.tpHciMobile.data.model.Routine
 import ar.edu.itba.tpHciMobile.data.repository.RoutinesCycleRepository
@@ -302,9 +303,9 @@ class RoutinesViewModel(
         uiState = uiState.copy(isFetchingRoutine = false, isFetchingExecution = false)
     }
 
-    fun setReview(routineId: Int) = runOnViewModelScope(
+    fun setReview(routineId: Int, review: Review) = runOnViewModelScope(
         {
-            routinesRepository.setReview(routineId)
+            routinesRepository.setReview(routineId, review)
         },
         { state, _ -> state }
     )

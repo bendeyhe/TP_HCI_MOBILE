@@ -1,5 +1,6 @@
 package ar.edu.itba.tpHciMobile.data.repository
 
+import ar.edu.itba.tpHciMobile.data.model.Review
 import ar.edu.itba.tpHciMobile.data.model.Routine
 import ar.edu.itba.tpHciMobile.data.network.datasources.RemoteDataSource
 import ar.edu.itba.tpHciMobile.data.network.datasources.RoutinesRemoteDataSource
@@ -68,7 +69,7 @@ class RoutinesRepository(
         return routinesMutex.withLock { routinesRemoteDataSource.getRoutine(routineId).asModel() }
     }
 
-    suspend fun setReview(routineId: Int) {
-        routinesRemoteDataSource.setReview(routineId)
+    suspend fun setReview(routineId: Int, review: Review) {
+        routinesRemoteDataSource.setReview(routineId, review)
     }
 }

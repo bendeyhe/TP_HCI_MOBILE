@@ -51,6 +51,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import ar.edu.itba.tpHciMobile.data.model.Review
+import ar.edu.itba.tpHciMobile.ui.main.Screen
 import ar.edu.itba.tpHciMobile.ui.main.viewmodels.RoutinesViewModel
 import ar.edu.itba.tpHciMobile.util.getViewModelFactory
 import java.lang.Math.ceil
@@ -262,7 +264,13 @@ fun ExecuteRoutineContent(
                             )
                         }
                         Button(
-                            onClick = { /*TODO sumar el rating a la rutina y volver a la página de inicio o de la rutina*/ },
+                            onClick = {
+                                var review: Review = Review()
+                                review.review = ""
+                                review.score = 3 // TODO CAMBIAR ESTO A LO QUE SEA QUE ELIJA
+                                routinesViewModel.setReview(routinesViewModel.uiState.currentRoutine!!.id, review)
+                                navController.navigate(Screen.RoutineDetails.route + "/${routinesViewModel.uiState.currentRoutine!!.id}")
+                            },
                             modifier = Modifier.padding(16.dp),
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = Color(

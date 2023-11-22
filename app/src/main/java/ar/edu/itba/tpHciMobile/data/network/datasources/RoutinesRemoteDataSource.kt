@@ -1,5 +1,6 @@
 package ar.edu.itba.tpHciMobile.data.network.datasources
 
+import ar.edu.itba.tpHciMobile.data.model.Review
 import ar.edu.itba.tpHciMobile.data.network.api.ApiRoutinesService
 import ar.edu.itba.tpHciMobile.data.network.model.util.NetworkPagedContent
 import ar.edu.itba.tpHciMobile.data.network.model.routines.NetworkCompleteCycle
@@ -61,9 +62,9 @@ class RoutinesRemoteDataSource(
         }
     }
 
-    suspend fun setReview(routineId: Int) {
+    suspend fun setReview(routineId: Int, review: Review) {
         return handleApiResponse {
-            routinesService.setReview(routineId)
+            routinesService.setReview(routineId, review)
         }
     }
 }
