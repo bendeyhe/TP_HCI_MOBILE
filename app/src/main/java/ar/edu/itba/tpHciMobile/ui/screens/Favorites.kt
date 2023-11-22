@@ -43,13 +43,15 @@ fun Favorites(
     userViewModel: UserViewModel
 ) {
     if (!userViewModel.uiState.isAuthenticated) {
-        // TODO BEN PONER ESTO FACHERAZO MAL RE PIOLANGA
         Text(
             text = stringResource(R.string.not_logged_in),
-            fontSize = MaterialTheme.typography.bodyMedium.fontSize,
             fontWeight = FontWeight.Medium,
-            modifier = Modifier.padding(start = 10.dp, top = 5.dp),
-            textAlign = TextAlign.Center
+            modifier = Modifier.padding(start = 10.dp, top = 20.dp),
+            textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.headlineMedium.copy(
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Medium
+            )
         )
     } else {
         if (routinesViewModel.uiState.isFetchingRoutine) {

@@ -204,6 +204,16 @@ fun Login(
                         )
                     )
                 }
+                Text(
+                    text = stringResource(R.string.create_account),
+                    fontWeight = FontWeight.Medium,
+                    modifier = Modifier.padding(start = 10.dp, top = 20.dp),
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.headlineMedium.copy(
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Medium
+                    )
+                )
                 Spacer(modifier = Modifier.weight(2f))
             }
         }
@@ -211,7 +221,7 @@ fun Login(
         if(userViewModel.uiState.currentUser == null)
             userViewModel.getCurrentUser()
         if(!userViewModel.uiState.isFetching) {
-            Surface() {
+            Surface(modifier = Modifier.fillMaxSize()) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -243,12 +253,6 @@ fun Login(
                             contentDescription = "Password"
                         )
                     },
-                    supportingText = {
-                        Text(
-                            modifier = Modifier.fillMaxWidth(),
-                            text = "Limit: ${userViewModel.uiState.currentUser?.username.toString().length}/$charLimit",
-                        )
-                    },
                     isError = isError,
                     keyboardActions = KeyboardActions { validate(userViewModel.uiState.currentUser?.username.toString()) },
                     modifier = Modifier
@@ -274,12 +278,6 @@ fun Login(
                         Icon(
                             imageVector = Icons.Filled.Person,
                             contentDescription = "Password"
-                        )
-                    },
-                    supportingText = {
-                        Text(
-                            modifier = Modifier.fillMaxWidth(),
-                            text = "Limit: ${userViewModel.uiState.currentUser?.firstName.toString().length}/$charLimit",
                         )
                     },
                     isError = isError,
@@ -309,12 +307,6 @@ fun Login(
                             contentDescription = "Password"
                         )
                     },
-                    supportingText = {
-                        Text(
-                            modifier = Modifier.fillMaxWidth(),
-                            text = "Limit: ${userViewModel.uiState.currentUser?.lastName.toString().length}/$charLimit",
-                        )
-                    },
                     isError = isError,
                     keyboardActions = KeyboardActions { validate(userViewModel.uiState.currentUser?.lastName.toString()) },
                     modifier = Modifier
@@ -340,12 +332,6 @@ fun Login(
                         Icon(
                             imageVector = Icons.Filled.Person,
                             contentDescription = "Password"
-                        )
-                    },
-                    supportingText = {
-                        Text(
-                            modifier = Modifier.fillMaxWidth(),
-                            text = "Limit: ${userViewModel.uiState.currentUser?.email.toString().length}/$charLimit",
                         )
                     },
                     isError = isError,

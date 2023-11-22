@@ -71,4 +71,5 @@
     <string name="routine_not_exists">Non-existent routine.</string>
     <string name="view_1">Detailed View</string>
     <string name="view_2">List view</string>
+    <string name="create_account">To create an account please visit our website: toobig.com</string>
 </resources>
