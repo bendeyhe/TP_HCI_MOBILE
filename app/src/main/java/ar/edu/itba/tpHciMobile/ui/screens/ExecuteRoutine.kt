@@ -122,24 +122,23 @@ fun ExecuteRoutineContent(
     routinesViewModel: RoutinesViewModel = viewModel(factory = getViewModelFactory()),
     routineId: Int
 ) {
-    if (view == 0) {
-        var currentRating by remember { mutableStateOf(0) }
-        if (routinesViewModel.uiState.isFetchingExecution) {
-            Loading()
-        } else {
-            if (routinesViewModel.uiState.currentRoutine == null)
-                routinesViewModel.startExecution(routineId)
-            if (!routinesViewModel.uiState.isFetchingExecution) {
-                if (routinesViewModel.uiState.isExecuting) {
-                    var timeLeft by remember { mutableStateOf(routinesViewModel.uiState.currentExercise?.duration) }
-                    var isPaused by remember { mutableStateOf(false) }
-                    routineFinished = false
-                    if (routinesViewModel.uiState.hasChangedExercise) {
-                        routinesViewModel.changeHasChangedExercise()
-                        timeLeft = routinesViewModel.uiState.currentExercise?.duration
-                    }
+    var currentRating by remember { mutableStateOf(0) }
+    if (routinesViewModel.uiState.isFetchingExecution) {
+        Loading()
+    } else {
+        if (routinesViewModel.uiState.currentRoutine == null)
+            routinesViewModel.startExecution(routineId)
+        if (!routinesViewModel.uiState.isFetchingExecution) {
+            if (routinesViewModel.uiState.isExecuting) {
+                var timeLeft by remember { mutableStateOf(routinesViewModel.uiState.currentExercise?.duration) }
+                var isPaused by remember { mutableStateOf(false) }
+                if (routinesViewModel.uiState.hasChangedExercise) {
+                    routinesViewModel.changeHasChangedExercise()
+                    timeLeft = routinesViewModel.uiState.currentExercise?.duration
+                }
+                routineFinished = false
 
-
+                if (view == 0) {
                     Surface(
                         modifier = modifier.fillMaxSize()
                     )
@@ -208,7 +207,8 @@ fun ExecuteRoutineContent(
                                                 if (timeLeft == 0)
                                                     if (!routinesViewModel.uiState.isFetchingRoutine) {
                                                         routinesViewModel.nextExercise()
-                                                        timeLeft = routinesViewModel.uiState.currentExercise?.duration
+                                                        timeLeft =
+                                                            routinesViewModel.uiState.currentExercise?.duration
                                                     }
                                             }
                                         }
@@ -273,130 +273,171 @@ fun ExecuteRoutineContent(
                         }
                     }
                 } else {
-                    routineFinished = true
-                    Column(
-                        modifier = Modifier.fillMaxHeight(),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Text(
-                            text = stringResource(R.string.routine_finished), //TODO TRADUCIR
-                            style = MaterialTheme.typography.headlineLarge.copy(
-                                fontWeight = FontWeight.Bold
-                            ),
-                            modifier = Modifier.padding(16.dp),
-                            textAlign = androidx.compose.ui.text.style.TextAlign.Center,
-                        )
-                        Text(
-                            text = stringResource(R.string.rank_routine),// TODO TRADUCIR
-                            style = MaterialTheme.typography.headlineLarge.copy(
-                                fontWeight = FontWeight.Bold
-                            )
-                        )
-                        RatingBar(
-                            currentRating = currentRating,
-                            onRatingChanged = { currentRating = it * 2
-                            routinesViewModel.setReview(routinesViewModel.uiState.currentRoutine!!.id, Review(currentRating))
+                    //TODO ESTO NO ES UN TODO, SOLO QUERIA QUE SE ME MARQUE LA SEGUNDA VIEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 
-                    })
-                        Row {
-                            Button(
-                                onClick = { navController.navigate("routine/${routinesViewModel.uiState.currentRoutine?.id}") },
-                                modifier = Modifier.padding(16.dp),
-                                colors = ButtonDefaults.buttonColors(containerColor = Color.LightGray)
-                            ) {
+                    Surface(modifier = Modifier.padding(top = 50.dp)) {
+                        Column() {
+                            for (cycle in routinesViewModel.uiState.cycleDetailList) {
                                 Text(
-                                    text = stringResource(R.string.skip),
-                                    color = Color.Black,
+                                    text = cycle.cycle!!.name,
                                     style = MaterialTheme.typography.headlineMedium.copy(
-                                        fontSize = 20.sp,
-                                        fontWeight = FontWeight.Medium
+                                        fontWeight = FontWeight.Bold
                                     )
                                 )
-                            }
-                            Button(
-                                onClick = {
-                                    var review: Review = Review(currentRating)
-                                    routinesViewModel.setReview(
-                                        routinesViewModel.uiState.currentRoutine!!.id,
-                                        review
-                                    )
-                                    navController.navigate(Screen.RoutineDetails.route + "/${routinesViewModel.uiState.currentRoutine!!.id}")
-                                },
-                                modifier = Modifier.padding(16.dp),
-                                colors = ButtonDefaults.buttonColors(
-                                    containerColor = Color(
-                                        0xFF8EFE00
-                                    )
-                                )
-                            ) {
-                                Text(
-                                    text = stringResource(R.string.send),
-                                    color = Color.Black,
-                                    style = MaterialTheme.typography.headlineMedium.copy(
-                                        fontSize = 20.sp,
-                                        fontWeight = FontWeight.Medium
-                                    )
-                                )
+                                Divider()
+                                for (exercise in cycle.exercises) {
+                                    if (exercise == routinesViewModel.uiState.currentExercise) {
+                                        Row(Modifier.background(Color.LightGray)) {
+                                            Text(
+                                                text = exercise.exercise.name,
+                                                style = MaterialTheme.typography.headlineMedium.copy(
+                                                    fontWeight = FontWeight.ExtraBold,
+                                                ),
+                                            )
+                                            Spacer(modifier = Modifier.weight(1f))
+                                            if (exercise.repetitions!! > 0) {
+                                                Text(
+                                                    text = "${exercise.repetitions} repetitions", //TODO TRADUCIR
+                                                    style = MaterialTheme.typography.headlineMedium.copy(
+                                                        fontWeight = FontWeight.ExtraBold,
+                                                    ),
+                                                )
+
+                                            }
+                                            if (exercise.duration!! > 0) {
+                                                Text(
+                                                    text = "${timeLeft} seconds", //TODO TRADUCIR
+                                                    style = MaterialTheme.typography.headlineMedium.copy(
+                                                        fontWeight = FontWeight.ExtraBold,
+                                                    ),
+                                                )
+                                                LaunchedEffect(
+                                                    key1 = timeLeft,
+                                                    key2 = isPaused
+                                                ) {
+                                                    while (timeLeft!! > 0 && !isPaused) {
+                                                        delay(1000L)
+                                                        timeLeft = timeLeft!! - 1
+                                                        if (timeLeft == 0)
+                                                            if (!routinesViewModel.uiState.isFetchingRoutine) {
+                                                                routinesViewModel.nextExercise()
+                                                                timeLeft =
+                                                                    routinesViewModel.uiState.currentExercise?.duration
+                                                            }
+                                                    }
+                                                }
+                                            }
+
+                                        }
+                                    } else {
+                                        Row() {
+                                            Text(
+                                                text = exercise.exercise.name,
+                                                style = MaterialTheme.typography.bodyLarge.copy(
+                                                    fontWeight = FontWeight.Normal
+                                                ),
+                                            )
+                                            Spacer(modifier = Modifier.weight(1f))
+                                            if (exercise.repetitions!! > 0) {
+                                                Text(
+                                                    text = "${exercise.repetitions} repetitions", //TODO TRADUCIR
+                                                    style = MaterialTheme.typography.bodyLarge.copy(
+                                                        fontWeight = FontWeight.Normal,
+                                                    ),
+                                                )
+                                            }
+                                            if (exercise.duration!! > 0) {
+                                                Text(
+                                                    text = "${exercise.duration} seconds", //TODO TRADUCIR
+                                                    style = MaterialTheme.typography.bodyLarge.copy(
+                                                        fontWeight = FontWeight.Normal,
+                                                    ),
+                                                )
+                                            }
+
+                                        }
+                                    }
+                                    Divider()
+                                }
                             }
                         }
                     }
                 }
-            } else
-                Loading()
-        }
-    } else {
-        var cycles = listOf("Ciclo 1", "Ciclo 2", "Ciclo 3")
-        var exercises = listOf(
-            ListExercise("Ejercicio 1", false),
-            ListExercise("Ejercicio 2", true),
-            ListExercise("Ejercicio 3", false)
-        )
-        Surface(modifier = Modifier.padding(top = 50.dp)) {
-            Column() {
-                for (cycle in cycles) {
+            } else {
+                routineFinished = true
+                Column(
+                    modifier = Modifier.fillMaxHeight(),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
                     Text(
-                        text = cycle,
-                        style = MaterialTheme.typography.headlineMedium.copy(
+                        text = stringResource(R.string.routine_finished), //TODO TRADUCIR
+                        style = MaterialTheme.typography.headlineLarge.copy(
+                            fontWeight = FontWeight.Bold
+                        ),
+                        modifier = Modifier.padding(16.dp),
+                        textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+                    )
+                    Text(
+                        text = stringResource(R.string.rank_routine),// TODO TRADUCIR
+                        style = MaterialTheme.typography.headlineLarge.copy(
                             fontWeight = FontWeight.Bold
                         )
                     )
-                    Divider()
-                    for (exercise in exercises) {
-                        if (exercise.isSelected) {
-                            Row(Modifier.background(Color.LightGray),) {
-                                Text(
-                                    text = exercise.name,
-                                    style = MaterialTheme.typography.headlineMedium.copy(
-                                        fontWeight = FontWeight.ExtraBold,
-                                    ),
-                                )
-                                Spacer(modifier = Modifier.weight(1f))
-                                Text(
-                                    text = "Series",
-                                    style = MaterialTheme.typography.headlineMedium.copy(
-                                        fontWeight = FontWeight.ExtraBold,
+                    RatingBar(
+                        currentRating = currentRating,
+                        onRatingChanged = {
+                            currentRating = it * 2
+                            routinesViewModel.setReview(
+                                routinesViewModel.uiState.currentRoutine!!.id,
+                                Review(currentRating)
+                            )
 
-                                        ),
+                        })
+                    Row {
+                        Button(
+                            onClick = { navController.navigate("routine/${routinesViewModel.uiState.currentRoutine?.id}") },
+                            modifier = Modifier.padding(16.dp),
+                            colors = ButtonDefaults.buttonColors(containerColor = Color.LightGray)
+                        ) {
+                            Text(
+                                text = stringResource(R.string.skip),
+                                color = Color.Black,
+                                style = MaterialTheme.typography.headlineMedium.copy(
+                                    fontSize = 20.sp,
+                                    fontWeight = FontWeight.Medium
                                 )
-                            }
-                        } else {
-                            Row() {
-                                Text(
-                                    text = exercise.name,
-                                    style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Normal),
-                                )
-                                Spacer(modifier = Modifier.weight(1f))
-                                Text(
-                                    text = "Series",
-                                    style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Normal),
-                                )
-                            }
+                            )
                         }
-                        Divider()
+                        Button(
+                            onClick = {
+                                var review: Review = Review(currentRating)
+                                routinesViewModel.setReview(
+                                    routinesViewModel.uiState.currentRoutine!!.id,
+                                    review
+                                )
+                                navController.navigate(Screen.RoutineDetails.route + "/${routinesViewModel.uiState.currentRoutine!!.id}")
+                            },
+                            modifier = Modifier.padding(16.dp),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color(
+                                    0xFF8EFE00
+                                )
+                            )
+                        ) {
+                            Text(
+                                text = stringResource(R.string.send),
+                                color = Color.Black,
+                                style = MaterialTheme.typography.headlineMedium.copy(
+                                    fontSize = 20.sp,
+                                    fontWeight = FontWeight.Medium
+                                )
+                            )
+                        }
                     }
                 }
             }
-        }
+        } else
+            Loading()
     }
 }
 
