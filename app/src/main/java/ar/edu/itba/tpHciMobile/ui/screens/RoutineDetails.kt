@@ -141,7 +141,8 @@ fun RoutineDetailsContent(
                     } ?: emptyList()
                 )
             },
-            routinesViewModel = routinesViewModel
+            routinesViewModel = routinesViewModel,
+            modifier = modifier
         )
     }
 }
