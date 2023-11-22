@@ -349,6 +349,7 @@ class RoutinesViewModel(
                     uiState.copy(currentExerciseIndex = uiState.cycleDetailList[uiState.currentCycleIndex].exercises.size - 1)
                 uiState =
                     uiState.copy(currentExercise = uiState.cycleDetailList[uiState.currentCycleIndex].exercises[uiState.currentExerciseIndex])
+                uiState = uiState.copy(currentRepetitionIndex = uiState.cycleDetailList[uiState.currentCycleIndex].cycle!!.repetitions - 1)
             } else {
                 uiState = uiState.copy(currentCycleIndex = uiState.routineCycles.size - 1)
                 uiState =
