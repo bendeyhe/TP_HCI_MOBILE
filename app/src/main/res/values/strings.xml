@@ -67,4 +67,6 @@
     <string name="second">Second</string>
     <string name="send">SEND</string>
     <string name="in">in</string>
+    <string name="next_exercise">Next exercise</string>
+    <string name="routine_not_exists">Non-existent routine.</string>
 </resources>

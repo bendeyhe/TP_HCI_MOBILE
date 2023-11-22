@@ -68,4 +68,6 @@
     <string name="second">Segundo</string>
     <string name="send">ENVIAR</string>
     <string name="in">en</string>
+    <string name="next_exercise">Siguiente ejercicio</string>
+    <string name="routine_not_exists">La rutina no existe.</string>
 </resources>

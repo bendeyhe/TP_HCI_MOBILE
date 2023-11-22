@@ -1,5 +1,6 @@
 package ar.edu.itba.tpHciMobile.ui.screens
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Star
@@ -40,6 +42,7 @@ import androidx.navigation.NavController
 import ar.edu.itba.tpHciMobile.R
 import kotlinx.coroutines.delay
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
@@ -160,72 +163,105 @@ fun ExecuteRoutineContent(
                             )
                         )
                         Spacer(modifier.weight(1f))
-                        Text(
-                            text = routinesViewModel.uiState.currentExercise!!.exercise.name,
-                            style = MaterialTheme.typography.headlineMedium.copy(
-                                fontWeight = FontWeight.Bold
-                            )
-                        )
-                        Text(
-                            text = routinesViewModel.uiState.currentExercise!!.exercise.detail!!,
-                            style = MaterialTheme.typography.bodyLarge.copy(
-                                fontWeight = FontWeight.Normal
-                            )
-                        )
-                        if (routinesViewModel.uiState.currentExercise?.repetitions!! > 0) {
-                            Text(
-                                text = stringResource(R.string.remaining_reps) + ":",
-                                style = MaterialTheme.typography.headlineMedium.copy(
-                                    fontWeight = FontWeight.Bold
-                                )
-                            )
-                            Text(
-                                text = "${routinesViewModel.uiState.currentExercise?.repetitions}",
-                                style = MaterialTheme.typography.displayLarge.copy(
-                                    fontWeight = FontWeight.Bold
-                                ),
-                                textAlign = androidx.compose.ui.text.style.TextAlign.Center,
-                            )
-                        }
-                        if (routinesViewModel.uiState.currentExercise?.duration!! > 0) {
-                            LaunchedEffect(key1 = timeLeft, key2 = isPaused) {
-                                while (timeLeft!! > 0 && !isPaused) {
-                                    delay(1000L)
-                                    timeLeft = timeLeft!! - 1
-                                }
-                            }
-                            Text(
-                                text = stringResource(R.string.time_left) + ":",
-                                style = MaterialTheme.typography.headlineMedium.copy(
-                                    fontWeight = FontWeight.Bold
-                                )
-                            )
-                            Text(
-                                text = "$timeLeft",
-                                style = MaterialTheme.typography.displayLarge.copy(
-                                    fontWeight = FontWeight.Bold
-                                ),
-                                textAlign = androidx.compose.ui.text.style.TextAlign.Center,
-                                fontSize = 100.sp
-                            )
-                            Button(
-                                onClick = { isPaused = !isPaused },
-                                colors = ButtonDefaults.buttonColors(
-                                    containerColor = Color(
-                                        0xFF8EFE00
+                        Box(
+                            modifier = Modifier
+                                .background(
+                                    color = Color.LightGray,
+                                    shape = RoundedCornerShape(16.dp))
+                                .padding(16.dp)
+                        ) {
+                            Column(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Text(
+                                    text = routinesViewModel.uiState.currentExercise!!.exercise.name,
+                                    style = MaterialTheme.typography.headlineMedium.copy(
+                                        fontWeight = FontWeight.Bold
                                     )
-                                ),
-                            )
-                            {
-                                if (isPaused) {
-                                    Icon(Icons.Filled.PlayArrow, "Play", tint = Color.Black)
-                                } else {
-                                    Icon(
-                                        painterResource(R.drawable.pause),
-                                        "Pause",
-                                        tint = Color.Black
+                                )
+                                Text(
+                                    text = routinesViewModel.uiState.currentExercise!!.exercise.detail!!,
+                                    style = MaterialTheme.typography.bodyLarge.copy(
+                                        fontWeight = FontWeight.Normal
+                                    )
+                                )
+                                if (routinesViewModel.uiState.currentExercise?.repetitions!! > 0) {
+                                    Text(
+                                        text = stringResource(R.string.remaining_reps) + ":",
+                                        style = MaterialTheme.typography.headlineMedium.copy(
+                                            fontWeight = FontWeight.Bold
+                                        )
+                                    )
+                                    Text(
+                                        text = "${routinesViewModel.uiState.currentExercise?.repetitions}",
+                                        style = MaterialTheme.typography.displayLarge.copy(
+                                            fontWeight = FontWeight.Bold
+                                        ),
+                                        textAlign = androidx.compose.ui.text.style.TextAlign.Center,
                                     )
                                 }
+                                if (routinesViewModel.uiState.currentExercise?.duration!! > 0) {
+                                    LaunchedEffect(key1 = timeLeft, key2 = isPaused) {
+                                        while (timeLeft!! > 0 && !isPaused) {
+                                            delay(1000L)
+                                            timeLeft = timeLeft!! - 1
+                                        }
+                                    }
+                                    Text(
+                                        text = stringResource(R.string.time_left) + ":",
+                                        style = MaterialTheme.typography.headlineMedium.copy(
+                                            fontWeight = FontWeight.Bold
+                                        )
+                                    )
+                                    Text(
+                                        text = "$timeLeft",
+                                        style = MaterialTheme.typography.displayLarge.copy(
+                                            fontWeight = FontWeight.Bold
+                                        ),
+                                        textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+                                        fontSize = 100.sp
+                                    )
+                                    Button(
+                                        onClick = { isPaused = !isPaused },
+                                        colors = ButtonDefaults.buttonColors(
+                                            containerColor = Color(
+                                                0xFF8EFE00
+                                            )
+                                        ),
+                                    )
+                                    {
+                                        if (isPaused) {
+                                            Icon(Icons.Filled.PlayArrow,
+                                                "Play",
+                                                tint = Color.Black,
+                                                modifier = Modifier.size(35.dp)
+                                            )
+                                        } else {
+                                            Icon(
+                                                painterResource(R.drawable.pause),
+                                                "Pause",
+                                                tint = Color.Black,
+                                                modifier = Modifier.size(35.dp)
+                                            )
+                                        }
+                                    }
+                                }
+                                //TODO IF HAY SIGUIENTE EJERCICIO MOSTRARLO
+                                Text(
+                                    text = stringResource(R.string.next_exercise) + ":",
+                                    style = MaterialTheme.typography.bodyLarge.copy(
+                                        fontWeight = FontWeight.Bold
+                                    ),
+                                    modifier = Modifier.padding(top = 16.dp)
+                                )
+                                Text(
+                                    text = "siguiente ejercicio", //TODO ACA PONER EL SIGUIENTE EJERCICIO
+                                    style = MaterialTheme.typography.bodyLarge.copy(
+                                        fontWeight = FontWeight.Bold
+                                    )
+                                )
+                                //CERRAR EL IF ACA
                             }
                         }
                         Spacer(modifier.weight(1f))

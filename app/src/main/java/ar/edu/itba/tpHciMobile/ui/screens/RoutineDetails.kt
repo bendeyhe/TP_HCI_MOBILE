@@ -78,7 +78,7 @@ fun RoutineDetails(
     var toastShown by rememberSaveable { mutableStateOf(false) }
     if (routinesViewModel.uiState.fetchRoutineErrorStringId != null) {
         if (!toastShown)
-            Toast.makeText(MyApplication.instance, "Routine not found", Toast.LENGTH_SHORT).show()
+            Toast.makeText(MyApplication.instance, stringResource(R.string.no_routines), Toast.LENGTH_SHORT).show()
         toastShown = true
         navController.navigate(Screen.Routines.route)
     }
