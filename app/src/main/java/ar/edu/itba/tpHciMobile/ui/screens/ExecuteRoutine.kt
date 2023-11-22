@@ -173,7 +173,7 @@ fun ExecuteRoutineContent(
                                     horizontalAlignment = Alignment.CenterHorizontally
                                 ) {
                                     Text(
-                                        text = routinesViewModel.uiState.currentExercise!!.exercise.name,
+                                        text = routinesViewModel.uiState.currentExercise!!.exercise.name + "   " + (routinesViewModel.uiState.currentExerciseIndex+1) + "/" + routinesViewModel.uiState.cycleDetailList[routinesViewModel.uiState.currentCycleIndex].exercises.size,
                                         style = MaterialTheme.typography.headlineMedium.copy(
                                             fontWeight = FontWeight.Bold
                                         )
