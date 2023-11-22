@@ -311,7 +311,7 @@ fun ShowRatingBar(
             Icon(
                 imageVector = Icons.Outlined.Star, contentDescription = null,
                 tint = Color.Black,
-                modifier = Modifier.size(20.dp)
+                modifier = Modifier.size(30.dp)
             )
         }
         if (halfStar) {
@@ -319,7 +319,7 @@ fun ShowRatingBar(
                 painterResource(R.drawable.star_half),
                 contentDescription = null,
                 tint = Color.Black,
-                modifier = Modifier.size(20.dp)
+                modifier = Modifier.size(25.dp)
             )
         }
         repeat(unfilledStars) {
@@ -327,7 +327,7 @@ fun ShowRatingBar(
                 painterResource(R.drawable.star_border),
                 contentDescription = null,
                 tint = Color.Black,
-                modifier = Modifier.size(20.dp)
+                modifier = Modifier.size(25.dp)
             )
         }
     }

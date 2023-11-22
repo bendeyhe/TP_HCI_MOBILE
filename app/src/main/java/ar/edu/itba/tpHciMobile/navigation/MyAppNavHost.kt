@@ -24,8 +24,8 @@ fun MyAppNavHost(
     navController: NavHostController,
     modifier: Modifier
 ) {
-    val uri = "http://www.example.com"
-    val secureUri = "https://www.example.com"
+    val uri = "http://toobig.com"
+    val secureUri = "https://toobig.com"
     NavHost(
         navController = navController,
         startDestination = Screen.Routines.route,

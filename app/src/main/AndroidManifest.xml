@@ -36,8 +36,8 @@
 
                 <data android:scheme="http" />
                 <data android:scheme="https" />
-                <data android:host="www.example.com" />
-                <data android:pathPrefix="/other" />
+                <data android:host="toobig.com" />
+                <data android:pathPrefix="/routine" />
             </intent-filter>
         </activity>
     </application>

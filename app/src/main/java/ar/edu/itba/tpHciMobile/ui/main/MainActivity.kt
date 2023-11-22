@@ -83,7 +83,6 @@ class MainActivity : ComponentActivity() {
                                     )
                                 )
                             },
-
                             navigationIcon = {
                                 if (currentRoute != Screen.Routines.route
                                     && currentRoute != Screen.Favorites.route
@@ -112,7 +111,13 @@ class MainActivity : ComponentActivity() {
                             scrollBehavior = scrollBehavior,
                         )
                     },
-                    bottomBar = { BottomBar(navController = navController) }
+
+                    bottomBar = {
+                        if (currentRoute == Screen.Routines.route
+                            || currentRoute == Screen.Favorites.route
+                            || currentRoute == Screen.LoginScreen.route
+                        ) BottomBar(navController = navController)
+                    }
                 ) { contentPadding ->
                     MyAppNavHost(
                         navController = navController,

@@ -2,6 +2,7 @@ package ar.edu.itba.tpHciMobile.ui.screens
 
 import android.content.Intent
 import android.text.style.BackgroundColorSpan
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
@@ -34,7 +35,11 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -52,6 +57,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import ar.edu.itba.tpHciMobile.R
 import ar.edu.itba.tpHciMobile.data.model.Routine
+import ar.edu.itba.tpHciMobile.ui.main.MyApplication
 import ar.edu.itba.tpHciMobile.ui.main.Screen
 import ar.edu.itba.tpHciMobile.ui.main.viewmodels.RoutinesViewModel
 import ar.edu.itba.tpHciMobile.ui.main.viewmodels.UserViewModel
@@ -69,6 +75,13 @@ fun RoutineDetails(
     routinesViewModel: RoutinesViewModel = viewModel(factory = getViewModelFactory()),
     routineId: Int
 ) {
+    var toastShown by rememberSaveable { mutableStateOf(false) }
+    if (routinesViewModel.uiState.fetchRoutineErrorStringId != null) {
+        if (!toastShown)
+            Toast.makeText(MyApplication.instance, "Routine not found", Toast.LENGTH_SHORT).show()
+        toastShown = true
+        navController.navigate(Screen.Routines.route)
+    }
     if (!routinesViewModel.uiState.isFetchingR) {
         val currentRoutine = routinesViewModel.uiState.currentRoutine
         @OptIn(ExperimentalMaterial3Api::class)
