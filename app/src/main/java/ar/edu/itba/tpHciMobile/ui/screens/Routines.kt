@@ -121,10 +121,7 @@ fun Routines(
                                     onItemClick = {
                                         if (!routinesViewModel.uiState.isFetchingRoutine) {
                                             val isLiked = routinesViewModel.uiState.routines?.find { it.id == routine.id }?.liked
-                                            println("isLiked: $isLiked. Before getRoutine")
-                                            routinesViewModel.getRoutine(routine.id)
-                                            routinesViewModel.setLiked(isLiked ?: false)
-                                            println("isLiked: $isLiked. After getRoutine")
+                                            routinesViewModel.getRoutine(routine.id, isLiked?: false)
                                             navController.navigate(Screen.RoutineDetails.route + "/${routine.id}")
                                         }
                                     },

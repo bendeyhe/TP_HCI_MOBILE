@@ -185,6 +185,14 @@ class RoutinesViewModel(
         }
     }
 
+    fun getRoutine(routineId: Int, liked: Boolean) = viewModelScope.launch {
+        getRoutine(routineId).join()
+        var curRout = uiState.currentRoutine
+        if (curRout != null)
+            curRout.liked = liked
+        uiState = uiState.copy(currentRoutine = curRout)
+    }
+
     fun getRoutine(routineId: Int) = viewModelScope.launch {
         uiState.cycleDetailList = emptyList()
         uiState = uiState.copy(
