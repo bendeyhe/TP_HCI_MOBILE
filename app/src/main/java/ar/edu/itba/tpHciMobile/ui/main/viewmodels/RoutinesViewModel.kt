@@ -402,6 +402,13 @@ class RoutinesViewModel(
         { state, _ -> state }
     )
 
+    fun setLiked(liked: Boolean) {
+        var curRout = uiState.currentRoutine
+        if (curRout != null)
+            curRout.liked = liked
+        uiState = uiState.copy(currentRoutine = curRout)
+    }
+
     private fun <R> runOnViewModelScope(
         block: suspend () -> R,
         updateState: (RoutinesUiState, R) -> RoutinesUiState

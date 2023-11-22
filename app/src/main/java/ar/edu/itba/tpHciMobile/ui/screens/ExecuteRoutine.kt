@@ -272,7 +272,8 @@ fun ExecuteRoutineContent(
                             Spacer(modifier.weight(1f))
                         }
                     }
-                } else {
+                }
+                else {
                     //TODO ESTO NO ES UN TODO, SOLO QUERIA QUE SE ME MARQUE LA SEGUNDA VIEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 
                     Surface(modifier = Modifier.padding(top = 50.dp)) {
@@ -314,17 +315,19 @@ fun ExecuteRoutineContent(
                                             )
                                             Spacer(modifier = Modifier.weight(1f))
                                             if (exercise.repetitions!! > 0) {
+                                                var txt = if(exercise.repetitions!! > 1) "${exercise.repetitions} " + stringResource(R.string.repetitions) else "${exercise.repetitions} " + stringResource(R.string.repetition)
+                                                if(exercise.duration!! > 0)
+                                                    txt += " " + stringResource(R.string.`in`) + " "
                                                 Text(
-                                                    text = "${exercise.repetitions} repetitions", //TODO TRADUCIR
+                                                    text = txt,
                                                     style = MaterialTheme.typography.headlineMedium.copy(
                                                         fontWeight = FontWeight.ExtraBold,
                                                     ),
                                                 )
-
                                             }
                                             if (exercise.duration!! > 0) {
                                                 Text(
-                                                    text = "${timeLeft} seconds", //TODO TRADUCIR
+                                                    text = if(timeLeft!! > 1) "$timeLeft " + stringResource(R.string.seconds) else "$timeLeft " + stringResource(R.string.second),
                                                     style = MaterialTheme.typography.headlineMedium.copy(
                                                         fontWeight = FontWeight.ExtraBold,
                                                     ),
@@ -357,8 +360,11 @@ fun ExecuteRoutineContent(
                                             )
                                             Spacer(modifier = Modifier.weight(1f))
                                             if (exercise.repetitions!! > 0) {
+                                                var txt = if(exercise.repetitions!! > 1) "${exercise.repetitions} " + stringResource(R.string.repetitions) else "${exercise.repetitions} " + stringResource(R.string.repetition)
+                                                if(exercise.duration!! > 0)
+                                                    txt += " " + stringResource(R.string.`in`) + " "
                                                 Text(
-                                                    text = "${exercise.repetitions} repetitions", //TODO TRADUCIR
+                                                    text = txt,
                                                     style = MaterialTheme.typography.bodyLarge.copy(
                                                         fontWeight = FontWeight.Normal,
                                                     ),
@@ -366,7 +372,7 @@ fun ExecuteRoutineContent(
                                             }
                                             if (exercise.duration!! > 0) {
                                                 Text(
-                                                    text = "${exercise.duration} seconds", //TODO TRADUCIR
+                                                    text = if(exercise.duration!! > 1) "${exercise.duration} " + stringResource(R.string.seconds) else "${exercise.duration} " + stringResource(R.string.second),
                                                     style = MaterialTheme.typography.bodyLarge.copy(
                                                         fontWeight = FontWeight.Normal,
                                                     ),
