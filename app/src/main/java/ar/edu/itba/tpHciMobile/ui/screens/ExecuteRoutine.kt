@@ -65,40 +65,43 @@ fun ExecuteRoutine(
     @OptIn(ExperimentalMaterial3Api::class)
     Scaffold(
         bottomBar = {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center
-            ) {
-                Button(
-                    onClick = { routinesViewModel.previousExercise() },
-                    modifier = Modifier.padding(16.dp),
-                    enabled = !(routinesViewModel.uiState.currentCycleIndex == 0 && routinesViewModel.uiState.currentExerciseIndex == 0),
-                    colors = ButtonDefaults.buttonColors(containerColor = Color.LightGray)
+            if (routinesViewModel.uiState.isExecuting) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
                 ) {
-                    Text(
-                        text = stringResource(R.string.back),
-                        color = Color.Black,
-                        style = MaterialTheme.typography.headlineMedium.copy(
-                            fontSize = 20.sp,
-                            fontWeight = FontWeight.Medium
+                    Button(
+                        onClick = { routinesViewModel.previousExercise() },
+                        modifier = Modifier.padding(16.dp),
+                        enabled = !(routinesViewModel.uiState.currentCycleIndex == 0 && routinesViewModel.uiState.currentExerciseIndex == 0),
+                        colors = ButtonDefaults.buttonColors(containerColor = Color.LightGray)
+                    ) {
+                        Text(
+                            text = stringResource(R.string.back),
+                            color = Color.Black,
+                            style = MaterialTheme.typography.headlineMedium.copy(
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.Medium
+                            )
                         )
-                    )
-                }
-                Button(
-                    onClick = { routinesViewModel.nextExercise() },
-                    modifier = Modifier.padding(16.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF8EFE00))
-                ) {
-                    Text(
-                        text = stringResource(R.string.next),
-                        color = Color.Black,
-                        style = MaterialTheme.typography.headlineMedium.copy(
-                            fontSize = 20.sp,
-                            fontWeight = FontWeight.Medium
+                    }
+                    Button(
+                        onClick = { routinesViewModel.nextExercise() },
+                        modifier = Modifier.padding(16.dp),
+                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF8EFE00))
+                    ) {
+                        Text(
+                            text = stringResource(R.string.next),
+                            color = Color.Black,
+                            style = MaterialTheme.typography.headlineMedium.copy(
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.Medium
+                            )
                         )
-                    )
+                    }
                 }
             }
+
         }
     ) { contentPadding ->
         ExecuteRoutineContent(
@@ -134,7 +137,6 @@ fun ExecuteRoutineContent(
                 )
                 {
                     if (routinesViewModel.uiState.currentExercise?.duration!! > 0 && routinesViewModel.uiState.currentExercise?.repetitions!! > 0) {
-                        println("1")
                         LaunchedEffect(key1 = timeLeft, key2 = isPaused) {
                             while (timeLeft!! > 0 && !isPaused) {
                                 delay(1000L)
@@ -186,7 +188,6 @@ fun ExecuteRoutineContent(
                             }
                         }
                     } else if (routinesViewModel.uiState.currentExercise?.duration!! > 0) {
-                        println("2")
                         LaunchedEffect(key1 = timeLeft, key2 = isPaused) {
                             while (timeLeft!! > 0 && !isPaused) {
                                 delay(1000L)
@@ -242,10 +243,6 @@ fun ExecuteRoutineContent(
                             }
                         }
                     } else if (routinesViewModel.uiState.currentExercise?.repetitions!! > 0) {
-                        println("3")
-                        println(routinesViewModel.uiState.currentExercise?.exercise?.name)
-                        println(routinesViewModel.uiState.currentExercise?.repetitions)
-                        println(routinesViewModel.uiState.currentExercise?.duration)
                         Column(
                             modifier = Modifier.fillMaxHeight(),
                             verticalArrangement = Arrangement.Center,
@@ -273,12 +270,6 @@ fun ExecuteRoutineContent(
                         }
                     }
                 }
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.Bottom,
-                    horizontalArrangement = Arrangement.SpaceEvenly
-                ) {
-                }
             } else {
                 Column(
                     modifier = Modifier.fillMaxHeight(),
@@ -301,7 +292,7 @@ fun ExecuteRoutineContent(
                     RatingBar(rating = 2.5)
                     Row() {
                         Button(
-                            onClick = { /*TODO volver a la página de inicio o la de la rutina*/ },
+                            onClick = { navController.navigate("routine/${routinesViewModel.uiState.currentRoutine?.id}") },
                             modifier = Modifier.padding(16.dp),
                             colors = ButtonDefaults.buttonColors(containerColor = Color.LightGray)
                         ) {
@@ -339,7 +330,6 @@ fun ExecuteRoutineContent(
             Loading()
     }
 }
-
 
 @Composable
 fun RatingBar(

@@ -25,6 +25,7 @@ import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.outlined.FavoriteBorder
+import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -45,6 +46,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -301,4 +303,45 @@ fun OrderByBtn(
             null
         },
     )
+}
+
+@Composable
+fun ShowRatingBar(
+    modifier: Modifier = Modifier,
+    rating: Double = 0.0,
+    stars: Int = 5,
+    starsColor: Color = Color.Yellow,
+) {
+    val filledStars = Math.floor(rating).toInt()
+    val unfilledStars = (stars - Math.ceil(rating)).toInt()
+    val halfStar = !(rating.rem(1).equals(0.0))
+    Row(
+        modifier = modifier,
+        Arrangement.Center,
+        Alignment.CenterVertically,
+    ) {
+        repeat(filledStars) {
+            Icon(
+                imageVector = Icons.Outlined.Star, contentDescription = null,
+                tint = Color.Black,
+                modifier = Modifier.size(10.dp)
+            )
+        }
+        if (halfStar) {
+            Icon(
+                painterResource(R.drawable.star_half),
+                contentDescription = null,
+                tint = Color.Black,
+                modifier = Modifier.size(10.dp)
+            )
+        }
+        repeat(unfilledStars) {
+            Icon(
+                painterResource(R.drawable.star_border),
+                contentDescription = null,
+                tint = Color.Black,
+                modifier = Modifier.size(10.dp)
+            )
+        }
+    }
 }

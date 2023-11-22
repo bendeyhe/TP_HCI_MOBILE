@@ -121,6 +121,7 @@ fun RoutineDetailsContent(
                     } ?: emptyList()
                 )
             },
+            routinesViewModel = routinesViewModel
         )
     }
 }
@@ -186,7 +187,8 @@ fun Buttons(
 @Composable
 fun CollapsableLazyColumn(
     sections: List<CollapsableSection>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    routinesViewModel: RoutinesViewModel
 ) {
     val collapsedState = remember(sections) { sections.map { true }.toMutableStateList() }
     LazyColumn(modifier) {
@@ -207,6 +209,16 @@ fun CollapsableLazyColumn(
                         modifier = Modifier.padding(10.dp)
                     )
                     Spacer(modifier = Modifier.weight(1f))
+                    val rep = routinesViewModel.uiState.cycleDetailList[i].cycle?.repetitions
+                    Text(
+                        if (rep == 1)
+                            rep.toString() + " " + stringResource(R.string.repetition)
+                        else
+                            rep.toString() + " " + stringResource(R.string.repetitions),
+                        fontWeight = FontWeight.Bold,
+                        style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
+                        modifier = Modifier.padding(10.dp)
+                    )
                     Icon(
                         Icons.Default.run {
                             if (collapsed)
@@ -243,7 +255,7 @@ fun CollapsableLazyColumn(
                                 }
                                 if (row.duration != 0) {
                                     if (textDurRep != "")
-                                        textDurRep += ", "
+                                        textDurRep += stringResource(R.string.`in`) + " "
                                     textDurRep += if (row.duration == 1)
                                         row.duration.toString() + " " + stringResource(R.string.second)
                                     else

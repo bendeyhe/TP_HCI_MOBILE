@@ -66,4 +66,5 @@
     <string name="seconds">Seconds</string>
     <string name="second">Second</string>
     <string name="send">SEND</string>
+    <string name="in">in</string>
 </resources>
