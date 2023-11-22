@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -136,138 +137,93 @@ fun ExecuteRoutineContent(
                     modifier = modifier.fillMaxSize()
                 )
                 {
-                    if (routinesViewModel.uiState.currentExercise?.duration!! > 0 && routinesViewModel.uiState.currentExercise?.repetitions!! > 0) {
-                        LaunchedEffect(key1 = timeLeft, key2 = isPaused) {
-                            while (timeLeft!! > 0 && !isPaused) {
-                                delay(1000L)
-                                timeLeft = timeLeft!! - 1
-                            }
-                        }
-                        Column(
-                            modifier = Modifier.fillMaxHeight(),
-                            verticalArrangement = Arrangement.Center,
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            Text(
-                                text = routinesViewModel.uiState.currentExercise!!.exercise.name,
-                                style = MaterialTheme.typography.headlineLarge.copy(
-                                    fontWeight = FontWeight.Bold
-                                )
+                    Column(
+                        modifier = Modifier.fillMaxHeight(),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(
+                            text = routinesViewModel.uiState.currentRoutine!!.name,
+                            style = MaterialTheme.typography.headlineLarge.copy(
+                                fontWeight = FontWeight.Bold
                             )
-                            Text(
-                                text = stringResource(R.string.time_left) + ":",
-                                style = MaterialTheme.typography.headlineLarge.copy(
-                                    fontWeight = FontWeight.Bold
-                                )
+                        )
+                        Text(
+                            text = routinesViewModel.uiState.currentRoutineCycle!!.name,
+                            style = MaterialTheme.typography.headlineMedium.copy(
+                                fontWeight = FontWeight.Bold
                             )
-                            Text(
-                                text = "$timeLeft",
-                                style = MaterialTheme.typography.displayLarge.copy(
-                                    fontWeight = FontWeight.Bold
-                                ),
-                                textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+                        )
+                        Spacer(modifier.weight(1f))
+                        Text(
+                            text = routinesViewModel.uiState.currentExercise!!.exercise.name,
+                            style = MaterialTheme.typography.headlineMedium.copy(
+                                fontWeight = FontWeight.Bold
                             )
-                            Button(
-                                onClick = { isPaused = !isPaused },
-                                colors = ButtonDefaults.buttonColors(
-                                    containerColor = Color(
-                                        0xFF8EFE00
-                                    )
-                                ),
+                        )
+                        Text(
+                            text = routinesViewModel.uiState.currentExercise!!.exercise.detail!!,
+                            style = MaterialTheme.typography.bodyLarge.copy(
+                                fontWeight = FontWeight.Normal
                             )
-                            {
-                                if (isPaused) {
-                                    Icon(Icons.Filled.PlayArrow, "Play", tint = Color.Black)
-                                } else {
-                                    Icon(
-                                        painterResource(R.drawable.pause),
-                                        "Pause",
-                                        tint = Color.Black
-                                    )
-                                }
-                            }
-                        }
-                    } else if (routinesViewModel.uiState.currentExercise?.duration!! > 0) {
-                        LaunchedEffect(key1 = timeLeft, key2 = isPaused) {
-                            while (timeLeft!! > 0 && !isPaused) {
-                                delay(1000L)
-                                timeLeft = timeLeft!! - 1
-                            }
-                        }
-                        Column(
-                            modifier = Modifier.fillMaxHeight(),
-                            verticalArrangement = Arrangement.Center,
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            Text(
-                                text = routinesViewModel.uiState.currentExercise!!.exercise.name,
-                                style = MaterialTheme.typography.headlineLarge.copy(
-                                    fontWeight = FontWeight.Bold
-                                )
-                            )
-                            Text(
-                                text = stringResource(R.string.time_left) + ":",
-                                style = MaterialTheme.typography.headlineLarge.copy(
-                                    fontWeight = FontWeight.Bold
-                                )
-                            )
-                            Text(
-                                text = "$timeLeft",
-                                style = MaterialTheme.typography.displayLarge.copy(
-                                    fontWeight = FontWeight.Bold
-                                ),
-                                textAlign = androidx.compose.ui.text.style.TextAlign.Center,
-                            )
-                            Button(
-                                onClick = { isPaused = !isPaused },
-                                colors = ButtonDefaults.buttonColors(
-                                    containerColor = Color(
-                                        0xFF8EFE00
-                                    )
-                                ),
-                            )
-                            {
-                                /*Text(
-                    text = if (isPaused) "Resume " else "Pause ",
-                    color = Color.Black
-                )*/
-                                if (isPaused) {
-                                    Icon(Icons.Filled.PlayArrow, "Play", tint = Color.Black)
-                                } else {
-                                    Icon(
-                                        painterResource(R.drawable.pause),
-                                        "Pause",
-                                        tint = Color.Black
-                                    )
-                                }
-                            }
-                        }
-                    } else if (routinesViewModel.uiState.currentExercise?.repetitions!! > 0) {
-                        Column(
-                            modifier = Modifier.fillMaxHeight(),
-                            verticalArrangement = Arrangement.Center,
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            Text(
-                                text = "Ejercicio",
-                                style = MaterialTheme.typography.headlineLarge.copy(
-                                    fontWeight = FontWeight.Bold
-                                )
-                            )
+                        )
+                        if (routinesViewModel.uiState.currentExercise?.repetitions!! > 0) {
                             Text(
                                 text = stringResource(R.string.remaining_reps) + ":",
-                                style = MaterialTheme.typography.headlineLarge.copy(
+                                style = MaterialTheme.typography.headlineMedium.copy(
                                     fontWeight = FontWeight.Bold
                                 )
                             )
                             Text(
-                                text = "10",
+                                text = "${routinesViewModel.uiState.currentExercise?.repetitions}",
                                 style = MaterialTheme.typography.displayLarge.copy(
                                     fontWeight = FontWeight.Bold
                                 ),
                                 textAlign = androidx.compose.ui.text.style.TextAlign.Center,
                             )
                         }
+                        if (routinesViewModel.uiState.currentExercise?.duration!! > 0) {
+                            LaunchedEffect(key1 = timeLeft, key2 = isPaused) {
+                                while (timeLeft!! > 0 && !isPaused) {
+                                    delay(1000L)
+                                    timeLeft = timeLeft!! - 1
+                                }
+                            }
+                            Text(
+                                text = stringResource(R.string.time_left) + ":",
+                                style = MaterialTheme.typography.headlineMedium.copy(
+                                    fontWeight = FontWeight.Bold
+                                )
+                            )
+                            Text(
+                                text = "$timeLeft",
+                                style = MaterialTheme.typography.displayLarge.copy(
+                                    fontWeight = FontWeight.Bold
+                                ),
+                                textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+                                fontSize = 100.sp
+                            )
+                            Button(
+                                onClick = { isPaused = !isPaused },
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = Color(
+                                        0xFF8EFE00
+                                    )
+                                ),
+                            )
+                            {
+                                if (isPaused) {
+                                    Icon(Icons.Filled.PlayArrow, "Play", tint = Color.Black)
+                                } else {
+                                    Icon(
+                                        painterResource(R.drawable.pause),
+                                        "Pause",
+                                        tint = Color.Black
+                                    )
+                                }
+                            }
+                        }
+                        Spacer(modifier.weight(1f))
                     }
                 }
             } else {
