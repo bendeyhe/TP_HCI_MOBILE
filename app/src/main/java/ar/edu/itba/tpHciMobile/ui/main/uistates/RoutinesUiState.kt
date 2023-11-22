@@ -35,6 +35,7 @@ data class RoutinesUiState(
 
     val currentCycleIndex: Int = 0,
     val currentExerciseIndex: Int = 0,
+    val currentRepetitionIndex: Int = 0,
 
     var cycleDetailList: List<CyclesDetail> = emptyList(),
 

@@ -155,7 +155,7 @@ fun ExecuteRoutineContent(
                                 )
                             )
                             Text(
-                                text = routinesViewModel.uiState.currentRoutineCycle!!.name,
+                                text = routinesViewModel.uiState.currentRoutineCycle!!.name+ "   " + (routinesViewModel.uiState.currentRepetitionIndex + 1) + "/" + routinesViewModel.uiState.cycleDetailList[routinesViewModel.uiState.currentCycleIndex].cycle!!.repetitions,
                                 style = MaterialTheme.typography.headlineMedium.copy(
                                     fontWeight = FontWeight.Bold
                                 )
@@ -276,18 +276,36 @@ fun ExecuteRoutineContent(
                     //TODO ESTO NO ES UN TODO, SOLO QUERIA QUE SE ME MARQUE LA SEGUNDA VIEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 
                     Surface(modifier = Modifier.padding(top = 50.dp)) {
-                        Column() {
+                        Column {
                             for (cycle in routinesViewModel.uiState.cycleDetailList) {
-                                Text(
-                                    text = cycle.cycle!!.name,
-                                    style = MaterialTheme.typography.headlineMedium.copy(
-                                        fontWeight = FontWeight.Bold
+                                if (cycle == routinesViewModel.uiState.cycleDetailList[routinesViewModel.uiState.currentCycleIndex]) {
+                                    Row (Modifier.background(Color.LightGray)){
+                                        Text(
+                                            text = cycle.cycle!!.name,
+                                            style = MaterialTheme.typography.headlineMedium.copy(
+                                                fontWeight = FontWeight.Bold
+                                            )
+                                        )
+                                        Spacer(modifier = Modifier.weight(1f))
+                                        Text(
+                                            text = "" + (routinesViewModel.uiState.currentRepetitionIndex + 1) + "/" + routinesViewModel.uiState.cycleDetailList[routinesViewModel.uiState.currentCycleIndex].cycle!!.repetitions,
+                                            style = MaterialTheme.typography.headlineMedium.copy(
+                                                fontWeight = FontWeight.Bold
+                                            )
+                                        )
+                                    }
+                                }
+                                else
+                                    Text(
+                                        text = cycle.cycle!!.name,
+                                        style = MaterialTheme.typography.headlineMedium.copy(
+                                            fontWeight = FontWeight.Normal
+                                        )
                                     )
-                                )
                                 Divider()
                                 for (exercise in cycle.exercises) {
                                     if (exercise == routinesViewModel.uiState.currentExercise) {
-                                        Row(Modifier.background(Color.LightGray)) {
+                                        Row(Modifier.background(Color(0xFF8EFE00))) {
                                             Text(
                                                 text = exercise.exercise.name,
                                                 style = MaterialTheme.typography.headlineMedium.copy(
