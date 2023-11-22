@@ -224,7 +224,6 @@ fun Routine(
                 }
                 Row() {
                     ShowRatingBar(
-                        modifier = Modifier.padding(top = 4.dp),
                         rating = routine.score,
                         stars = 5,
                         starsColor = Color.Yellow
@@ -233,7 +232,6 @@ fun Routine(
                         text = " (" + ((routine.score.toDouble()/2)) + ")",
                         color = Color.Black,
                         style = MaterialTheme.typography.headlineMedium.copy(fontSize = 20.sp),
-                        modifier = Modifier.padding(top = 4.dp)
                     )
                 }
                 Row {
@@ -270,13 +268,18 @@ fun Routine(
                             style = MaterialTheme.typography.headlineMedium.copy(fontSize = 20.sp)
                         )
                     }
-                }
-                Row {
-                    Text(
-                        text = stringResource(R.string.difficulty) + ": " + routine.difficulty,
-                        color = Color.Black,
-                        style = MaterialTheme.typography.headlineMedium.copy(fontSize = 20.sp)
-                    )
+                    Spacer(modifier = Modifier.weight(1f))
+                    Surface(
+                        shape = MaterialTheme.shapes.small,
+                        color = Color.LightGray
+                    ) {
+                        Text(
+                            text = routine.difficulty.toString(),
+                            color = Color.Black,
+                            style = MaterialTheme.typography.headlineMedium.copy(fontSize = 20.sp),
+                            modifier = Modifier.padding(horizontal = 4.dp, vertical = 4.dp)
+                        )
+                    }
                 }
             }
         }
