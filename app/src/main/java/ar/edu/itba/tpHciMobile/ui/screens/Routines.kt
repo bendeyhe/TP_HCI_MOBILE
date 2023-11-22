@@ -190,7 +190,7 @@ fun Routine(
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    if(color == Color.White) {
+                    if (color == Color.White) {
                         Text(
                             text = routine.name + " ",
                             color = Color.Black,
@@ -198,21 +198,44 @@ fun Routine(
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis
                         )
-                    }
-                    else{
+                    } else {
                         Text(
                             text = routine.name + " ",
                             color = Color.Black,
                             style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.ExtraBold),
                         )
                     }
+                    Spacer(modifier = Modifier.weight(1f))
+                    Column() {
+                        if (userViewModel.uiState.isAuthenticated) {
+                            IconToggleButton(
+                                checked = routine.liked,
+                                onCheckedChange = { likeFunc(); },
+                            ) {
+                                Icon(
+                                    imageVector = if (routine.liked) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
+                                    "Like",
+                                    modifier = Modifier.size(36.dp),
+                                    tint = Color.Black
+                                )
+                            }
+                        }
+                    }
                 }
-                ShowRatingBar(
-                    modifier = Modifier.padding(top = 4.dp),
-                    rating = routine.score,
-                    stars = 4,
-                    starsColor = Color.Yellow
-                )
+                Row() {
+                    ShowRatingBar(
+                        modifier = Modifier.padding(top = 4.dp),
+                        rating = routine.score,
+                        stars = 5,
+                        starsColor = Color.Yellow
+                    )
+                    Text(
+                        text = " (" + ((routine.score.toDouble()/2)) + ")",
+                        color = Color.Black,
+                        style = MaterialTheme.typography.headlineMedium.copy(fontSize = 20.sp),
+                        modifier = Modifier.padding(top = 4.dp)
+                    )
+                }
                 Row {
                     if (color == Color.White) {
                         Text(
@@ -228,37 +251,32 @@ fun Routine(
                             text = routine.detail ?: "",
                             color = Color.Black,
                             style = MaterialTheme.typography.headlineMedium.copy(fontSize = 20.sp),
-                            )
+                        )
                     }
                 }
                 Row {
-                    Text(
-                        text = stringResource(R.string.category) + ": " + routine.category.name,
-                        color = Color.Black,
-                        style = MaterialTheme.typography.headlineMedium.copy(fontSize = 18.sp)
-                    )
+                    if (color == Color.White) {
+                        Text(
+                            text = stringResource(R.string.category) + ": " + routine.category.name,
+                            color = Color.Black,
+                            style = MaterialTheme.typography.headlineMedium.copy(fontSize = 20.sp),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    } else {
+                        Text(
+                            text = stringResource(R.string.category) + ": " + routine.category.name,
+                            color = Color.Black,
+                            style = MaterialTheme.typography.headlineMedium.copy(fontSize = 20.sp)
+                        )
+                    }
                 }
                 Row {
                     Text(
                         text = stringResource(R.string.difficulty) + ": " + routine.difficulty,
                         color = Color.Black,
-                        style = MaterialTheme.typography.headlineMedium.copy(fontSize = 18.sp)
+                        style = MaterialTheme.typography.headlineMedium.copy(fontSize = 20.sp)
                     )
-                }
-            }
-            Column() {
-                if (userViewModel.uiState.isAuthenticated) {
-                    IconToggleButton(
-                        checked = routine.liked,
-                        onCheckedChange = { likeFunc(); },
-                    ) {
-                        Icon(
-                            imageVector = if (routine.liked) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
-                            "Like",
-                            modifier = Modifier.size(36.dp),
-                            tint = Color.Black
-                        )
-                    }
                 }
             }
         }
@@ -345,8 +363,10 @@ fun ShowRatingBar(
     starsColor: Color = Color.Yellow,
 ) {
     val filledStars = Math.floor((rating / 2).toDouble()).toInt()
-    val unfilledStars = (stars - Math.ceil((rating / 2).toDouble())).toInt()
-    val halfStar = !((rating / 2).rem(1).equals(0.0))
+    var unfilledStars = (stars - Math.ceil((rating / 2).toDouble())).toInt()
+    val halfStar = (rating.toDouble()/2 - rating/2) > 0
+    if(halfStar)
+        unfilledStars -=  1
     Row(
         modifier = modifier,
         Arrangement.Center,
