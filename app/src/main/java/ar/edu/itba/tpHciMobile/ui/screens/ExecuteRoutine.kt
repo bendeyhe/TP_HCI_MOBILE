@@ -1,5 +1,6 @@
 package ar.edu.itba.tpHciMobile.ui.screens
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,6 +15,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -123,6 +125,7 @@ fun ExecuteRoutineContent(
     routinesViewModel: RoutinesViewModel = viewModel(factory = getViewModelFactory()),
     routineId: Int
 ) {
+    var currentRating by remember { mutableStateOf(0) }
     if (routinesViewModel.uiState.isFetchingExecution) {
         Loading()
     } else {
@@ -247,7 +250,7 @@ fun ExecuteRoutineContent(
                             fontWeight = FontWeight.Bold
                         )
                     )
-                    RatingBar(rating = 2.5)
+                    RatingBar(currentRating = currentRating, onRatingChanged = { currentRating = it })
                     Row() {
                         Button(
                             onClick = { navController.navigate("routine/${routinesViewModel.uiState.currentRoutine?.id}") },
@@ -297,40 +300,23 @@ fun ExecuteRoutineContent(
 
 @Composable
 fun RatingBar(
-    modifier: Modifier = Modifier,
-    rating: Double = 0.0,
-    stars: Int = 5,
-    starsColor: Color = Color.Yellow,
+    maxRating: Int = 5,
+    currentRating: Int,
+    onRatingChanged: (Int) -> Unit,
+    starsColor: Color = Color.Black
 ) {
-    val filledStars = floor(rating).toInt()
-    val unfilledStars = (stars - ceil(rating)).toInt()
-    val halfStar = !(rating.rem(1).equals(0.0))
-    Row(
-        modifier = modifier,
-        Arrangement.Center,
-        Alignment.CenterVertically,
-    ) {
-        repeat(filledStars) {
+    Row {
+        for (i in 1..maxRating) {
             Icon(
-                imageVector = Icons.Outlined.Star, contentDescription = null,
-                tint = Color.Black,
-                modifier = Modifier.size(65.dp)
-            )
-        }
-        if (halfStar) {
-            Icon(
-                painterResource(R.drawable.star_half),
+                imageVector = if (i <= currentRating) Icons.Filled.Star
+                else Icons.Outlined.Star,
                 contentDescription = null,
-                tint = Color.Black,
-                modifier = Modifier.size(65.dp)
-            )
-        }
-        repeat(unfilledStars) {
-            Icon(
-                painterResource(R.drawable.star_border),
-                contentDescription = null,
-                tint = Color.Black,
-                modifier = Modifier.size(65.dp)
+                tint = if (i <= currentRating) starsColor
+                else Color.LightGray,
+                modifier = Modifier
+                    .padding(5.dp)
+                    .size(50.dp)
+                    .clickable { onRatingChanged(i) }
             )
         }
     }
