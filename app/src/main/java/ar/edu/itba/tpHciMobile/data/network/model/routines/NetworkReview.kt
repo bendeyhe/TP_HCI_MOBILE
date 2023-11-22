@@ -10,17 +10,14 @@ import java.util.Date
 class NetworkReview(
     @SerializedName("id") var id: Int,
     @SerializedName("date") var date: Date? = null,
-    @SerializedName("score") var score: Int? = null,
+    @SerializedName("score") var score: Int,
     @SerializedName("review") var review: String,
     @SerializedName("user") var user: NetworkUser? = null
 ) {
     fun asModel(): Review {
         return Review(
-            id = id,
-            date = date,
             score = score,
             review = review,
-            user = user
         )
     }
 }

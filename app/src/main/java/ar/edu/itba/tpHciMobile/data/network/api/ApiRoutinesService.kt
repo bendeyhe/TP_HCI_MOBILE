@@ -5,6 +5,7 @@ import ar.edu.itba.tpHciMobile.data.network.model.util.NetworkPagedContent
 import ar.edu.itba.tpHciMobile.data.network.model.routines.NetworkCompleteCycle
 import ar.edu.itba.tpHciMobile.data.network.model.routines.NetworkReview
 import ar.edu.itba.tpHciMobile.data.network.model.routines.NetworkRoutine
+import ar.edu.itba.tpHciMobile.data.network.model.routines.NetworkUpdateRoutine
 import retrofit2.Response
 import retrofit2.http.*
 import retrofit2.http.Query
@@ -32,6 +33,8 @@ interface ApiRoutinesService {
 
     @GET("routines/{routineId}")
     suspend fun getRoutine(@Path("routineId") routineId: Int): Response<NetworkRoutine>
+    @PUT("routines/{routineId}")
+    suspend fun updateRoutine(@Path("routineId") routineId: Int, @Body routine: NetworkUpdateRoutine): Response<Unit>
 
     @GET("routines/{routineId}/cycles")
     suspend fun getCycles(@Path("routineId") routineId: Int): Response<NetworkPagedContent<NetworkCompleteCycle>>

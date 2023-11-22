@@ -243,7 +243,6 @@ fun ExecuteRoutineContent(
                                             }
                                         }
                                     }
-                                    //TODO IF HAY SIGUIENTE EJERCICIO MOSTRARLO
                                     if (routinesViewModel.uiState.nextExercise != null) {
                                         Text(
                                             text = stringResource(R.string.next_exercise) + ":",
@@ -253,13 +252,12 @@ fun ExecuteRoutineContent(
                                             modifier = Modifier.padding(top = 16.dp)
                                         )
                                         Text(
-                                            text = routinesViewModel.uiState!!.nextExercise!!.exercise.name, //TODO ACA PONER EL SIGUIENTE EJERCICIO
+                                            text = routinesViewModel.uiState!!.nextExercise!!.exercise.name,
                                             style = MaterialTheme.typography.bodyLarge.copy(
                                                 fontWeight = FontWeight.Bold
                                             )
                                         )
                                     }
-                                    //CERRAR EL IF ACA
                                 }
                             }
                             Spacer(modifier.weight(1f))
@@ -272,7 +270,7 @@ fun ExecuteRoutineContent(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text(
-                            text = stringResource(R.string.routine_finished),
+                            text = stringResource(R.string.routine_finished), //TODO TRADUCIR
                             style = MaterialTheme.typography.headlineLarge.copy(
                                 fontWeight = FontWeight.Bold
                             ),
@@ -280,14 +278,17 @@ fun ExecuteRoutineContent(
                             textAlign = androidx.compose.ui.text.style.TextAlign.Center,
                         )
                         Text(
-                            text = stringResource(R.string.rank_routine),
+                            text = stringResource(R.string.rank_routine),// TODO TRADUCIR
                             style = MaterialTheme.typography.headlineLarge.copy(
                                 fontWeight = FontWeight.Bold
                             )
                         )
                         RatingBar(
                             currentRating = currentRating,
-                            onRatingChanged = { currentRating = it })
+                            onRatingChanged = { currentRating = it * 2
+                            routinesViewModel.setReview(routinesViewModel.uiState.currentRoutine!!.id, Review(currentRating))
+
+                    })
                         Row {
                             Button(
                                 onClick = { navController.navigate("routine/${routinesViewModel.uiState.currentRoutine?.id}") },
@@ -305,9 +306,7 @@ fun ExecuteRoutineContent(
                             }
                             Button(
                                 onClick = {
-                                    var review: Review = Review()
-                                    review.review = ""
-                                    review.score = 3 // TODO CAMBIAR ESTO A LO QUE SEA QUE ELIJA
+                                    var review: Review = Review(currentRating)
                                     routinesViewModel.setReview(
                                         routinesViewModel.uiState.currentRoutine!!.id,
                                         review

@@ -6,6 +6,7 @@ import ar.edu.itba.tpHciMobile.data.network.model.util.NetworkPagedContent
 import ar.edu.itba.tpHciMobile.data.network.model.routines.NetworkCompleteCycle
 import ar.edu.itba.tpHciMobile.data.network.model.routines.NetworkReview
 import ar.edu.itba.tpHciMobile.data.network.model.routines.NetworkRoutine
+import ar.edu.itba.tpHciMobile.data.network.model.routines.NetworkUpdateRoutine
 
 class RoutinesRemoteDataSource(
     private val routinesService: ApiRoutinesService
@@ -47,6 +48,11 @@ class RoutinesRemoteDataSource(
     suspend fun getRoutine(routineId: Int): NetworkRoutine {
         return handleApiResponse {
             routinesService.getRoutine(routineId)
+        }
+    }
+    suspend fun updateRoutine(routineId: Int, routine: NetworkUpdateRoutine) {
+        handleApiResponse {
+            routinesService.updateRoutine(routineId, routine)
         }
     }
 

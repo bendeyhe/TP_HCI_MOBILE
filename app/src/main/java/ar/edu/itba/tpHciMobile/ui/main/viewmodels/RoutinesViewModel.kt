@@ -214,6 +214,13 @@ class RoutinesViewModel(
         }
     }
 
+    fun updateRoutine(routineId: Int, routine: Routine) = runOnViewModelScope(
+        {
+            routinesRepository.updateRoutine(routineId, routine)
+        },
+        { state, _ -> state }
+    )
+
     fun getCurrentUserRoutines() = runOnViewModelScope(
         {
             userRepository.getCurrentUserRoutines(true)
@@ -329,6 +336,7 @@ class RoutinesViewModel(
         }
         uiState = uiState.copy(isFetchingRoutine = false, isFetchingExecution = false)
     }
+
 
     fun setReview(routineId: Int, review: Review) = runOnViewModelScope(
         {

@@ -3,6 +3,7 @@ package ar.edu.itba.tpHciMobile.data.model
 import ar.edu.itba.tpHciMobile.data.network.model.util.NetworkCategory
 import ar.edu.itba.tpHciMobile.data.network.model.user.NetworkUser
 import ar.edu.itba.tpHciMobile.data.network.model.routines.NetworkRoutine
+import ar.edu.itba.tpHciMobile.data.network.model.routines.NetworkUpdateRoutine
 import java.util.Date
 
 class Routine(
@@ -43,6 +44,17 @@ class Routine(
             category = category,
             liked = liked,
             fromCUser = fromCUser
+        )
+    }
+
+    fun asNetworkUpdateModel(): NetworkUpdateRoutine {
+        return NetworkUpdateRoutine(
+            name = name,
+            detail = detail,
+            isPublic = isPublic,
+            difficulty = difficulty,
+            category = category.id,
+            metadata = null
         )
     }
 }

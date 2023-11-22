@@ -5,12 +5,9 @@ import ar.edu.itba.tpHciMobile.data.network.model.user.NetworkUser
 import java.util.Date
 
 class Review (
-    var id: Int = 0,
-    var date: Date? = null,
-    var score: Int? = null,
+    var score: Int,
     var review: String = "",
-    var user: NetworkUser? = null
-    ) {
+    ) /*{
         fun asModel(): NetworkReview {
             return NetworkReview(
                 id = id,
@@ -21,3 +18,4 @@ class Review (
             )
         }
     }
+    */
