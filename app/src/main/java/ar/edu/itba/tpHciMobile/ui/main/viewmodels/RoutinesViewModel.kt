@@ -270,6 +270,7 @@ class RoutinesViewModel(
                 uiState = uiState.copy(currentCycleIndex = uiState.currentCycleIndex + 1)
                 uiState =
                     uiState.copy(currentRoutineCycle = uiState.cycleDetailList[uiState.currentCycleIndex].cycle)
+                uiState = uiState.copy(currentExercise = uiState.cycleDetailList[uiState.currentCycleIndex].exercises[0])
                 if (uiState.currentExerciseIndex < uiState.cycleDetailList[uiState.currentCycleIndex].exercises.size - 1) {
                     uiState = uiState.copy(nextExercise = uiState.cycleDetailList[uiState.currentCycleIndex].exercises[uiState.currentExerciseIndex + 1])
                 } else if (uiState.currentCycleIndex < uiState.cycleDetailList.size - 1) {
@@ -304,6 +305,8 @@ class RoutinesViewModel(
                 uiState =
                     uiState.copy(currentRoutineCycle = uiState.cycleDetailList[uiState.currentCycleIndex].cycle)
                 uiState = uiState.copy(currentExerciseIndex = uiState.cycleDetailList[uiState.currentCycleIndex].exercises.size - 1)
+                uiState =
+                    uiState.copy(currentExercise = uiState.cycleDetailList[uiState.currentCycleIndex].exercises[uiState.currentExerciseIndex])
             } else {
                 uiState = uiState.copy(currentCycleIndex = uiState.routineCycles.size - 1)
                 uiState =
