@@ -250,12 +250,26 @@ class RoutinesViewModel(
             uiState = uiState.copy(currentExerciseIndex = uiState.currentExerciseIndex + 1)
             uiState =
                 uiState.copy(currentExercise = uiState.cycleDetailList[uiState.currentCycleIndex].exercises[uiState.currentExerciseIndex])
+            if (uiState.currentExerciseIndex < uiState.cycleDetailList[uiState.currentCycleIndex].exercises.size - 1) {
+                uiState = uiState.copy(nextExercise = uiState.cycleDetailList[uiState.currentCycleIndex].exercises[uiState.currentExerciseIndex + 1])
+            } else if (uiState.currentCycleIndex < uiState.cycleDetailList.size - 1) {
+                uiState = uiState.copy(nextExercise = uiState.cycleDetailList[uiState.currentCycleIndex + 1].exercises[0])
+            } else {
+                uiState = uiState.copy(nextExercise = null)
+            }
         } else {
             uiState = uiState.copy(currentExerciseIndex = 0)
             if (uiState.currentCycleIndex < uiState.cycleDetailList.size - 1) {
                 uiState = uiState.copy(currentCycleIndex = uiState.currentCycleIndex + 1)
                 uiState =
                     uiState.copy(currentRoutineCycle = uiState.cycleDetailList[uiState.currentCycleIndex].cycle)
+                if (uiState.currentExerciseIndex < uiState.cycleDetailList[uiState.currentCycleIndex].exercises.size - 1) {
+                    uiState = uiState.copy(nextExercise = uiState.cycleDetailList[uiState.currentCycleIndex].exercises[uiState.currentExerciseIndex + 1])
+                } else if (uiState.currentCycleIndex < uiState.cycleDetailList.size - 1) {
+                    uiState = uiState.copy(nextExercise = uiState.cycleDetailList[uiState.currentCycleIndex + 1].exercises[0])
+                } else {
+                    uiState = uiState.copy(nextExercise = null)
+                }
             } else {
                 uiState = uiState.copy(currentCycleIndex = 0)
                 uiState =
@@ -268,20 +282,26 @@ class RoutinesViewModel(
     fun previousExercise() = viewModelScope.launch {
         uiState = uiState.copy(isFetchingRoutine = true, fetchRoutineErrorStringId = null)
         if (uiState.currentExerciseIndex > 0) {
+            uiState = uiState.copy(nextExercise = uiState.currentExercise)
             uiState = uiState.copy(currentExerciseIndex = uiState.currentExerciseIndex - 1)
             uiState =
                 uiState.copy(currentExercise = uiState.cycleDetailList[uiState.currentCycleIndex].exercises[uiState.currentExerciseIndex])
         } else {
-            uiState =
+            /*uiState =
                 uiState.copy(currentExerciseIndex = uiState.cycleDetailList[uiState.currentCycleIndex].exercises.size - 1)
+
+             */
             if (uiState.currentCycleIndex > 0) {
+                uiState = uiState.copy(nextExercise = uiState.currentExercise)
                 uiState = uiState.copy(currentCycleIndex = uiState.currentCycleIndex - 1)
                 uiState =
                     uiState.copy(currentRoutineCycle = uiState.cycleDetailList[uiState.currentCycleIndex].cycle)
+                uiState = uiState.copy(currentExerciseIndex = uiState.cycleDetailList[uiState.currentCycleIndex].exercises.size - 1)
             } else {
                 uiState = uiState.copy(currentCycleIndex = uiState.routineCycles.size - 1)
                 uiState =
                     uiState.copy(currentRoutineCycle = uiState.cycleDetailList[uiState.currentCycleIndex].cycle)
+                uiState = uiState.copy(nextExercise = null)
 
             }
         }
@@ -299,6 +319,13 @@ class RoutinesViewModel(
                 uiState.copy(currentExercise = uiState.cycleDetailList.first().exercises.first())
             uiState = uiState.copy(currentCycleIndex = 0)
             uiState = uiState.copy(currentExerciseIndex = 0)
+            if (uiState.cycleDetailList.first().exercises.size > 1) {
+                uiState = uiState.copy(nextExercise = uiState.cycleDetailList.first().exercises[1])
+            } else if (uiState.cycleDetailList.size > 1) {
+                uiState = uiState.copy(nextExercise = uiState.cycleDetailList[1].exercises[0])
+            } else {
+                uiState = uiState.copy(nextExercise = null)
+            }
         }
         uiState = uiState.copy(isFetchingRoutine = false, isFetchingExecution = false)
     }

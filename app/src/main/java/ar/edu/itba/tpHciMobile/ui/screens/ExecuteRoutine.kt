@@ -244,19 +244,21 @@ fun ExecuteRoutineContent(
                                         }
                                     }
                                     //TODO IF HAY SIGUIENTE EJERCICIO MOSTRARLO
-                                    Text(
-                                        text = stringResource(R.string.next_exercise) + ":",
-                                        style = MaterialTheme.typography.bodyLarge.copy(
-                                            fontWeight = FontWeight.Bold
-                                        ),
-                                        modifier = Modifier.padding(top = 16.dp)
-                                    )
-                                    Text(
-                                        text = "siguiente ejercicio", //TODO ACA PONER EL SIGUIENTE EJERCICIO
-                                        style = MaterialTheme.typography.bodyLarge.copy(
-                                            fontWeight = FontWeight.Bold
+                                    if (routinesViewModel.uiState.nextExercise != null) {
+                                        Text(
+                                            text = stringResource(R.string.next_exercise) + ":",
+                                            style = MaterialTheme.typography.bodyLarge.copy(
+                                                fontWeight = FontWeight.Bold
+                                            ),
+                                            modifier = Modifier.padding(top = 16.dp)
                                         )
-                                    )
+                                        Text(
+                                            text = routinesViewModel.uiState!!.nextExercise!!.exercise.name, //TODO ACA PONER EL SIGUIENTE EJERCICIO
+                                            style = MaterialTheme.typography.bodyLarge.copy(
+                                                fontWeight = FontWeight.Bold
+                                            )
+                                        )
+                                    }
                                     //CERRAR EL IF ACA
                                 }
                             }

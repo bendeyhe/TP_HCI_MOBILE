@@ -53,4 +53,6 @@ data class RoutinesUiState(
     val updatedFavs: Boolean = false,
     val isExecuting: Boolean = true,
     val aux: Boolean = false,
+
+    val nextExercise: CycleExercise? = null,
 )
