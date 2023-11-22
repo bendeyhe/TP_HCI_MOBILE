@@ -69,4 +69,6 @@
     <string name="in">in</string>
     <string name="next_exercise">Next exercise</string>
     <string name="routine_not_exists">Non-existent routine.</string>
+    <string name="view_1">Detailed View</string>
+    <string name="view_2">List view</string>
 </resources>

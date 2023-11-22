@@ -107,7 +107,7 @@ fun RoutineDetails(
 
 @Composable
 fun RoutineDetailsContent(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     routinesViewModel: RoutinesViewModel,
     currentRoutine: Routine
 ) {

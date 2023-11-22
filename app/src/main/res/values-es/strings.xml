@@ -70,4 +70,6 @@
     <string name="in">en</string>
     <string name="next_exercise">Siguiente ejercicio</string>
     <string name="routine_not_exists">La rutina no existe.</string>
+    <string name="view_1">Vista detallada</string>
+    <string name="view_2">Ver lista</string>
 </resources>
