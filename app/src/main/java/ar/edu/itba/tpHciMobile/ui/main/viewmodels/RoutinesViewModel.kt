@@ -249,7 +249,7 @@ class RoutinesViewModel(
     )
 
     fun nextExercise() = viewModelScope.launch {
-        uiState = uiState.copy(isFetchingRoutine = true, fetchRoutineErrorStringId = null)
+        uiState = uiState.copy(isFetchingRoutine = true, fetchRoutineErrorStringId = null, hasChangedExercise = true)
         if (uiState.currentCycleIndex == uiState.cycleDetailList.size - 1 && uiState.currentExerciseIndex == uiState.cycleDetailList.last().exercises.size - 1) {
             uiState = uiState.copy(isExecuting = false)
         }
@@ -288,7 +288,7 @@ class RoutinesViewModel(
     }
 
     fun previousExercise() = viewModelScope.launch {
-        uiState = uiState.copy(isFetchingRoutine = true, fetchRoutineErrorStringId = null)
+        uiState = uiState.copy(isFetchingRoutine = true, fetchRoutineErrorStringId = null, hasChangedExercise = true)
         if (uiState.currentExerciseIndex > 0) {
             uiState = uiState.copy(nextExercise = uiState.currentExercise)
             uiState = uiState.copy(currentExerciseIndex = uiState.currentExerciseIndex - 1)
@@ -316,6 +316,9 @@ class RoutinesViewModel(
             }
         }
         uiState = uiState.copy(isFetchingRoutine = false)
+    }
+    fun changeHasChangedExercise() = viewModelScope.launch {
+        uiState = uiState.copy(hasChangedExercise = false)
     }
 
     fun startExecution(routineId: Int) = viewModelScope.launch {

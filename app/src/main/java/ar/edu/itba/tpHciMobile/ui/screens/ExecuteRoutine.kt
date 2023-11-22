@@ -134,8 +134,12 @@ fun ExecuteRoutineContent(
                     var timeLeft by remember { mutableStateOf(routinesViewModel.uiState.currentExercise?.duration) }
                     var isPaused by remember { mutableStateOf(false) }
                     routineFinished = false
-                    if (timeLeft == null || timeLeft == 0)
-                        timeLeft = 5
+                    if (routinesViewModel.uiState.hasChangedExercise) {
+                        routinesViewModel.changeHasChangedExercise()
+                        timeLeft = routinesViewModel.uiState.currentExercise?.duration
+                    }
+
+
                     Surface(
                         modifier = modifier.fillMaxSize()
                     )
@@ -201,6 +205,11 @@ fun ExecuteRoutineContent(
                                             while (timeLeft!! > 0 && !isPaused) {
                                                 delay(1000L)
                                                 timeLeft = timeLeft!! - 1
+                                                if (timeLeft == 0)
+                                                    if (!routinesViewModel.uiState.isFetchingRoutine) {
+                                                        routinesViewModel.nextExercise()
+                                                        timeLeft = routinesViewModel.uiState.currentExercise?.duration
+                                                    }
                                             }
                                         }
                                         Text(

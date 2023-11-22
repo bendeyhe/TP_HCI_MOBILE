@@ -55,4 +55,6 @@ data class RoutinesUiState(
     val aux: Boolean = false,
 
     val nextExercise: CycleExercise? = null,
+
+    val hasChangedExercise: Boolean = false,
 )
