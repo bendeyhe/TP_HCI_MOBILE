@@ -16,8 +16,10 @@ import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -55,6 +57,61 @@ import java.lang.Math.floor
 
 @Composable
 fun ExecuteRoutine(
+    modifier: Modifier = Modifier,
+    navController: NavController,
+    routinesViewModel: RoutinesViewModel = viewModel(factory = getViewModelFactory()),
+    routineId: Int
+) {
+    @OptIn(ExperimentalMaterial3Api::class)
+    Scaffold(
+        bottomBar = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Button(
+                    onClick = { routinesViewModel.previousExercise() },
+                    modifier = Modifier.padding(16.dp),
+                    enabled = !(routinesViewModel.uiState.currentCycleIndex == 0 && routinesViewModel.uiState.currentExerciseIndex == 0),
+                    colors = ButtonDefaults.buttonColors(containerColor = Color.LightGray)
+                ) {
+                    Text(
+                        text = stringResource(R.string.back),
+                        color = Color.Black,
+                        style = MaterialTheme.typography.headlineMedium.copy(
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Medium
+                        )
+                    )
+                }
+                Button(
+                    onClick = { routinesViewModel.nextExercise() },
+                    modifier = Modifier.padding(16.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF8EFE00))
+                ) {
+                    Text(
+                        text = stringResource(R.string.next),
+                        color = Color.Black,
+                        style = MaterialTheme.typography.headlineMedium.copy(
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Medium
+                        )
+                    )
+                }
+            }
+        }
+    ) { contentPadding ->
+        ExecuteRoutineContent(
+            Modifier.padding(contentPadding),
+            navController,
+            routinesViewModel,
+            routineId
+        )
+    }
+}
+
+@Composable
+fun ExecuteRoutineContent(
     modifier: Modifier = Modifier,
     navController: NavController,
     routinesViewModel: RoutinesViewModel = viewModel(factory = getViewModelFactory()),
@@ -128,8 +185,7 @@ fun ExecuteRoutine(
                                 }
                             }
                         }
-                    }
-                    else if (routinesViewModel.uiState.currentExercise?.duration!! > 0) {
+                    } else if (routinesViewModel.uiState.currentExercise?.duration!! > 0) {
                         println("2")
                         LaunchedEffect(key1 = timeLeft, key2 = isPaused) {
                             while (timeLeft!! > 0 && !isPaused) {
@@ -171,9 +227,9 @@ fun ExecuteRoutine(
                             )
                             {
                                 /*Text(
-                            text = if (isPaused) "Resume " else "Pause ",
-                            color = Color.Black
-                        )*/
+                    text = if (isPaused) "Resume " else "Pause ",
+                    color = Color.Black
+                )*/
                                 if (isPaused) {
                                     Icon(Icons.Filled.PlayArrow, "Play", tint = Color.Black)
                                 } else {
@@ -185,8 +241,7 @@ fun ExecuteRoutine(
                                 }
                             }
                         }
-                    }
-                    else if (routinesViewModel.uiState.currentExercise?.repetitions!! > 0) {
+                    } else if (routinesViewModel.uiState.currentExercise?.repetitions!! > 0) {
                         println("3")
                         println(routinesViewModel.uiState.currentExercise?.exercise?.name)
                         println(routinesViewModel.uiState.currentExercise?.repetitions)
@@ -218,53 +273,24 @@ fun ExecuteRoutine(
                         }
                     }
                 }
-
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.Bottom,
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
-                    Button(
-                        onClick = { routinesViewModel.previousExercise() },
-                        modifier = Modifier.padding(16.dp),
-                        enabled = !(routinesViewModel.uiState.currentCycleIndex == 0 && routinesViewModel.uiState.currentExerciseIndex == 0),
-                        colors = ButtonDefaults.buttonColors(containerColor = Color.LightGray)
-                    ) {
-                        Text(
-                            text = stringResource(R.string.back),
-                            color = Color.Black,
-                            style = MaterialTheme.typography.headlineMedium.copy(
-                                fontSize = 20.sp,
-                                fontWeight = FontWeight.Medium
-                            )
-                        )
-                    }
-                    Button(
-                        onClick = { routinesViewModel.nextExercise() },
-                        modifier = Modifier.padding(16.dp),
-                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF8EFE00))
-                    ) {
-                        Text(
-                            text = stringResource(R.string.next),
-                            color = Color.Black,
-                            style = MaterialTheme.typography.headlineMedium.copy(
-                                fontSize = 20.sp,
-                                fontWeight = FontWeight.Medium
-                            )
-                        )
-                    }
                 }
             } else {
                 Column(
                     modifier = Modifier.fillMaxHeight(),
-                    verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
                         text = stringResource(R.string.routine_finished),
                         style = MaterialTheme.typography.headlineLarge.copy(
                             fontWeight = FontWeight.Bold
-                        )
+                        ),
+                        modifier = Modifier.padding(16.dp),
+                        textAlign = androidx.compose.ui.text.style.TextAlign.Center,
                     )
                     Text(
                         text = stringResource(R.string.rank_routine),
@@ -273,19 +299,39 @@ fun ExecuteRoutine(
                         )
                     )
                     RatingBar(rating = 2.5)
-                    Button(
-                        onClick = { /*TODO*/ },
-                        modifier = Modifier.padding(16.dp),
-                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF8EFE00))
-                    ) {
-                        Text(
-                            text = stringResource(R.string.skip),
-                            color = Color.Black,
-                            style = MaterialTheme.typography.headlineMedium.copy(
-                                fontSize = 20.sp,
-                                fontWeight = FontWeight.Medium
+                    Row() {
+                        Button(
+                            onClick = { /*TODO volver a la página de inicio o la de la rutina*/ },
+                            modifier = Modifier.padding(16.dp),
+                            colors = ButtonDefaults.buttonColors(containerColor = Color.LightGray)
+                        ) {
+                            Text(
+                                text = stringResource(R.string.skip),
+                                color = Color.Black,
+                                style = MaterialTheme.typography.headlineMedium.copy(
+                                    fontSize = 20.sp,
+                                    fontWeight = FontWeight.Medium
+                                )
                             )
-                        )
+                        }
+                        Button(
+                            onClick = { /*TODO sumar el rating a la rutina y volver a la página de inicio o de la rutina*/ },
+                            modifier = Modifier.padding(16.dp),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color(
+                                    0xFF8EFE00
+                                )
+                            )
+                        ) {
+                            Text(
+                                text = stringResource(R.string.send),
+                                color = Color.Black,
+                                style = MaterialTheme.typography.headlineMedium.copy(
+                                    fontSize = 20.sp,
+                                    fontWeight = FontWeight.Medium
+                                )
+                            )
+                        }
                     }
                 }
             }
@@ -293,6 +339,7 @@ fun ExecuteRoutine(
             Loading()
     }
 }
+
 
 @Composable
 fun RatingBar(

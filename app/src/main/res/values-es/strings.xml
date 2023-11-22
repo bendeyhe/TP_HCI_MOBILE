@@ -40,8 +40,8 @@
     <string name="login_msg">Iniciar sesión</string>
     <string name="logout_msg">Cerrar sesión</string>
     <string name="routine_details">Detalle de la rutina</string>
-    <string name="share_routine">Compartir</string>
-    <string name="start_routine">Comenzar</string>
+    <string name="share_routine">COMPARTIR</string>
+    <string name="start_routine">COMENZAR</string>
     <string name="rating">Puntaje</string>
     <string name="difficulty">Dificultad</string>
     <string name="category">Categoria</string>
@@ -61,9 +61,10 @@
     <string name="back">ANTERIOR</string>
     <string name="routine_finished">Felicitaciones! Terminaste la rutina.</string>
     <string name="rank_routine">¿Te ha gustado la rutina?</string>
-    <string name="skip">Omitir</string>
+    <string name="skip">OMITIR</string>
     <string name="repetitions">Repeticiones</string>
     <string name="repetition">Repetición</string>
     <string name="seconds">Segundos</string>
     <string name="second">Segundo</string>
+    <string name="send">ENVIAR</string>
 </resources>

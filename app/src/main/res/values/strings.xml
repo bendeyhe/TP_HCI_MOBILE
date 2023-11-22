@@ -39,8 +39,8 @@
     <string name="logout_msg">Log out</string>
     <string name="enter_password">Password</string>
     <string name="routine_details">Routine details</string>
-    <string name="share_routine">Share</string>
-    <string name="start_routine">Start</string>
+    <string name="share_routine">SHARE</string>
+    <string name="start_routine">START</string>
     <string name="rating">Rating</string>
     <string name="difficulty">Difficulty</string>
     <string name="category">Category</string>
@@ -59,10 +59,11 @@
     <string name="next">NEXT</string>
     <string name="back">BACK</string>
     <string name="routine_finished">Congratulations! You have finished the routine.</string>
-    <string name="rank_routine">Did you like the routine?</string>
-    <string name="skip">Skip</string>
+    <string name="rank_routine">Did you like the it?</string>
+    <string name="skip">SKIP</string>
     <string name="repetitions">Repetitions</string>
     <string name="repetition">Repetition</string>
     <string name="seconds">Seconds</string>
     <string name="second">Second</string>
+    <string name="send">SEND</string>
 </resources>
