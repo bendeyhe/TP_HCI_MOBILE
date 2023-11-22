@@ -20,6 +20,6 @@ fun Loading(color: Color = Color.Transparent) {
             .fillMaxSize()
             .background(color)
     ) {
-        CircularProgressIndicator()
+        CircularProgressIndicator(color = Color(0xFF8EFE00))
     }
 }
