@@ -255,7 +255,7 @@ fun CollapsableLazyColumn(
                                 }
                                 if (row.duration != 0) {
                                     if (textDurRep != "")
-                                        textDurRep += stringResource(R.string.`in`) + " "
+                                        textDurRep += " " + stringResource(R.string.`in`) + " "
                                     textDurRep += if (row.duration == 1)
                                         row.duration.toString() + " " + stringResource(R.string.second)
                                     else

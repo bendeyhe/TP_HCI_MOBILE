@@ -67,4 +67,8 @@ class RoutinesRepository(
     suspend fun getRoutine(routineId: Int): Routine {
         return routinesMutex.withLock { routinesRemoteDataSource.getRoutine(routineId).asModel() }
     }
+
+    suspend fun setReview(routineId: Int) {
+        routinesRemoteDataSource.setReview(routineId)
+    }
 }

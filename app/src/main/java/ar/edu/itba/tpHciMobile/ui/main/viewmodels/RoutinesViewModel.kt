@@ -247,15 +247,18 @@ class RoutinesViewModel(
         }
         if (uiState.currentExerciseIndex < uiState.cycleDetailList[uiState.currentCycleIndex].exercises.size - 1) {
             uiState = uiState.copy(currentExerciseIndex = uiState.currentExerciseIndex + 1)
-            uiState = uiState.copy(currentExercise = uiState.cycleDetailList[uiState.currentCycleIndex].exercises[uiState.currentExerciseIndex])
+            uiState =
+                uiState.copy(currentExercise = uiState.cycleDetailList[uiState.currentCycleIndex].exercises[uiState.currentExerciseIndex])
         } else {
             uiState = uiState.copy(currentExerciseIndex = 0)
             if (uiState.currentCycleIndex < uiState.cycleDetailList.size - 1) {
                 uiState = uiState.copy(currentCycleIndex = uiState.currentCycleIndex + 1)
-                uiState = uiState.copy(currentRoutineCycle = uiState.cycleDetailList[uiState.currentCycleIndex].cycle)
+                uiState =
+                    uiState.copy(currentRoutineCycle = uiState.cycleDetailList[uiState.currentCycleIndex].cycle)
             } else {
                 uiState = uiState.copy(currentCycleIndex = 0)
-                uiState = uiState.copy(currentRoutineCycle = uiState.cycleDetailList[uiState.currentCycleIndex].cycle)
+                uiState =
+                    uiState.copy(currentRoutineCycle = uiState.cycleDetailList[uiState.currentCycleIndex].cycle)
             }
         }
         uiState = uiState.copy(isFetchingRoutine = false)
@@ -265,15 +268,19 @@ class RoutinesViewModel(
         uiState = uiState.copy(isFetchingRoutine = true, fetchRoutineErrorStringId = null)
         if (uiState.currentExerciseIndex > 0) {
             uiState = uiState.copy(currentExerciseIndex = uiState.currentExerciseIndex - 1)
-            uiState = uiState.copy(currentExercise = uiState.cycleDetailList[uiState.currentCycleIndex].exercises[uiState.currentExerciseIndex])
+            uiState =
+                uiState.copy(currentExercise = uiState.cycleDetailList[uiState.currentCycleIndex].exercises[uiState.currentExerciseIndex])
         } else {
-            uiState = uiState.copy(currentExerciseIndex = uiState.cycleDetailList[uiState.currentCycleIndex].exercises.size - 1)
+            uiState =
+                uiState.copy(currentExerciseIndex = uiState.cycleDetailList[uiState.currentCycleIndex].exercises.size - 1)
             if (uiState.currentCycleIndex > 0) {
                 uiState = uiState.copy(currentCycleIndex = uiState.currentCycleIndex - 1)
-                uiState = uiState.copy(currentRoutineCycle = uiState.cycleDetailList[uiState.currentCycleIndex].cycle)
+                uiState =
+                    uiState.copy(currentRoutineCycle = uiState.cycleDetailList[uiState.currentCycleIndex].cycle)
             } else {
                 uiState = uiState.copy(currentCycleIndex = uiState.routineCycles.size - 1)
-                uiState = uiState.copy(currentRoutineCycle = uiState.cycleDetailList[uiState.currentCycleIndex].cycle)
+                uiState =
+                    uiState.copy(currentRoutineCycle = uiState.cycleDetailList[uiState.currentCycleIndex].cycle)
 
             }
         }
@@ -287,12 +294,20 @@ class RoutinesViewModel(
             getRoutine(routineId).join()
             uiState = uiState.copy(isExecuting = true)
             uiState = uiState.copy(currentRoutineCycle = uiState.cycleDetailList.first().cycle)
-            uiState = uiState.copy(currentExercise = uiState.cycleDetailList.first().exercises.first())
+            uiState =
+                uiState.copy(currentExercise = uiState.cycleDetailList.first().exercises.first())
             uiState = uiState.copy(currentCycleIndex = 0)
             uiState = uiState.copy(currentExerciseIndex = 0)
         }
         uiState = uiState.copy(isFetchingRoutine = false, isFetchingExecution = false)
     }
+
+    fun setReview(routineId: Int) = runOnViewModelScope(
+        {
+            routinesRepository.setReview(routineId)
+        },
+        { state, _ -> state }
+    )
 
     private fun <R> runOnViewModelScope(
         block: suspend () -> R,

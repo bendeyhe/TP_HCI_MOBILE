@@ -10,7 +10,7 @@ class Routine(
     var name: String,
     var detail: String? = null,
     var date: Date? = null,
-    var score: Int? = null,
+    var score: Int = 0,
     var isPublic: Boolean? = null,
     var difficulty: String? = null,
     var user: NetworkUser? = null,

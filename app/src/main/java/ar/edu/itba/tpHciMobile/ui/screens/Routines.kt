@@ -1,11 +1,8 @@
 package ar.edu.itba.tpHciMobile.ui.screens
 
-import android.widget.Toast
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.spring
-import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,6 +17,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.KeyboardArrowDown
@@ -88,7 +86,6 @@ fun Routines(
                 state = rememberSwipeRefreshState(isRefreshing = routinesViewModel.uiState.isFetchingRoutine),
                 onRefresh = { routinesViewModel.getRoutinesOrderBy() }
             ) {
-
                 Column(
                     horizontalAlignment = Alignment.Start,
                     verticalArrangement = Arrangement.Top
@@ -171,26 +168,39 @@ fun Routine(
                     .weight(1f)
                     .padding(bottom = extraPadding),
             ) { //de esta manera se le da peso a la columna
-                Text(
-                    text = routine.name,
-                    style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.ExtraBold)
-                )
-                Text(
-                    text = routine.detail ?: "",
-                    style = MaterialTheme.typography.bodyMedium.copy(fontSize = 18.sp)
-                )
-                Text(
-                    text = stringResource(R.string.difficulty) + " " + routine.difficulty,
-                    style = MaterialTheme.typography.headlineMedium.copy(fontSize = 20.sp)
-                )
-                Text(
-                    text = stringResource(R.string.rating) + " " + routine.score,
-                    style = MaterialTheme.typography.headlineMedium.copy(fontSize = 20.sp)
-                )
-                Text(
-                    text = stringResource(R.string.category) + " " + routine.category.name,
-                    style = MaterialTheme.typography.headlineMedium.copy(fontSize = 20.sp)
-                )
+                Row (
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = routine.name + " ",
+                        style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.ExtraBold)
+                    )
+                    ShowRatingBar(
+                        modifier = Modifier.padding(top = 4.dp),
+                        rating = routine.score,
+                        stars = 4,
+                        starsColor = Color.Yellow
+                    )
+                }
+                Row {
+                    Text(
+                        text = routine.detail ?: "",
+                        style = MaterialTheme.typography.bodyMedium.copy(fontSize = 20.sp)
+                    )
+                }
+                Row {
+                    Text(
+                        text = stringResource(R.string.category) + ": " + routine.category.name,
+                        style = MaterialTheme.typography.headlineMedium.copy(fontSize = 18.sp)
+                    )
+                }
+                Row {
+                    Text(
+                        text = stringResource(R.string.difficulty) + ": " + routine.difficulty,
+                        style = MaterialTheme.typography.headlineMedium.copy(fontSize = 18.sp)
+                    )
+                }
             }
             Column() {
                 IconToggleButton(
@@ -204,31 +214,8 @@ fun Routine(
                         tint = Color.Black
                     )
                 }
+                //ShowDifficulty(routine.difficulty!!)
             }
-        }
-    }
-}
-
-
-@Composable
-fun FavButton(routine: Routine, onClick: () -> Unit) {
-    TextButton(
-        onClick = { onClick() }
-    ) {
-        if (!routine.liked) {
-            Icon(
-                Icons.Filled.Favorite,
-                "FavIcon",
-                tint = Color.Black,
-                modifier = Modifier.size(32.dp)
-            )
-        } else {
-            Icon(
-                Icons.Outlined.FavoriteBorder,
-                "FavIcon",
-                tint = Color.Black,
-                modifier = Modifier.size(32.dp)
-            )
         }
     }
 }
@@ -308,13 +295,13 @@ fun OrderByBtn(
 @Composable
 fun ShowRatingBar(
     modifier: Modifier = Modifier,
-    rating: Double = 0.0,
+    rating: Int = 0,
     stars: Int = 5,
     starsColor: Color = Color.Yellow,
 ) {
-    val filledStars = Math.floor(rating).toInt()
-    val unfilledStars = (stars - Math.ceil(rating)).toInt()
-    val halfStar = !(rating.rem(1).equals(0.0))
+    val filledStars = Math.floor((rating/2).toDouble()).toInt()
+    val unfilledStars = (stars - Math.ceil((rating/2).toDouble())).toInt()
+    val halfStar = !((rating/2).rem(1).equals(0.0))
     Row(
         modifier = modifier,
         Arrangement.Center,
@@ -324,7 +311,7 @@ fun ShowRatingBar(
             Icon(
                 imageVector = Icons.Outlined.Star, contentDescription = null,
                 tint = Color.Black,
-                modifier = Modifier.size(10.dp)
+                modifier = Modifier.size(20.dp)
             )
         }
         if (halfStar) {
@@ -332,7 +319,7 @@ fun ShowRatingBar(
                 painterResource(R.drawable.star_half),
                 contentDescription = null,
                 tint = Color.Black,
-                modifier = Modifier.size(10.dp)
+                modifier = Modifier.size(20.dp)
             )
         }
         repeat(unfilledStars) {
@@ -340,7 +327,55 @@ fun ShowRatingBar(
                 painterResource(R.drawable.star_border),
                 contentDescription = null,
                 tint = Color.Black,
-                modifier = Modifier.size(10.dp)
+                modifier = Modifier.size(20.dp)
+            )
+        }
+    }
+}
+
+@Composable
+fun ShowDifficulty(
+    diff: String,
+) {
+    when (diff) {
+        "rookie" -> {
+            Icon(
+                Icons.Filled.AddCircle,
+                contentDescription = null,
+                tint = Color(0xFF8EFE00),
+                modifier = Modifier.size(30.dp)
+            )
+        }
+        "beginner" -> {
+            Icon(
+                Icons.Filled.AddCircle,
+                contentDescription = null,
+                tint = Color(0xFF00FF00),
+                modifier = Modifier.size(30.dp)
+            )
+        }
+        "intermediate" -> {
+            Icon(
+                Icons.Filled.AddCircle,
+                contentDescription = null,
+                tint = Color(0xFFFFFF00),
+                modifier = Modifier.size(30.dp)
+            )
+        }
+        "advanced" -> {
+            Icon(
+                Icons.Filled.AddCircle,
+                contentDescription = null,
+                tint = Color(0xFFFF0000),
+                modifier = Modifier.size(30.dp)
+            )
+        }
+        "expert" -> {
+            Icon(
+                Icons.Filled.AddCircle,
+                contentDescription = null,
+                tint = Color(0xFF8E0000),
+                modifier = Modifier.size(30.dp)
             )
         }
     }

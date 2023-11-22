@@ -3,6 +3,7 @@ package ar.edu.itba.tpHciMobile.data.network.datasources
 import ar.edu.itba.tpHciMobile.data.network.api.ApiRoutinesService
 import ar.edu.itba.tpHciMobile.data.network.model.util.NetworkPagedContent
 import ar.edu.itba.tpHciMobile.data.network.model.routines.NetworkCompleteCycle
+import ar.edu.itba.tpHciMobile.data.network.model.routines.NetworkReview
 import ar.edu.itba.tpHciMobile.data.network.model.routines.NetworkRoutine
 
 class RoutinesRemoteDataSource(
@@ -57,6 +58,12 @@ class RoutinesRemoteDataSource(
     suspend fun getCycle(routineId: Int, cycleId: Int): NetworkCompleteCycle {
         return handleApiResponse {
             routinesService.getCycle(routineId, cycleId)
+        }
+    }
+
+    suspend fun setReview(routineId: Int) {
+        return handleApiResponse {
+            routinesService.setReview(routineId)
         }
     }
 }

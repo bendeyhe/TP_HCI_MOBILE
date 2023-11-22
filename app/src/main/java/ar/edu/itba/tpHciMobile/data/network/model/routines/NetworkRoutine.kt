@@ -11,7 +11,7 @@ class NetworkRoutine(
     @SerializedName("name") var name: String,
     @SerializedName("detail") var detail: String? = null,
     @SerializedName("date") var date: Date? = null,
-    @SerializedName("score") var score: Int? = null,
+    @SerializedName("score") var score: Int = 0,
     @SerializedName("isPublic") var isPublic: Boolean? = null,
     @SerializedName("difficulty") var difficulty: String? = null,
     @SerializedName("user") var user: NetworkUser? = null,            //desde el converter estaba User()

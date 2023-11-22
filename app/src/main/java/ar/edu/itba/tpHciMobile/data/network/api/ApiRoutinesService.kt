@@ -2,6 +2,7 @@ package ar.edu.itba.tpHciMobile.data.network.api
 
 import ar.edu.itba.tpHciMobile.data.network.model.util.NetworkPagedContent
 import ar.edu.itba.tpHciMobile.data.network.model.routines.NetworkCompleteCycle
+import ar.edu.itba.tpHciMobile.data.network.model.routines.NetworkReview
 import ar.edu.itba.tpHciMobile.data.network.model.routines.NetworkRoutine
 import retrofit2.Response
 import retrofit2.http.*
@@ -39,5 +40,8 @@ interface ApiRoutinesService {
         @Path("routineId") routineId: Int,
         @Path("cycleId") cycleId: Int
     ): Response<NetworkCompleteCycle>
+
+    @POST("reviews/{routineId}")
+    suspend fun setReview(@Path("routineId") routineId: Int): Response<Unit>
 
 }
