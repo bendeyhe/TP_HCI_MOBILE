@@ -72,7 +72,7 @@ fun LoginTablet(
                 verticalArrangement = Arrangement.Center
             ) {
                 Text(
-                    text = stringResource(R.string.login_msg) + " TABLET", // TODO SACAR ESTE TABLET
+                    text = stringResource(R.string.login_msg),
                     textAlign = TextAlign.Center,
                     fontSize = 30.sp,
                     fontWeight = FontWeight.Bold,

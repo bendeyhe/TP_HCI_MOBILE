@@ -41,7 +41,7 @@
     <string name="logout_msg">Cerrar sesión</string>
     <string name="routine_details">Detalle de la rutina</string>
     <string name="share_routine">COMPARTIR</string>
-    <string name="start_routine">COMENZAR</string>
+    <string name="start_routine">EMPEZAR</string>
     <string name="rating">Puntaje</string>
     <string name="difficulty">Dificultad</string>
     <string name="category">Categoria</string>
@@ -73,4 +73,9 @@
     <string name="view_1">Vista detallada</string>
     <string name="view_2">Ver lista</string>
     <string name="create_account">Para crear una cuenta por favor visite nuestro sitio web: toobig.com</string>
+    <string name="rookie">Principiante</string>
+    <string name="beginner">Amateur</string>
+    <string name="intermediate">Intermedio</string>
+    <string name="advanced">Avanzado</string>
+    <string name="expert">Experto</string>
 </resources>

@@ -72,4 +72,9 @@
     <string name="view_1">Detailed View</string>
     <string name="view_2">List view</string>
     <string name="create_account">To create an account please visit our website: toobig.com</string>
+    <string name="rookie">Rookie</string>
+    <string name="beginner">Beginner</string>
+    <string name="intermediate">Intermediate</string>
+    <string name="advanced">Advanced</string>
+    <string name="expert">Expert</string>
 </resources>

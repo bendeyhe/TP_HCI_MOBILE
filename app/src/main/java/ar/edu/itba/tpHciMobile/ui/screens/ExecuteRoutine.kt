@@ -448,7 +448,7 @@ fun ExecuteRoutineContent(
                         Button(
                             onClick = {
                                 if (!routinesViewModel.uiState.isFetchingRoutine) {
-                                    var review: Review = Review(currentRating)
+                                    var review: Review = Review(currentRating * 2)
                                     routinesViewModel.setReview(
                                         routinesViewModel.uiState.currentRoutine!!.id, review
                                     )

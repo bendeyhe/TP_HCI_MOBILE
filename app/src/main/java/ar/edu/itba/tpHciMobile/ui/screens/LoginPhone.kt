@@ -73,7 +73,7 @@ fun LoginPhone(
                 verticalArrangement = Arrangement.Center
             ) {
                 Text(
-                    text = stringResource(R.string.login_msg) + " PHONE", // TODO SACAR ESTE PHONE
+                    text = stringResource(R.string.login_msg) ,
                     textAlign = TextAlign.Center,
                     fontSize = 30.sp,
                     fontWeight = FontWeight.Bold,
