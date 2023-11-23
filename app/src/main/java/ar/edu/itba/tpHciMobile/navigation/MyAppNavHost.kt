@@ -52,16 +52,31 @@ fun MyAppNavHost(
 
          */
         composable(Screen.Routines.route) {
-            Routines(navController = navController, routinesViewModel = routinesViewModel, userViewModel = userViewModel)
+            Routines(
+                navController = navController,
+                routinesViewModel = routinesViewModel,
+                userViewModel = userViewModel
+            )
         }
         composable(Screen.LoginScreen.route) {
             Login(navController = navController, userViewModel = userViewModel)
         }
         composable(Screen.Favorites.route) {
-            Favorites(navController = navController, routinesViewModel = routinesViewModel, userViewModel = userViewModel)
+            Favorites(
+                navController = navController,
+                routinesViewModel = routinesViewModel,
+                userViewModel = userViewModel
+            )
         }
-        composable(route = Screen.ExecuteRoutine.route + "/{id}", arguments = listOf(navArgument("id") { type = NavType.IntType }) ) {
-            ExecuteRoutine(navController = navController, routinesViewModel = routinesViewModel, routineId = it.arguments?.getInt("id")!!)
+        composable(
+            route = Screen.ExecuteRoutine.route + "/{id}",
+            arguments = listOf(navArgument("id") { type = NavType.IntType })
+        ) {
+            ExecuteRoutine(
+                navController = navController,
+                routinesViewModel = routinesViewModel,
+                routineId = it.arguments?.getInt("id")!!
+            )
         }
         composable(
             route = Screen.RoutineDetails.route + "/{id}",
@@ -71,7 +86,12 @@ fun MyAppNavHost(
             ),
             arguments = listOf(navArgument("id") { type = NavType.IntType })
         ) {
-            RoutineDetails(navController = navController, routinesViewModel = routinesViewModel, userViewModel = userViewModel, routineId = it.arguments?.getInt("id")!!)
+            RoutineDetails(
+                navController = navController,
+                routinesViewModel = routinesViewModel,
+                userViewModel = userViewModel,
+                routineId = it.arguments?.getInt("id")!!
+            )
         }
     }
 }

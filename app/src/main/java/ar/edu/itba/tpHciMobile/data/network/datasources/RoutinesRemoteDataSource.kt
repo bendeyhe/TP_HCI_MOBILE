@@ -50,6 +50,7 @@ class RoutinesRemoteDataSource(
             routinesService.getRoutine(routineId)
         }
     }
+
     suspend fun updateRoutine(routineId: Int, routine: NetworkUpdateRoutine) {
         handleApiResponse {
             routinesService.updateRoutine(routineId, routine)

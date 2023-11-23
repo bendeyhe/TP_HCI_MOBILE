@@ -72,7 +72,7 @@ fun RoutinesPhone(
     onItemClick: () -> Unit,
     likeFunc: () -> Unit,
     color: Color = Color.White
-){
+) {
     var expanded = rememberSaveable { mutableStateOf(false) }
     var fav = rememberSaveable { mutableStateOf(false) }
     //luego para usar lo que hay en expanded se usa expanded.value
@@ -154,7 +154,7 @@ fun RoutinesPhone(
                         starsColor = Color.Yellow
                     )
                     Text(
-                        text = " (" + ((routine.score.toDouble()/2)) + ")",
+                        text = " (" + ((routine.score.toDouble() / 2)) + ")",
                         color = Color.Black,
                         style = MaterialTheme.typography.headlineMedium.copy(fontSize = 20.sp),
                     )
@@ -199,7 +199,7 @@ fun RoutinesPhone(
                         color = Color.LightGray
                     ) {
                         Text(
-                            text = ShowDifficulty(routine.difficulty?: "").toString(),
+                            text = ShowDifficulty(routine.difficulty ?: "").toString(),
                             color = Color.Black,
                             style = MaterialTheme.typography.headlineMedium.copy(fontSize = 20.sp),
                             modifier = Modifier.padding(horizontal = 4.dp, vertical = 4.dp)

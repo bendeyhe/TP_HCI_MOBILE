@@ -88,24 +88,24 @@ fun RoutinesTablet(
     val notLoggedIn = stringResource(R.string.not_logged_in)
 
     Surface(
-    modifier = Modifier
-    .padding(vertical = 4.dp, horizontal = 8.dp)
-    .clickable(onClick =
-    {
-        if (userViewModel.uiState.isAuthenticated) {
-            onItemClick()
-        } else {
-            Toast
-                .makeText(
-                    MyApplication.instance,
-                    notLoggedIn,
-                    Toast.LENGTH_SHORT
-                )
-                .show()
-        }
-    }),
-    shape = MaterialTheme.shapes.medium,
-    color = color
+        modifier = Modifier
+            .padding(vertical = 4.dp, horizontal = 8.dp)
+            .clickable(onClick =
+            {
+                if (userViewModel.uiState.isAuthenticated) {
+                    onItemClick()
+                } else {
+                    Toast
+                        .makeText(
+                            MyApplication.instance,
+                            notLoggedIn,
+                            Toast.LENGTH_SHORT
+                        )
+                        .show()
+                }
+            }),
+        shape = MaterialTheme.shapes.medium,
+        color = color
     )
     {
         Row(modifier = Modifier.padding(horizontal = 20.dp, vertical = 4.dp)) {

@@ -14,7 +14,10 @@ interface ApiExercisesService {
     suspend fun getExercise(@Path("exerciseId") exerciseId: Int): Response<NetworkExercise>
 
     @GET("cycles/{cycleId}/exercises")
-    suspend fun getExercisesByCycle(@Path("cycleId") cycleId: Int, @Query("page") page: Int): Response<NetworkPagedContent<NetworkCycleExercise>>
+    suspend fun getExercisesByCycle(
+        @Path("cycleId") cycleId: Int,
+        @Query("page") page: Int
+    ): Response<NetworkPagedContent<NetworkCycleExercise>>
 
     @GET("cycles/{cycleId}/exercises/{exerciseId}")
     suspend fun getExerciseByCycle(

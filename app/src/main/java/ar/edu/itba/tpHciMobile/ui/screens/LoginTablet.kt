@@ -210,9 +210,9 @@ fun LoginTablet(
             }
         }
     } else {
-        if(userViewModel.uiState.currentUser == null)
+        if (userViewModel.uiState.currentUser == null)
             userViewModel.getCurrentUser()
-        if(!userViewModel.uiState.isFetching) {
+        if (!userViewModel.uiState.isFetching) {
             Surface(modifier = Modifier.fillMaxSize()) {
                 Column(
                     modifier = Modifier

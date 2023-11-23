@@ -20,7 +20,10 @@ class ExercisesRemoteDataSource(
         }
     }
 
-    suspend fun getExercisesByCycle(cycleId: Int, page: Int): NetworkPagedContent<NetworkCycleExercise> {
+    suspend fun getExercisesByCycle(
+        cycleId: Int,
+        page: Int
+    ): NetworkPagedContent<NetworkCycleExercise> {
         return handleApiResponse {
             exercisesService.getExercisesByCycle(cycleId, page)
         }

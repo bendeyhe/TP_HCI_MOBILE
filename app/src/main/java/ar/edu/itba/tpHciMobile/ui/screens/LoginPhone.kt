@@ -73,7 +73,7 @@ fun LoginPhone(
                 verticalArrangement = Arrangement.Center
             ) {
                 Text(
-                    text = stringResource(R.string.login_msg) ,
+                    text = stringResource(R.string.login_msg),
                     textAlign = TextAlign.Center,
                     fontSize = 30.sp,
                     fontWeight = FontWeight.Bold,
@@ -211,9 +211,9 @@ fun LoginPhone(
             }
         }
     } else {
-        if(userViewModel.uiState.currentUser == null)
+        if (userViewModel.uiState.currentUser == null)
             userViewModel.getCurrentUser()
-        if(!userViewModel.uiState.isFetching) {
+        if (!userViewModel.uiState.isFetching) {
             Surface(modifier = Modifier.fillMaxSize()) {
                 Column(
                     modifier = Modifier

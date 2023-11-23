@@ -75,8 +75,7 @@ fun Routines(
 ) {
     if (routinesViewModel.uiState.isFetchingRoutine) {
         Loading()
-    }
-    else {
+    } else {
         if (routinesViewModel.uiState.routines == null)
             routinesViewModel.getRoutinesOrderBy()
 
@@ -123,8 +122,12 @@ fun Routines(
                                     userViewModel = userViewModel,
                                     onItemClick = {
                                         if (!routinesViewModel.uiState.isFetchingRoutine) {
-                                            val isLiked = routinesViewModel.uiState.routines?.find { it.id == routine.id }?.liked
-                                            routinesViewModel.getRoutine(routine.id, isLiked?: false)
+                                            val isLiked =
+                                                routinesViewModel.uiState.routines?.find { it.id == routine.id }?.liked
+                                            routinesViewModel.getRoutine(
+                                                routine.id,
+                                                isLiked ?: false
+                                            )
                                             navController.navigate(Screen.RoutineDetails.route + "/${routine.id}")
                                         }
                                     },
@@ -254,9 +257,9 @@ fun ShowRatingBar(
 ) {
     val filledStars = Math.floor((rating / 2).toDouble()).toInt()
     var unfilledStars = (stars - Math.ceil((rating / 2).toDouble())).toInt()
-    val halfStar = (rating.toDouble()/2 - rating/2) > 0
-    if(halfStar)
-        unfilledStars -=  1
+    val halfStar = (rating.toDouble() / 2 - rating / 2) > 0
+    if (halfStar)
+        unfilledStars -= 1
     Row(
         modifier = modifier,
         Arrangement.Center,
@@ -291,23 +294,28 @@ fun ShowRatingBar(
 @Composable
 fun ShowDifficulty(
     diff: String,
-) :String {
+): String {
     when (diff) {
         "rookie" -> {
             return stringResource(R.string.rookie)
         }
+
         "beginner" -> {
             return stringResource(R.string.beginner)
         }
+
         "intermediate" -> {
             return stringResource(R.string.intermediate)
         }
+
         "advanced" -> {
             return stringResource(R.string.advanced)
         }
+
         "expert" -> {
             return stringResource(R.string.expert)
         }
+
         else -> {
             return ""
         }

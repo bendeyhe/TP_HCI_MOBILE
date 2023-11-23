@@ -155,7 +155,7 @@ fun ExecuteRoutineContent(
                                 )
                             )
                             Text(
-                                text = routinesViewModel.uiState.currentRoutineCycle!!.name+ "   " + (routinesViewModel.uiState.currentRepetitionIndex + 1) + "/" + routinesViewModel.uiState.cycleDetailList[routinesViewModel.uiState.currentCycleIndex].cycle!!.repetitions,
+                                text = routinesViewModel.uiState.currentRoutineCycle!!.name + "   " + (routinesViewModel.uiState.currentRepetitionIndex + 1) + "/" + routinesViewModel.uiState.cycleDetailList[routinesViewModel.uiState.currentCycleIndex].cycle!!.repetitions,
                                 style = MaterialTheme.typography.headlineMedium.copy(
                                     fontWeight = FontWeight.Bold
                                 )
@@ -173,7 +173,7 @@ fun ExecuteRoutineContent(
                                     horizontalAlignment = Alignment.CenterHorizontally
                                 ) {
                                     Text(
-                                        text = routinesViewModel.uiState.currentExercise!!.exercise.name + "   " + (routinesViewModel.uiState.currentExerciseIndex+1) + "/" + routinesViewModel.uiState.cycleDetailList[routinesViewModel.uiState.currentCycleIndex].exercises.size,
+                                        text = routinesViewModel.uiState.currentExercise!!.exercise.name + "   " + (routinesViewModel.uiState.currentExerciseIndex + 1) + "/" + routinesViewModel.uiState.cycleDetailList[routinesViewModel.uiState.currentCycleIndex].exercises.size,
                                         style = MaterialTheme.typography.headlineMedium.copy(
                                             fontWeight = FontWeight.Bold
                                         )
@@ -272,15 +272,14 @@ fun ExecuteRoutineContent(
                             Spacer(modifier.weight(1f))
                         }
                     }
-                }
-                else {
+                } else {
                     //TODO ESTO NO ES UN TODO, SOLO QUERIA QUE SE ME MARQUE LA SEGUNDA VIEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 
                     Surface(modifier = modifier.fillMaxSize()) {
                         Column {
                             for (cycle in routinesViewModel.uiState.cycleDetailList) {
                                 if (cycle == routinesViewModel.uiState.cycleDetailList[routinesViewModel.uiState.currentCycleIndex]) {
-                                    Row (Modifier.background(Color.LightGray)){
+                                    Row(Modifier.background(Color.LightGray)) {
                                         Text(
                                             text = cycle.cycle!!.name,
                                             style = MaterialTheme.typography.headlineSmall.copy(
@@ -297,8 +296,7 @@ fun ExecuteRoutineContent(
                                             modifier = Modifier.padding(end = 8.dp)
                                         )
                                     }
-                                }
-                                else
+                                } else
                                     Text(
                                         text = cycle.cycle!!.name,
                                         style = MaterialTheme.typography.headlineSmall.copy(
@@ -313,7 +311,7 @@ fun ExecuteRoutineContent(
                                             Column(
                                                 Modifier.background(Color(0xFF8EFE00)),
                                                 horizontalAlignment = Alignment.CenterHorizontally
-                                                ) {
+                                            ) {
                                                 Text(
                                                     text = exercise.exercise.name,
                                                     style = MaterialTheme.typography.headlineMedium.copy(
@@ -376,8 +374,13 @@ fun ExecuteRoutineContent(
                                             )
                                             Spacer(modifier = Modifier.weight(1f))
                                             if (exercise.repetitions!! > 0) {
-                                                var txt = if(exercise.repetitions!! > 1) "${exercise.repetitions} " + stringResource(R.string.repetitions) else "${exercise.repetitions} " + stringResource(R.string.repetition)
-                                                if(exercise.duration!! > 0)
+                                                var txt =
+                                                    if (exercise.repetitions!! > 1) "${exercise.repetitions} " + stringResource(
+                                                        R.string.repetitions
+                                                    ) else "${exercise.repetitions} " + stringResource(
+                                                        R.string.repetition
+                                                    )
+                                                if (exercise.duration!! > 0)
                                                     txt += " " + stringResource(R.string.`in`) + " "
                                                 Text(
                                                     text = txt,
@@ -388,7 +391,11 @@ fun ExecuteRoutineContent(
                                             }
                                             if (exercise.duration!! > 0) {
                                                 Text(
-                                                    text = if(exercise.duration!! > 1) "${exercise.duration} " + stringResource(R.string.seconds) else "${exercise.duration} " + stringResource(R.string.second),
+                                                    text = if (exercise.duration!! > 1) "${exercise.duration} " + stringResource(
+                                                        R.string.seconds
+                                                    ) else "${exercise.duration} " + stringResource(
+                                                        R.string.second
+                                                    ),
                                                     style = MaterialTheme.typography.bodyLarge.copy(
                                                         fontWeight = FontWeight.Normal,
                                                     ),
