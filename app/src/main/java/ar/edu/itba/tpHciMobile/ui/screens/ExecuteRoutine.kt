@@ -1,5 +1,6 @@
 package ar.edu.itba.tpHciMobile.ui.screens
 
+import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -45,6 +46,7 @@ import androidx.navigation.NavController
 import ar.edu.itba.tpHciMobile.R
 import kotlinx.coroutines.delay
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -63,55 +65,10 @@ fun ExecuteRoutine(
     routinesViewModel: RoutinesViewModel,
     routineId: Int
 ) {
-    @OptIn(ExperimentalMaterial3Api::class)
-    Scaffold(
-        topBar = { if (!routineFinished) TabScreen() },
-        bottomBar = {
-            if (routinesViewModel.uiState.isExecuting) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    Button(
-                        onClick = { routinesViewModel.previousExercise() },
-                        modifier = Modifier.padding(16.dp),
-                        enabled = !(routinesViewModel.uiState.currentCycleIndex == 0 && routinesViewModel.uiState.currentExerciseIndex == 0),
-                        colors = ButtonDefaults.buttonColors(containerColor = Color.LightGray)
-                    ) {
-                        Text(
-                            text = stringResource(R.string.back),
-                            color = Color.Black,
-                            style = MaterialTheme.typography.headlineMedium.copy(
-                                fontSize = 20.sp,
-                                fontWeight = FontWeight.Medium
-                            )
-                        )
-                    }
-                    Button(
-                        onClick = { routinesViewModel.nextExercise() },
-                        modifier = Modifier.padding(16.dp),
-                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF8EFE00))
-                    ) {
-                        Text(
-                            text = stringResource(R.string.next),
-                            color = Color.Black,
-                            style = MaterialTheme.typography.headlineMedium.copy(
-                                fontSize = 20.sp,
-                                fontWeight = FontWeight.Medium
-                            )
-                        )
-                    }
-                }
-            }
-
-        }
-    ) { contentPadding ->
-        ExecuteRoutineContent(
-            Modifier.padding(contentPadding),
-            navController,
-            routinesViewModel,
-            routineId
-        )
+    if (LocalContext.current.resources.configuration.screenLayout and Configuration.SCREENLAYOUT_SIZE_MASK >= Configuration.SCREENLAYOUT_SIZE_LARGE) {
+        ExecuteRoutineTablet(modifier, navController, routinesViewModel, routineId)
+    } else {
+        ExecuteRoutinePhone(modifier, navController, routinesViewModel, routineId)
     }
 }
 
