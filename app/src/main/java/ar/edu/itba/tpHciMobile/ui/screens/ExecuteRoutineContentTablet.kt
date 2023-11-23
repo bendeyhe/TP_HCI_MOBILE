@@ -339,7 +339,7 @@ fun ExecuteRoutineContentTablet(
             } else {
                 routineFinished = true
                 Column(
-                    modifier = Modifier.fillMaxHeight(),
+                    modifier = Modifier.fillMaxSize(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
