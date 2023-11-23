@@ -78,4 +78,5 @@
     <string name="intermediate">Intermedio</string>
     <string name="advanced">Avanzado</string>
     <string name="expert">Experto</string>
+    <string name="no_routine_selected">Seleccione una rutina para ver el detalle</string>
 </resources>

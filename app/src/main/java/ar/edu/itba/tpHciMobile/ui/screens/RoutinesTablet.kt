@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
@@ -71,6 +72,7 @@ fun RoutinesTablet(
     routinesViewModel: RoutinesViewModel,
     userViewModel: UserViewModel
 ) {
+    var selectedRoutine by remember { mutableStateOf<Routine?>(null) }
     if (routinesViewModel.uiState.isFetchingRoutine) {
         Loading()
     } else {
@@ -80,64 +82,87 @@ fun RoutinesTablet(
         var routines = emptyList<Routine>()
         if (!routinesViewModel.uiState.isFetchingRoutine)
             routines = routinesViewModel.uiState.routines.orEmpty()
-
-        Surface(
-            color = Color(0xFFAEB0B2),
-            modifier = modifier.fillMaxHeight()
-        ) {
-            SwipeRefresh(
-                state = rememberSwipeRefreshState(isRefreshing = routinesViewModel.uiState.isFetchingRoutine),
-                onRefresh = { routinesViewModel.getRoutinesOrderBy() }
+        Row {
+            Surface(
+                color = Color(0xFFAEB0B2),
+                modifier = modifier.fillMaxWidth(0.3f).fillMaxHeight()
             ) {
-                Column(
-                    horizontalAlignment = Alignment.Start,
-                    verticalArrangement = Arrangement.Top
+                SwipeRefresh(
+                    state = rememberSwipeRefreshState(isRefreshing = routinesViewModel.uiState.isFetchingRoutine),
+                    onRefresh = { routinesViewModel.getRoutinesOrderBy() }
                 ) {
-                    Row() {
-                        Text(
-                            text = stringResource(R.string.routines),
-                            textAlign = TextAlign.Left,
-                            fontSize = 30.sp,
-                            fontWeight = androidx.compose.ui.text.font.FontWeight.Bold,
-                            modifier = Modifier.padding(8.dp)
-                        )
-                        Spacer(modifier = Modifier.weight(1f))
-                        OrderByBtn(
-                            routinesViewModel = routinesViewModel,
-                            modifier = modifier.padding(end = 8.dp)
-                        )
-                    }
-                    val list = routines
-                    if (list.isNotEmpty()) {
-                        LazyVerticalGrid(
-                            state = rememberLazyGridState(),
-                            columns = GridCells.Adaptive(minSize = 300.dp)
-                        ) {
-                            items(items = list) { routine ->
-                                Routine(
-                                    routine = routine,
-                                    routinesViewModel = routinesViewModel,
-                                    userViewModel = userViewModel,
-                                    onItemClick = {
-                                        if (!routinesViewModel.uiState.isFetchingRoutine) {
-                                            val isLiked =
-                                                routinesViewModel.uiState.routines?.find { it.id == routine.id }?.liked
-                                            routinesViewModel.getRoutine(
-                                                routine.id,
-                                                isLiked ?: false
-                                            )
-                                            navController.navigate(Screen.RoutineDetails.route + "/${routine.id}")
-                                        }
-                                    },
-                                    likeFunc = {
-                                        routinesViewModel.toggleLike(routine)
-                                    },
-                                )
-                            }
+                    Column(
+                        horizontalAlignment = Alignment.Start,
+                        verticalArrangement = Arrangement.Top
+                    ) {
+                        Row() {
+                            Text(
+                                text = stringResource(R.string.routines),
+                                textAlign = TextAlign.Left,
+                                fontSize = 30.sp,
+                                fontWeight = androidx.compose.ui.text.font.FontWeight.Bold,
+                                modifier = Modifier.padding(8.dp)
+                            )
+                            Spacer(modifier = Modifier.weight(1f))
+                            OrderByBtn(
+                                routinesViewModel = routinesViewModel,
+                                modifier = modifier.padding(end = 8.dp)
+                            )
                         }
-                    } else {
-                        Text(text = stringResource(R.string.no_routines))
+                        val list = routines
+                        if (list.isNotEmpty()) {
+                            LazyVerticalGrid(
+                                state = rememberLazyGridState(),
+                                columns = GridCells.Adaptive(minSize = 300.dp)
+                            ) {
+                                items(items = list) { routine ->
+                                    Routine(
+                                        routine = routine,
+                                        routinesViewModel = routinesViewModel,
+                                        userViewModel = userViewModel,
+                                        onItemClick = {
+                                            if (!routinesViewModel.uiState.isFetchingRoutine) {
+                                                val isLiked =
+                                                    routinesViewModel.uiState.routines?.find { it.id == routine.id }?.liked
+                                                routinesViewModel.getRoutine(
+                                                    routine.id,
+                                                    isLiked ?: false
+                                                )
+                                                selectedRoutine = routine
+                                            }
+                                        },
+                                        likeFunc = {
+                                            routinesViewModel.toggleLike(routine)
+                                        },
+                                    )
+                                }
+                            }
+                        } else {
+                            Text(text = stringResource(R.string.no_routines))
+                        }
                     }
+                }
+            }
+            Surface(
+                color = Color(0xFFAEB0B2),
+                modifier = modifier.fillMaxWidth().fillMaxHeight()
+            ){
+                if(selectedRoutine != null){
+                    RoutineDetails(
+                        routineId = selectedRoutine!!.id,
+                        routinesViewModel = routinesViewModel,
+                        navController = navController,
+                        userViewModel = userViewModel,
+                    )
+                }
+                else{
+                    Text(
+                        text = stringResource(R.string.no_routine_selected),
+                        textAlign = TextAlign.Center,
+                        fontSize = 30.sp,
+                        fontWeight = androidx.compose.ui.text.font.FontWeight.Bold,
+                        modifier = Modifier.padding(50.dp)
+                    )
                 }
             }
         }

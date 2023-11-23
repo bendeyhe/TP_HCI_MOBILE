@@ -77,4 +77,5 @@
     <string name="intermediate">Intermediate</string>
     <string name="advanced">Advanced</string>
     <string name="expert">Expert</string>
+    <string name="no_routine_selected">Select a routine to see its details</string>
 </resources>

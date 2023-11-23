@@ -95,15 +95,16 @@ fun LoginTablet(
                     },
                     supportingText = {
                         Text(
-                            modifier = Modifier.fillMaxWidth(),
+                            modifier = Modifier.fillMaxWidth(0.5f),
                             text = stringResource(R.string.limit) + ": ${username.length}/$charLimit",
                         )
                     },
                     isError = isError,
                     keyboardActions = KeyboardActions { validate(username) },
+
                     modifier = Modifier
                         .padding(16.dp)
-                        .fillMaxWidth()
+                        .fillMaxWidth(0.5f)
                         .semantics {
                             // Provide localized description of the error
                             if (isError) error(errorMessage)
@@ -138,7 +139,7 @@ fun LoginTablet(
                     keyboardActions = KeyboardActions { validate(password) },
                     modifier = Modifier
                         .padding(16.dp)
-                        .fillMaxWidth()
+                        .fillMaxWidth(0.5f)
                         .semantics {
                             // Provide localized description of the error
                             if (isError) error(errorMessage)
@@ -249,7 +250,7 @@ fun LoginTablet(
                         keyboardActions = KeyboardActions { validate(userViewModel.uiState.currentUser?.username.toString()) },
                         modifier = Modifier
                             .padding(16.dp)
-                            .fillMaxWidth()
+                            .fillMaxWidth(0.5f)
                             .semantics {
                                 // Provide localized description of the error
                                 if (isError) error(errorMessage)
@@ -276,7 +277,7 @@ fun LoginTablet(
                         keyboardActions = KeyboardActions { validate(userViewModel.uiState.currentUser?.firstName.toString()) },
                         modifier = Modifier
                             .padding(16.dp)
-                            .fillMaxWidth()
+                            .fillMaxWidth(0.5f)
                             .semantics {
                                 // Provide localized description of the error
                                 if (isError) error(errorMessage)
@@ -303,7 +304,7 @@ fun LoginTablet(
                         keyboardActions = KeyboardActions { validate(userViewModel.uiState.currentUser?.lastName.toString()) },
                         modifier = Modifier
                             .padding(16.dp)
-                            .fillMaxWidth()
+                            .fillMaxWidth(0.5f)
                             .semantics {
                                 // Provide localized description of the error
                                 if (isError) error(errorMessage)
@@ -330,7 +331,7 @@ fun LoginTablet(
                         keyboardActions = KeyboardActions { validate(userViewModel.uiState.currentUser?.email.toString()) },
                         modifier = Modifier
                             .padding(16.dp)
-                            .fillMaxWidth()
+                            .fillMaxWidth(0.5f)
                             .semantics {
                                 // Provide localized description of the error
                                 if (isError) error(errorMessage)
