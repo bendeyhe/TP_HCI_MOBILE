@@ -173,8 +173,11 @@ fun LoginPhone(
                         else if (password.length > charLimit)
                             Toast.makeText(context, notValidPassword, Toast.LENGTH_SHORT).show()
                         else {
-                            var isAuth = userViewModel.login(username, password)
                             if (!userViewModel.uiState.isFetching) {
+                                userViewModel.login(username, password)
+
+                                var isAuth = userViewModel.uiState.isAuthenticated
+
                                 if (isAuth)
                                     navController.navigate(Screen.Routines.route)
                                 else

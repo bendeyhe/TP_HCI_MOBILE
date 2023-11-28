@@ -54,15 +54,18 @@ class UserViewModel(
         { state, _ -> state }
     )
 
-    fun login(username: String, password: String): Boolean {
-        runOnViewModelScope(
-            {
-                userRepository.login(username, password)
-                userRepository.getCurrentUser(true)
-            },
-            { state, response -> state.copy(isAuthenticated = true, currentUser = response) }
-        )
-        return uiState.isAuthenticated
+    fun login(username: String, password: String,): Job = viewModelScope.launch {
+        uiState = uiState.copy(isFetching = true, error = null)
+        runCatching {
+            userRepository.login(username, password)
+        }.onSuccess {
+            uiState = uiState.copy(isAuthenticated = true, isFetching = false)
+            getCurrentUser()
+        }.onFailure { e ->
+            uiState = uiState.copy(isFetching = false, error = handleError(e), isAuthenticated = false)
+
+        }
+
     }
 
     fun getCurrentUser() = runOnViewModelScope(
